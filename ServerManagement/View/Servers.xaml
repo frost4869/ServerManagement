@@ -1,0 +1,39 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ServerManagement.View"
+            xmlns:viewModel="clr-namespace:ServerManagement.ViewModel"
+             xmlns:Entity="clr-namespace:ServerManagement.Model.Entity" x:Class="ServerManagement.View.Servers"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="1000" Loaded="UserControl_Loaded">
+    <!--<UserControl.Resources>
+        <CollectionViewSource x:Key="serverViewSource" d:DesignSource="{d:DesignInstance {x:Type Entity:Server}, CreateList=True}"/>
+    </UserControl.Resources>-->
+    <Grid>
+        <DataGrid x:Name="serverDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" ItemsSource="{Binding Servers}" EnableRowVirtualization="True" AutoGenerateColumns="False"
+                  Margin="0,10,0,0" 
+                  CanUserAddRows="False"
+                  IsReadOnly="True"
+                  GridLinesVisibility="All"
+                  EnableColumnVirtualization="True"
+                  RowHeaderWidth="27"
+                  HeadersVisibility="All"
+                  MinColumnWidth="100"
+                  SelectionUnit="CellOrRowHeader">
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="functionalityColumn" Width="SizeToHeader" Header="Functionality" Binding="{Binding Functionality}"/>
+                <DataGridTextColumn x:Name="hostNameColumn" Width="SizeToHeader" Header="Host Name" Binding="{Binding HostName}"/>
+                <DataGridTextColumn x:Name="iP1Column" Width="SizeToHeader" Header="IP 1" Binding="{Binding IP1}"/>
+                <DataGridTextColumn x:Name="iP2Column" Width="SizeToHeader" Header="IP 2" Binding="{Binding IP2}"/>
+                <DataGridTextColumn x:Name="iP3Column" Width="SizeToHeader" Header="IP 3" Binding="{Binding IP3}"/>
+                <DataGridTextColumn x:Name="iP4Column" Width="SizeToHeader" Header="IP 4" Binding="{Binding IP4}"/>
+                <DataGridTextColumn x:Name="nameColumn" Width="SizeToHeader" Header="Name" Binding="{Binding Name}"/>
+                <DataGridTextColumn x:Name="passwordColumn" Width="SizeToHeader" Header="Password" Binding="{Binding Password}"/>
+                <DataGridTextColumn x:Name="usernameColumn" Width="SizeToHeader" Header="Username" Binding="{Binding Username}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+</UserControl>

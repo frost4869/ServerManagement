@@ -1,12 +1,26 @@
-﻿<Window x:Class="ServerManagement.MainWindow"
+﻿<Controls:MetroWindow x:Class="ServerManagement.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:ServerManagement"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+                      xmlns:views="clr-namespace:ServerManagement.View"
+                      mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="1000">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0"
+              Margin="5"
+              HorizontalContentAlignment="Left"
+              VerticalAlignment="Stretch">
+            <MenuItem Header="New" Click="NewServer_Click"></MenuItem>
+        </Menu>
+        <views:NewServer Visibility="Collapsed" Grid.Row="2" x:Name="NewView"/>
+        <views:Servers Grid.Row="2" x:Name="ServersView"/>
     </Grid>
-</Window>
+</Controls:MetroWindow>
