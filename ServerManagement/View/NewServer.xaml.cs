@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using ServerManagement.Model.Entity;
+using ServerManagement.VML;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ServerManagement.View
 {
@@ -20,15 +9,28 @@ namespace ServerManagement.View
     /// </summary>
     public partial class NewServer : UserControl
     {
+        public Model.Entity.Server newServer = new Model.Entity.Server();
+        private readonly ServerManagementEntities db = new ServerManagementEntities();
+
         public NewServer()
         {
             InitializeComponent();
-            PART_Title.Content = "New Server";
+            NewServerGrid.DataContext = newServer;
         }
 
-        private void PART_BackButton_Click(object sender, RoutedEventArgs e)
+        private async void ButtonSave_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            this.Visibility = Visibility.Collapsed;
+            try
+            {
+                newServer.Active = true;
+                db.Servers.Add(newServer);
+                db.SaveChanges();
+            }
+            catch (System.Exception ex)
+            {
+                Utils.WriteLog(ex.Message);
+                await Utils.ShowMessageBoxAsync("Error", ex.Message);
+            }
         }
     }
 }

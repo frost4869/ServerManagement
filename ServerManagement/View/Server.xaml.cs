@@ -19,19 +19,29 @@ namespace ServerManagement.View
     /// <summary>
     /// Interaction logic for Servers.xaml
     /// </summary>
-    public partial class Servers : UserControl
+    public partial class Server : UserControl
     {
-        public Servers()
+        public ServerViewModel viewModel = new ServerViewModel();
+        public Server()
         {
             InitializeComponent();
-            this.DataContext = new ServerViewModel();
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            //viewmodel.LoadServers();
+            this.DataContext = viewModel;
+        }
 
-            //serverDataGrid.DataContext = viewmodel.Servers;
+        private void headerCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            viewModel.CheckAll();
+            this.DataContext = viewModel;
+        }
+
+        private void headerCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            viewModel.UnCheckAll();
+            this.DataContext = viewModel;
         }
     }
 }

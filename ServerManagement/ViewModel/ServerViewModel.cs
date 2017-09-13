@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace ServerManagement.ViewModel
 {
-    class ServerViewModel
+    public class ServerViewModel
     {
         public ServerViewModel()
         {
@@ -31,6 +31,22 @@ namespace ServerManagement.ViewModel
             );
 
             Servers = model;
+        }
+
+        public void CheckAll()
+        {
+            foreach (var item in Servers)
+            {
+                item.IsSelected = true;
+            }
+        }
+
+        public void UnCheckAll()
+        {
+            foreach (var item in Servers)
+            {
+                item.IsSelected = false;
+            }
         }
     }
 }

@@ -7,7 +7,17 @@
         xmlns:local="clr-namespace:ServerManagement"
                       xmlns:views="clr-namespace:ServerManagement.View"
                       mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="1000">
+        Title="MainWindow" Height="600" Width="1000" MinWidth="700">
+
+    <Window.Resources>
+        <Style x:Key="AppThemeMenuItemStyle"
+                   BasedOn="{StaticResource MetroMenuItem}"
+                   TargetType="{x:Type MenuItem}">
+            <Setter Property="Command" Value="{Binding ChangeAccentCommand}" />
+            <Setter Property="Header" Value="{Binding Name, Mode=OneWay}" />
+        </Style>
+    </Window.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
@@ -20,7 +30,14 @@
               VerticalAlignment="Stretch">
             <MenuItem Header="New" Click="NewServer_Click"></MenuItem>
         </Menu>
-        <views:NewServer Visibility="Collapsed" Grid.Row="2" x:Name="NewView"/>
-        <views:Servers Grid.Row="2" x:Name="ServersView"/>
+        <Controls:MetroAnimatedSingleRowTabControl 
+            TabItemClosingEvent="MainTabControl_TabItemClosingEvent" 
+            x:Name="MainTabControl"
+            Grid.Row="2" 
+            Controls:TabControlHelper.Underlined="TabPanel">
+            <Controls:MetroTabItem Header="Servers List" x:Name="AllPC">
+                <views:Server Grid.Row="2" x:Name="ServersView"/>
+            </Controls:MetroTabItem>
+        </Controls:MetroAnimatedSingleRowTabControl>
     </Grid>
 </Controls:MetroWindow>

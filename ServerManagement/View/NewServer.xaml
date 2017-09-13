@@ -3,32 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:local="clr-namespace:ServerManagement.View"
+             xmlns:w="clr-namespace:ServerManagement.VML"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="1000">
-    <Grid>
+    <Grid x:Name="NewServerGrid">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" MinHeight="50" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <Button x:Name="PART_BackButton"
-                    Width="34"
-                    Height="34"
-                    Margin="4 2 2 2"
-                    VerticalAlignment="Center"
-                    Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}"
-                    Click="PART_BackButton_Click">
-                <ContentControl Width="20"
-                                Height="20"
-                                Content="M57,42V34H32.25L42.25,24H31.75L17.75,38L31.75,52H42.25L32.25,42H57Z"
-                                Style="{DynamicResource PathIconContentControlStyle}" />
-            </Button>
-            <Label x:Name="PART_Title"
-                   VerticalAlignment="Center"
-                   FontSize="25" />
-        </StackPanel>
-        <Grid Grid.Row="1" Margin="50 0 50 0">
+        <Grid Grid.Row="0" Margin="100 30 100 0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
@@ -40,45 +24,49 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
-            <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0">
+            <StackPanel Margin="0 0 30 0" Orientation="Vertical" Grid.Row="0" Grid.Column="0">
                 <Label FontWeight="DemiBold" FontSize="13" VerticalAlignment="Top">Server Name</Label>
-                <TextBox Height="30" Margin="0 0 20 10" VerticalAlignment="center"></TextBox>
+                <TextBox Height="30" Margin="0 0 20 10" VerticalAlignment="center" Text="{Binding Name, Mode=TwoWay}"></TextBox>
             </StackPanel>
-            <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0">
+            <StackPanel Margin="0 0 30 0" Orientation="Vertical" Grid.Row="1" Grid.Column="0">
                 <Label FontWeight="DemiBold" FontSize="13" VerticalAlignment="Top">Host Name</Label>
-                <TextBox Height="30" Margin="0 0 20 10" VerticalAlignment="center"></TextBox>
+                <TextBox Height="30" Margin="0 0 20 10" VerticalAlignment="center" Text="{Binding HostName, Mode=TwoWay}"></TextBox>
             </StackPanel>
-            <StackPanel Orientation="Vertical" Grid.Row="2" Grid.Column="0">
+            <StackPanel Margin="0 0 30 0" Orientation="Vertical" Grid.Row="2" Grid.Column="0">
                 <Label FontWeight="DemiBold"  FontSize="13" VerticalAlignment="Top">Username</Label>
-                <TextBox Height="30" Margin="0 0 20 10" VerticalAlignment="center"></TextBox>
+                <TextBox Height="30" Margin="0 0 20 10" VerticalAlignment="center" Text="{Binding Username, Mode=TwoWay}"></TextBox>
             </StackPanel>
-            <StackPanel Orientation="Vertical" Grid.Row="3" Grid.Column="0">
+            <StackPanel Margin="0 0 30 0" Orientation="Vertical" Grid.Row="3" Grid.Column="0">
                 <Label FontWeight="DemiBold"  FontSize="13" VerticalAlignment="Top">Password</Label>
-                <PasswordBox Height="30" Margin="0 0 20 10" VerticalAlignment="center"></PasswordBox>
+                <PasswordBox Height="30" Margin="0 0 20 10" VerticalAlignment="center" 
+                             w:PasswordHelper.Attach="True"
+                             w:PasswordHelper.Password="{Binding Password, Mode=TwoWay}"
+                             Style="{StaticResource MetroButtonRevealedPasswordBox}"></PasswordBox>
             </StackPanel>
-            <StackPanel Orientation="Vertical" Grid.Row="4" Grid.Column="0">
+            <StackPanel Margin="0 0 30 0" Orientation="Vertical" Grid.Row="4" Grid.Column="0">
                 <Label FontWeight="DemiBold"  FontSize="13" VerticalAlignment="Top">Function</Label>
-                <TextBox Height="70" Margin="0 0 20 10" VerticalAlignment="Bottom" AcceptsReturn="True"></TextBox>
+                <TextBox Height="70" Margin="0 0 20 10" VerticalAlignment="Bottom" AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding Functionality, Mode=TwoWay}"></TextBox>
             </StackPanel>
-            <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1">
+            <StackPanel Margin="30 0 0 0" Orientation="Vertical" Grid.Row="0" Grid.Column="1">
                 <Label FontWeight="DemiBold" FontSize="13" VerticalAlignment="Top">IP 1</Label>
-                <TextBox  Height="30" Margin="0 0 20 10" VerticalAlignment="center"></TextBox>
+                <TextBox  Height="30" Margin="0 0 20 10" VerticalAlignment="center" Text="{Binding Ip1, Mode=TwoWay}"></TextBox>
             </StackPanel>
-            <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="1">
+            <StackPanel Margin="30 0 0 0" Orientation="Vertical" Grid.Row="1" Grid.Column="1">
                 <Label FontWeight="DemiBold" VerticalAlignment="Top">IP 2</Label>
-                <TextBox Height="30" Margin="0 0 20 10" VerticalAlignment="center"></TextBox>
+                <TextBox Height="30" Margin="0 0 20 10" VerticalAlignment="center" Text="{Binding Ip2, Mode=TwoWay}"></TextBox>
             </StackPanel>
-            <StackPanel Orientation="Vertical" Grid.Row="2" Grid.Column="1">
+            <StackPanel Margin="30 0 0 0" Orientation="Vertical" Grid.Row="2" Grid.Column="1">
                 <Label FontWeight="DemiBold" VerticalAlignment="Top">IP 3</Label>
-                <TextBox Height="30" Margin="0 0 20 10" VerticalAlignment="center"></TextBox>
+                <TextBox Height="30" Margin="0 0 20 10" VerticalAlignment="center" Text="{Binding Ip3, Mode=TwoWay}"></TextBox>
             </StackPanel>
-            <StackPanel Orientation="Vertical" Grid.Row="3" Grid.Column="1">
+            <StackPanel Margin="30 0 0 0" Orientation="Vertical" Grid.Row="3" Grid.Column="1">
                 <Label FontWeight="DemiBold" VerticalAlignment="Top">IP 4</Label>
-                <TextBox Height="30" Margin="0 0 20 10" VerticalAlignment="center"></TextBox>
+                <TextBox Height="30" Margin="0 0 20 10" VerticalAlignment="center" Text="{Binding Ip4, Mode=TwoWay}"></TextBox>
             </StackPanel>
-            <Button Grid.Row="4" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="70" Height="30"
-                    Margin="0 0 20 0" FontSize="15" VerticalContentAlignment="Center"
-                    Style="{DynamicResource SquareButtonStyle}">Save</Button>
+            <Button Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="70" Height="30"
+                    Margin="30 0 20 0" FontSize="15" 
+                    Style="{DynamicResource SquareButtonStyle}"
+                    Click="ButtonSave_Click">Save</Button>
         </Grid>
     </Grid>
 </UserControl>

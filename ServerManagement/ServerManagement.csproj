@@ -94,9 +94,12 @@
     <Compile Include="View\NewServer.xaml.cs">
       <DependentUpon>NewServer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Servers.xaml.cs">
-      <DependentUpon>Servers.xaml</DependentUpon>
+    <Compile Include="View\Server.xaml.cs">
+      <DependentUpon>Server.xaml</DependentUpon>
     </Compile>
+    <Compile Include="VML\PasswordHelper.cs" />
+    <Compile Include="VML\Utils.cs" />
+    <Compile Include="VML\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -113,7 +116,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Servers.xaml">
+    <Page Include="View\Server.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

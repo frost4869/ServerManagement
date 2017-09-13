@@ -23,9 +23,9 @@ F:\Projects\ServerManagement\ServerManagement\bin\Debug\EntityFramework.SqlServe
 F:\Projects\ServerManagement\ServerManagement\bin\Debug\AutoMapper.xml
 F:\Projects\ServerManagement\ServerManagement\bin\Debug\EntityFramework.xml
 F:\Projects\ServerManagement\ServerManagement\bin\Debug\EntityFramework.SqlServer.xml
-F:\Projects\ServerManagement\ServerManagement\obj\Debug\View\Servers.g.cs
 F:\Projects\ServerManagement\ServerManagement\obj\Debug\ServerManagement_Content.g.cs
-F:\Projects\ServerManagement\ServerManagement\obj\Debug\View\Servers.baml
 F:\Projects\ServerManagement\ServerManagement\obj\Debug\GeneratedInternalTypeHelper.g.cs
 F:\Projects\ServerManagement\ServerManagement\obj\Debug\View\NewServer.g.cs
 F:\Projects\ServerManagement\ServerManagement\obj\Debug\View\NewServer.baml
+F:\Projects\ServerManagement\ServerManagement\obj\Debug\View\Server.g.cs
+F:\Projects\ServerManagement\ServerManagement\obj\Debug\View\Server.baml

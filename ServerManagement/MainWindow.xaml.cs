@@ -29,8 +29,23 @@ namespace ServerManagement
 
         private void NewServer_Click(object sender, RoutedEventArgs e)
         {
-            ServersView.Visibility = Visibility.Collapsed;
-            NewView.Visibility = Visibility.Visible;
+            MetroTabItem item = new MetroTabItem
+            {
+                Header = "New Server",
+                CloseButtonEnabled = true,
+            };
+
+            View.NewServer view = new View.NewServer();
+            item.Content = view;
+
+            MainTabControl.Items.Add(item);
+            item.Focus();
+        }
+
+        private void MainTabControl_TabItemClosingEvent(object sender, BaseMetroTabControl.TabItemClosingEventArgs e)
+        {
+            if (e.ClosingTabItem.Header.ToString().StartsWith("sizes"))
+                e.Cancel = true;
         }
     }
 }

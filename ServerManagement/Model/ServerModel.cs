@@ -3,16 +3,26 @@ using System.ComponentModel;
 
 namespace ServerManagement.Model
 {
-    class ServerModel : Server, INotifyPropertyChanged
+    public class ServerModel : Server, INotifyPropertyChanged
     {
+        private bool mIsSelected;
+        public bool IsSelected
+        {
+            get
+            {
+                return mIsSelected;
+            }
+            set
+            {
+                mIsSelected = value;
+                RaisePropertyChanged("IsSelected");
+            }
+        }
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void RaisePropertyChanged(string property)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(property));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
     }
 }
