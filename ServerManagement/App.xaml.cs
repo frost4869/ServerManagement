@@ -1,4 +1,10 @@
-﻿using System;
+﻿using AutoMapper;
+using ServerManagement.Identity;
+using ServerManagement.Model;
+using ServerManagement.Model.Entity;
+using ServerManagement.View;
+using ServerManagement.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +19,25 @@ namespace ServerManagement
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            Mapper.Initialize(q =>
+            {
+                q.CreateMap<Model.Entity.Server, ServerModel>();
+                q.CreateMap<ServerModel, Model.Entity.Server>();
+            });
+
+            //Create a custom principal with an anonymous identity at startup
+            CustomPrincipal customPrincipal = new CustomPrincipal();
+            AppDomain.CurrentDomain.SetThreadPrincipal(customPrincipal);
+
+            base.OnStartup(e);
+
+            //Show the login view
+            AuthenticationViewModel viewModel = new AuthenticationViewModel(new AuthenticationService());
+            IView loginWindow = new LoginWindow(viewModel);
+            loginWindow.Show();
+        }
     }
 }

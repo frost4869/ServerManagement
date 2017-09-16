@@ -46,6 +46,9 @@
     <Reference Include="MahApps.Metro, Version=1.5.0.23, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.5.0\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
+    <Reference Include="MahApps.Metro.IconPacks, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.1.9.0\lib\net45\MahApps.Metro.IconPacks.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -72,6 +75,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Identity\AuthenticationService.cs" />
+    <Compile Include="Identity\CustomPrincipal.cs" />
+    <Compile Include="Identity\CustomIdentity.cs" />
+    <Compile Include="Model\Entity\Role.cs">
+      <DependentUpon>ServerManagementModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Entity\Server.cs">
       <DependentUpon>ServerManagementModel.tt</DependentUpon>
     </Compile>
@@ -90,13 +99,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ServerManagementModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Identity\UnauthenticatedIdentity.cs" />
+    <Compile Include="Model\Entity\User.cs">
+      <DependentUpon>ServerManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\AuthenticationViewModel.cs" />
     <Compile Include="ViewModel\ServerViewModel.cs" />
+    <Compile Include="View\LoginWindow.xaml.cs">
+      <DependentUpon>LoginWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\NewServer.xaml.cs">
       <DependentUpon>NewServer.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Server.xaml.cs">
       <DependentUpon>Server.xaml</DependentUpon>
     </Compile>
+    <Compile Include="VML\DelegateCommand.cs" />
     <Compile Include="VML\PasswordHelper.cs" />
     <Compile Include="VML\Utils.cs" />
     <Compile Include="VML\ViewModelLocator.cs" />
@@ -112,6 +130,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\LoginWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\NewServer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

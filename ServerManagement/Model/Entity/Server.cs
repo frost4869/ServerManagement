@@ -24,6 +24,7 @@ namespace ServerManagement.Model.Entity
         public string Username { get; set; }
         public string Password { get; set; }
         public string Functionality { get; set; }
+        public string Project { get; set; }
         public bool Active { get; set; }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using MahApps.Metro.Controls;
+using ServerManagement.View;
 using ServerManagement.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,11 +22,22 @@ namespace ServerManagement
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow
+    [PrincipalPermission(SecurityAction.Demand, Role = "Mod")]
+    public partial class MainWindow : IView
     {
+        #region IView Members
+        public IViewModel ViewModel
+        {
+            get { return DataContext as IViewModel; }
+            set { DataContext = value; }
+        }
+        #endregion
+
         public MainWindow()
         {
             InitializeComponent();
+            WindowState = WindowState.Maximized;
+            WindowStyle = WindowStyle.None;
         }
 
         private void NewServer_Click(object sender, RoutedEventArgs e)

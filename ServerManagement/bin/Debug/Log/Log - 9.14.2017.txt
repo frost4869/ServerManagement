@@ -1,0 +1,16 @@
+
+Log Entry : 10:51:09 AM
+  :
+  =====>:Mapper not initialized. Call Initialize with appropriate configuration. If you are trying to use mapper instances through a container or otherwise, make sure you do not have any calls to the static Mapper.Map methods, and if you're using ProjectTo or UseAsDataSource extension methods, make sure you pass in the appropriate IConfigurationProvider instance.
+-------------------------------
+
+Log Entry : 11:00:19 AM
+  :
+  =====>:The specified parameter type 'ServerManagement.Model.ServerModel' is not valid. Only scalar types, such as System.Int32, System.Decimal, System.DateTime, and System.Guid, are supported.
+Parameter name: item
+-------------------------------
+
+Log Entry : 11:08:52 AM
+  :
+  =====>:A second operation started on this context before a previous asynchronous operation completed. Use 'await' to ensure that any asynchronous operations have completed before calling another method on this context. Any instance members are not guaranteed to be thread safe.
+-------------------------------

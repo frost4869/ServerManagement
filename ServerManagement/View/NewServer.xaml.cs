@@ -1,5 +1,9 @@
-﻿using ServerManagement.Model.Entity;
+﻿using AutoMapper;
+using ServerManagement.Model;
+using ServerManagement.Model.Entity;
+using ServerManagement.ViewModel;
 using ServerManagement.VML;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace ServerManagement.View
@@ -9,22 +13,34 @@ namespace ServerManagement.View
     /// </summary>
     public partial class NewServer : UserControl
     {
-        public Model.Entity.Server newServer = new Model.Entity.Server();
+        public ServerModel newServer = new ServerModel();
         private readonly ServerManagementEntities db = new ServerManagementEntities();
 
         public NewServer()
         {
             InitializeComponent();
-            NewServerGrid.DataContext = newServer;
+            this.DataContext = newServer;
         }
 
         private async void ButtonSave_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             try
             {
-                newServer.Active = true;
-                db.Servers.Add(newServer);
+                ServerModel updatedServer = ((FrameworkElement)sender).DataContext as ServerModel;
+                var entity = db.Servers.Find(updatedServer.Id);
+                if (entity == null)//create server
+                {
+                    entity = Mapper.Map<Model.Entity.Server>(newServer);
+                    db.Servers.Add(entity);
+                }
+                else//update server
+                {
+                    db.Entry(entity).CurrentValues.SetValues(Mapper.Map<Model.Entity.Server>(updatedServer));
+                    db.Entry(entity).State = System.Data.Entity.EntityState.Modified;
+                }
+                
                 db.SaveChanges();
+                Server.Instance.DataContext = new ServerViewModel();
             }
             catch (System.Exception ex)
             {

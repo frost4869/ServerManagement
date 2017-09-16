@@ -4,8 +4,11 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="244be28c734f4e648dfccd4497b752f1" Name="Diagram1">
-        <EntityTypeShape EntityType="ServerManagementModel.Server" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+      <Diagram DiagramId="244be28c734f4e648dfccd4497b752f1" Name="Diagram1" ZoomLevel="96">
+        <EntityTypeShape EntityType="ServerManagementModel.Server" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="ServerManagementModel.Role" Width="1.5" PointX="3.375" PointY="1.125" />
+        <EntityTypeShape EntityType="ServerManagementModel.User" Width="1.5" PointX="5.625" PointY="0.875" />
+        <AssociationConnector Association="ServerManagementModel.FK_User_Role" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

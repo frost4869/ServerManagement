@@ -26,5 +26,7 @@ namespace ServerManagement.Model.Entity
         }
     
         public virtual DbSet<Server> Servers { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<User> Users { get; set; }
     }
 }

@@ -23,48 +23,53 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
             <StackPanel Margin="0 0 30 0" Orientation="Vertical" Grid.Row="0" Grid.Column="0">
                 <Label FontWeight="DemiBold" FontSize="13" VerticalAlignment="Top">Server Name</Label>
-                <TextBox Height="30" Margin="0 0 20 10" VerticalAlignment="center" Text="{Binding Name, Mode=TwoWay}"></TextBox>
+                <TextBox Height="30" Margin="0 0 20 10" VerticalAlignment="center" Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
             </StackPanel>
             <StackPanel Margin="0 0 30 0" Orientation="Vertical" Grid.Row="1" Grid.Column="0">
                 <Label FontWeight="DemiBold" FontSize="13" VerticalAlignment="Top">Host Name</Label>
-                <TextBox Height="30" Margin="0 0 20 10" VerticalAlignment="center" Text="{Binding HostName, Mode=TwoWay}"></TextBox>
+                <TextBox Height="30" Margin="0 0 20 10" VerticalAlignment="center" Text="{Binding Path=HostName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
             </StackPanel>
             <StackPanel Margin="0 0 30 0" Orientation="Vertical" Grid.Row="2" Grid.Column="0">
                 <Label FontWeight="DemiBold"  FontSize="13" VerticalAlignment="Top">Username</Label>
-                <TextBox Height="30" Margin="0 0 20 10" VerticalAlignment="center" Text="{Binding Username, Mode=TwoWay}"></TextBox>
+                <TextBox Height="30" Margin="0 0 20 10" VerticalAlignment="center" Text="{Binding Path=Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
             </StackPanel>
             <StackPanel Margin="0 0 30 0" Orientation="Vertical" Grid.Row="3" Grid.Column="0">
                 <Label FontWeight="DemiBold"  FontSize="13" VerticalAlignment="Top">Password</Label>
                 <PasswordBox Height="30" Margin="0 0 20 10" VerticalAlignment="center" 
                              w:PasswordHelper.Attach="True"
-                             w:PasswordHelper.Password="{Binding Password, Mode=TwoWay}"
+                             w:PasswordHelper.Password="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              Style="{StaticResource MetroButtonRevealedPasswordBox}"></PasswordBox>
             </StackPanel>
             <StackPanel Margin="0 0 30 0" Orientation="Vertical" Grid.Row="4" Grid.Column="0">
+                <Label FontWeight="DemiBold"  FontSize="13" VerticalAlignment="Top">Project</Label>
+                <TextBox Height="30" Margin="0 0 20 10" VerticalAlignment="center" Text="{Binding Path=Project, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            </StackPanel>
+            <StackPanel Margin="30 0 0 0" Orientation="Vertical" Grid.Row="4" Grid.Column="1">
                 <Label FontWeight="DemiBold"  FontSize="13" VerticalAlignment="Top">Function</Label>
-                <TextBox Height="70" Margin="0 0 20 10" VerticalAlignment="Bottom" AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding Functionality, Mode=TwoWay}"></TextBox>
+                <TextBox Height="70" Margin="0 0 20 10" VerticalAlignment="Bottom" AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding Path=Functionality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
             </StackPanel>
             <StackPanel Margin="30 0 0 0" Orientation="Vertical" Grid.Row="0" Grid.Column="1">
                 <Label FontWeight="DemiBold" FontSize="13" VerticalAlignment="Top">IP 1</Label>
-                <TextBox  Height="30" Margin="0 0 20 10" VerticalAlignment="center" Text="{Binding Ip1, Mode=TwoWay}"></TextBox>
+                <TextBox  Height="30" Margin="0 0 20 10" VerticalAlignment="center" Text="{Binding Path=IP1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
             </StackPanel>
             <StackPanel Margin="30 0 0 0" Orientation="Vertical" Grid.Row="1" Grid.Column="1">
                 <Label FontWeight="DemiBold" VerticalAlignment="Top">IP 2</Label>
-                <TextBox Height="30" Margin="0 0 20 10" VerticalAlignment="center" Text="{Binding Ip2, Mode=TwoWay}"></TextBox>
+                <TextBox Height="30" Margin="0 0 20 10" VerticalAlignment="center" Text="{Binding Path=IP2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
             </StackPanel>
             <StackPanel Margin="30 0 0 0" Orientation="Vertical" Grid.Row="2" Grid.Column="1">
                 <Label FontWeight="DemiBold" VerticalAlignment="Top">IP 3</Label>
-                <TextBox Height="30" Margin="0 0 20 10" VerticalAlignment="center" Text="{Binding Ip3, Mode=TwoWay}"></TextBox>
+                <TextBox Height="30" Margin="0 0 20 10" VerticalAlignment="center" Text="{Binding Path=IP3, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
             </StackPanel>
             <StackPanel Margin="30 0 0 0" Orientation="Vertical" Grid.Row="3" Grid.Column="1">
                 <Label FontWeight="DemiBold" VerticalAlignment="Top">IP 4</Label>
-                <TextBox Height="30" Margin="0 0 20 10" VerticalAlignment="center" Text="{Binding Ip4, Mode=TwoWay}"></TextBox>
+                <TextBox Height="30" Margin="0 0 20 10" VerticalAlignment="center" Text="{Binding Path=IP4, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
             </StackPanel>
-            <Button Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="70" Height="30"
-                    Margin="30 0 20 0" FontSize="15" 
+            <Button Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="70" Height="30"
+                    Margin="30 20 20 0" FontSize="13" 
                     Style="{DynamicResource SquareButtonStyle}"
                     Click="ButtonSave_Click">Save</Button>
         </Grid>

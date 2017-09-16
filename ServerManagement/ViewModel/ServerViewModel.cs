@@ -2,8 +2,10 @@
 using AutoMapper.QueryableExtensions;
 using ServerManagement.Model;
 using ServerManagement.Model.Entity;
+using ServerManagement.VML;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ServerManagement.ViewModel
 {
@@ -14,11 +16,6 @@ namespace ServerManagement.ViewModel
             LoadServers();
         }
         private readonly ServerManagementEntities db = new ServerManagementEntities();
-        private MapperConfiguration config = new MapperConfiguration(q =>
-        {
-            q.CreateMap<Server, ServerModel>();
-            q.CreateMap<ServerModel, Server>();
-        });
         public ObservableCollection<ServerModel> Servers { get; set; }
 
         public void LoadServers()
@@ -26,7 +23,7 @@ namespace ServerManagement.ViewModel
             ObservableCollection<ServerModel> model = new ObservableCollection<ServerModel>();
             model = new ObservableCollection<ServerModel>(
                 db.Servers.Where(q => q.Active)
-                .ProjectTo<ServerModel>(config)
+                .ProjectTo<ServerModel>(Mapper.Configuration)
                 .ToList()
             );
 
@@ -48,5 +45,40 @@ namespace ServerManagement.ViewModel
                 item.IsSelected = false;
             }
         }
+
+        public bool IsAnySelected()
+        {
+            if(Servers.Any(q => q.IsSelected))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public async Task DeleteSelected()
+        {
+            try
+            {
+                foreach (var item in Servers)
+                {
+                    if (item.IsSelected)
+                    {
+                        var server = await db.Servers.FindAsync(Mapper.Map<Server>(item).Id);
+                        server.Active = false;
+                    }
+                }
+
+                await db.SaveChangesAsync();
+            }
+            catch (System.Exception ex)
+            {
+                Utils.WriteLog(ex.Message);
+                await Utils.ShowMessageBoxAsync("Error", ex.Message);
+            }
+        }
+
     }
 }

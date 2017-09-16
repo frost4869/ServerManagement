@@ -7,14 +7,32 @@
              xmlns:viewModel="clr-namespace:ServerManagement.ViewModel"
              xmlns:Entity="clr-namespace:ServerManagement.Model.Entity" x:Class="ServerManagement.View.Server"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="1000" Loaded="UserControl_Loaded"
+             d:DesignHeight="700" d:DesignWidth="1366" Loaded="UserControl_Loaded"
             xmlns:vml="clr-namespace:ServerManagement.VML"
+            xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+            xmlns:views="clr-namespace:ServerManagement.View"
             vml:ViewModelLocator.AutoHookedUpViewModel="True">
     <!--<UserControl.Resources>
         <CollectionViewSource x:Key="serverViewSource" d:DesignSource="{d:DesignInstance {x:Type Entity:Server}, CreateList=True}"/>
     </UserControl.Resources>-->
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" MinWidth="300"></ColumnDefinition>
+            <ColumnDefinition Width="5"></ColumnDefinition>
+            <ColumnDefinition Width="*" MinWidth="450"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="0">
+            <Button x:Name="btnDelete" Content="Delete" Style="{DynamicResource SquareButtonStyle}" Width="70" FontSize="13"
+                    Click="ButtonDelete_Click"
+                    Margin="0 10 20 0"
+                    Visibility="Hidden"></Button>
+        </StackPanel>
         <DataGrid x:Name="serverDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" ItemsSource="{Binding Servers}" EnableRowVirtualization="True" AutoGenerateColumns="False"
+                  Grid.Row="1" Grid.Column="0"
                   Margin="0,10,0,0" 
                   CanUserAddRows="False"
                   IsReadOnly="True"
@@ -22,7 +40,6 @@
                   EnableColumnVirtualization="True"
                   RowHeaderWidth="27"
                   HeadersVisibility="All"
-                  MinColumnWidth="100"
                   SelectionUnit="CellOrRowHeader">
             <DataGrid.Columns>
                 <DataGridTemplateColumn>
@@ -32,21 +49,23 @@
                         </Style>
                     </DataGridTemplateColumn.HeaderStyle>
                     <DataGridTemplateColumn.Header>
-                        <CheckBox x:Name="headerCheckBox" Checked="headerCheckBox_Checked" Unchecked="headerCheckBox_Unchecked"/>
+                        <CheckBox x:Name="headerCheckBox" HorizontalContentAlignment="Center" Checked="headerCheckBox_Checked" Unchecked="headerCheckBox_Unchecked"/>
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" MinWidth="0" />
+                            <CheckBox IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" MinWidth="0" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn x:Name="nameColumn" Width="SizeToHeader" Header="Server Name" Binding="{Binding Name, Mode=TwoWay}"/>
-                <DataGridTextColumn x:Name="hostNameColumn" Width="SizeToHeader" Header="Host Name" Binding="{Binding HostName, Mode=TwoWay}"/>
-                <DataGridTextColumn x:Name="iP1Column" Width="SizeToHeader" Header="IP 1" Binding="{Binding IP1, Mode=TwoWay}"/>
-                <DataGridTextColumn x:Name="iP2Column" Width="SizeToHeader" Header="IP 2" Binding="{Binding IP2, Mode=TwoWay}"/>
-                <DataGridTextColumn x:Name="iP3Column" Width="SizeToHeader" Header="IP 3" Binding="{Binding IP3, Mode=TwoWay}"/>
-                <DataGridTextColumn x:Name="iP4Column" Width="SizeToHeader" Header="IP 4" Binding="{Binding IP4, Mode=TwoWay}"/>
+                <DataGridTextColumn x:Name="nameColumn" Width="Auto" Header="Server Name" Binding="{Binding Name, Mode=TwoWay}"/>
+                <DataGridTextColumn x:Name="hostNameColumn" Width="Auto" Header="Host Name" Binding="{Binding HostName, Mode=TwoWay}"/>
+                <DataGridTextColumn x:Name="usernameColumn" Width="Auto" Header="Username" Binding="{Binding Username, Mode=TwoWay}"/>
+                <DataGridTextColumn x:Name="passwordColumn" Width="Auto" Header="Password" Binding="{Binding Password, Mode=TwoWay}"/>
+                <DataGridTextColumn x:Name="projectColumn" Width="Auto" Header="Project" Binding="{Binding Project, Mode=TwoWay}"/>
             </DataGrid.Columns>
         </DataGrid>
+        <GridSplitter Grid.Column="1" Grid.RowSpan="2" Width="5" Height="Auto" HorizontalAlignment="Stretch"/>
+        <views:NewServer Grid.Row="1" Grid.Column="2"
+                         x:Name="DetailsView"/>
     </Grid>
 </UserControl>

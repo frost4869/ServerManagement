@@ -4,17 +4,38 @@
     <EntitySetMapping Name="Servers">
       <EntityTypeMapping TypeName="ServerManagementModel.Server">
         <MappingFragment StoreEntitySet="Server">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="HostName" ColumnName="HostName" />
-          <ScalarProperty Name="IP1" ColumnName="IP1" />
-          <ScalarProperty Name="IP2" ColumnName="IP2" />
-          <ScalarProperty Name="IP3" ColumnName="IP3" />
-          <ScalarProperty Name="IP4" ColumnName="IP4" />
-          <ScalarProperty Name="Username" ColumnName="Username" />
-          <ScalarProperty Name="Password" ColumnName="Password" />
-          <ScalarProperty Name="Functionality" ColumnName="Functionality" />
           <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="Project" ColumnName="Project" />
+          <ScalarProperty Name="Functionality" ColumnName="Functionality" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="IP4" ColumnName="IP4" />
+          <ScalarProperty Name="IP3" ColumnName="IP3" />
+          <ScalarProperty Name="IP2" ColumnName="IP2" />
+          <ScalarProperty Name="IP1" ColumnName="IP1" />
+          <ScalarProperty Name="HostName" ColumnName="HostName" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Roles">
+      <EntityTypeMapping TypeName="ServerManagementModel.Role">
+        <MappingFragment StoreEntitySet="Role">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="ServerManagementModel.User">
+        <MappingFragment StoreEntitySet="User">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

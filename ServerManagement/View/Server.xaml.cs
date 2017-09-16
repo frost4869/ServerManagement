@@ -1,18 +1,11 @@
-﻿using ServerManagement.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MahApps.Metro.Controls;
+using ServerManagement.Model;
+using ServerManagement.ViewModel;
+using ServerManagement.VML;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ServerManagement.View
 {
@@ -21,27 +14,66 @@ namespace ServerManagement.View
     /// </summary>
     public partial class Server : UserControl
     {
-        public ServerViewModel viewModel = new ServerViewModel();
+        public static Server Instance
+        {
+            get;
+            private set;
+        }
         public Server()
         {
             InitializeComponent();
+            Instance = this;
+            this.serverDataGrid.AddHandler(DataGridRow.MouseDoubleClickEvent,
+                                        new MouseButtonEventHandler(DataGridRow_MouseDoubleClick), true);
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            this.DataContext = viewModel;
+            this.DataContext = new ServerViewModel();
         }
 
         private void headerCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            viewModel.CheckAll();
-            this.DataContext = viewModel;
+            btnDelete.Visibility = Visibility.Visible;
+            var dataContext = this.DataContext as ServerViewModel;
+            dataContext.CheckAll();
         }
 
         private void headerCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
-            viewModel.UnCheckAll();
-            this.DataContext = viewModel;
+            btnDelete.Visibility = Visibility.Hidden;
+            var dataContext = this.DataContext as ServerViewModel;
+            dataContext.UnCheckAll();
+        }
+
+        private async void ButtonDelete_Click(object sender, RoutedEventArgs e)
+        {
+            var dataContext = this.DataContext as ServerViewModel;
+            await dataContext.DeleteSelected();
+            this.DataContext = new ServerViewModel();
+        }
+
+        private void DataGridRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if(((DataGrid)sender).SelectedCells.Count > 0)
+            {
+                ServerModel server = ((DataGrid)sender).SelectedCells[0].Item as ServerModel;
+                DetailsView.DataContext = server;
+            }
+        }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            btnDelete.Visibility = Visibility.Visible;
+        }
+
+        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            var dataContext = this.DataContext as ServerViewModel;
+            if (dataContext.IsAnySelected())
+            {
+                btnDelete.Visibility = Visibility.Hidden;
+            }
         }
     }
 }
