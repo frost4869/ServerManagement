@@ -2,6 +2,7 @@
 using ServerManagement.Model;
 using ServerManagement.ViewModel;
 using ServerManagement.VML;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -73,6 +74,22 @@ namespace ServerManagement.View
             if (dataContext.IsAnySelected())
             {
                 btnDelete.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private async void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            await Task.Delay(1000);
+            var keyWord = searchBox.Text;
+            if (!string.IsNullOrEmpty(keyWord))
+            {
+                var viewModel = new ServerViewModel();
+                viewModel.Get(keyWord);
+                this.DataContext = viewModel;
+            }
+            else
+            {
+                this.DataContext = new ServerViewModel();
             }
         }
     }

@@ -11,6 +11,7 @@
             xmlns:vml="clr-namespace:ServerManagement.VML"
             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
             xmlns:views="clr-namespace:ServerManagement.View"
+            xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
             vml:ViewModelLocator.AutoHookedUpViewModel="True">
     <!--<UserControl.Resources>
         <CollectionViewSource x:Key="serverViewSource" d:DesignSource="{d:DesignInstance {x:Type Entity:Server}, CreateList=True}"/>
@@ -25,12 +26,31 @@
             <ColumnDefinition Width="5"></ColumnDefinition>
             <ColumnDefinition Width="*" MinWidth="450"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="0">
-            <Button x:Name="btnDelete" Content="Delete" Style="{DynamicResource SquareButtonStyle}" Width="70" FontSize="13"
+        <DockPanel Grid.Row="0">
+            <TextBox x:Name="searchBox" 
+                Controls:TextBoxHelper.ClearTextButton="True"
+                     Controls:TextBoxHelper.UseFloatingWatermark="True"
+                     Controls:TextBoxHelper.Watermark="Search..."
+                     Width="300" VerticalAlignment="Center"
+                     Margin="10 10 0 0"
+                     TextChanged="SearchBox_TextChanged">
+                <TextBox.Style>
+                    <Style BasedOn="{StaticResource SearchMetroTextBox}" TargetType="{x:Type TextBox}">
+                        <Style.Triggers>
+                            <Trigger Property="Controls:TextBoxHelper.HasText" Value="True">
+                                <Setter Property="Controls:TextBoxHelper.ButtonContent" Value="r" />
+                                <Setter Property="Controls:TextBoxHelper.ButtonContentTemplate" Value="{x:Null}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+            <Button x:Name="btnDelete" Content="Delete" DockPanel.Dock="Right"
+                    VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 10 10 0"
+                    Style="{DynamicResource SquareButtonStyle}" Width="70" FontSize="13"
                     Click="ButtonDelete_Click"
-                    Margin="0 10 20 0"
                     Visibility="Hidden"></Button>
-        </StackPanel>
+        </DockPanel>
         <DataGrid x:Name="serverDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" ItemsSource="{Binding Servers}" EnableRowVirtualization="True" AutoGenerateColumns="False"
                   Grid.Row="1" Grid.Column="0"
                   Margin="0,10,0,0" 

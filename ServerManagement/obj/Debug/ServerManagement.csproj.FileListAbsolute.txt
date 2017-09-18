@@ -33,3 +33,4 @@ F:\Projects\ServerManagement\ServerManagement\obj\Debug\ServerManagement.Propert
 F:\Projects\ServerManagement\ServerManagement\obj\Debug\ServerManagement.csproj.GenerateResource.Cache
 F:\Projects\ServerManagement\ServerManagement\obj\Debug\ServerManagement.exe
 F:\Projects\ServerManagement\ServerManagement\obj\Debug\ServerManagement.pdb
+F:\Projects\ServerManagement\ServerManagement\obj\Debug\ServerManagement.csprojResolveAssemblyReference.cache

@@ -17,19 +17,33 @@
             <Setter Property="Header" Value="{Binding Name, Mode=OneWay}" />
         </Style>
     </Window.Resources>
-    
+    <Controls:MetroWindow.RightWindowCommands>
+        <Controls:WindowCommands>
+            <Button ToolTip="Logout" Content="Logout"
+                    FontWeight="DemiBold"
+                    FontSize="15"></Button>
+        </Controls:WindowCommands>    
+    </Controls:MetroWindow.RightWindowCommands>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <Menu Grid.Row="0"
-              Margin="5"
-              HorizontalContentAlignment="Left"
-              VerticalAlignment="Stretch">
-            <MenuItem Header="New" Click="NewServer_Click"></MenuItem>
-        </Menu>
+        <DockPanel Grid.Row="0">
+            <Menu Margin="5"
+                    HorizontalContentAlignment="Left"
+                    VerticalAlignment="Stretch"
+                    DockPanel.Dock="Left">
+                <MenuItem Header="New" Click="NewServer_Click"></MenuItem>
+            </Menu>
+            <Button DockPanel.Dock="Right" Width="70" Height="30"
+                    HorizontalAlignment="Right"
+                    Content="Logout"
+                    Style="{DynamicResource SquareButtonStyle}"></Button>
+        </DockPanel>
+        
         <Controls:MetroAnimatedSingleRowTabControl 
             TabItemClosingEvent="MainTabControl_TabItemClosingEvent" 
             x:Name="MainTabControl"
@@ -39,5 +53,11 @@
                 <views:Server Grid.Row="2" x:Name="ServersView"/>
             </Controls:MetroTabItem>
         </Controls:MetroAnimatedSingleRowTabControl>
+        <StatusBar Grid.Row="3">
+            <StatusBarItem>Server Management Tool</StatusBarItem>
+            <Separator Style="{StaticResource MetroStatusBarSeparator}" />
+            <StatusBarItem>Logged in as: </StatusBarItem>
+            <StatusBarItem Content="{Binding Path=Identity.Name, Mode=OneWay}" />
+        </StatusBar>
     </Grid>
 </Controls:MetroWindow>

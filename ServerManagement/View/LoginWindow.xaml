@@ -29,7 +29,7 @@
                    VerticalAlignment="Center" Foreground="Red" TextWrapping="Wrap" HorizontalAlignment="Center"/>-->
 
         <Button Grid.Row="3" Content="login" Style="{DynamicResource SquareButtonStyle}"
-                Command="{Binding LoginCommand, Mode=OneTime}"
+                Command="{Binding LoginCommand}"
                 CommandParameter="{Binding ElementName=passwordBox}"
                 HorizontalAlignment="Center"
                 Width="100" FontSize="13"/>

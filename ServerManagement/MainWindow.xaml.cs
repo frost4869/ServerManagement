@@ -1,11 +1,14 @@
 ﻿using MahApps.Metro.Controls;
+using ServerManagement.Identity;
 using ServerManagement.View;
 using ServerManagement.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Security.Permissions;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,7 +25,7 @@ namespace ServerManagement
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    [PrincipalPermission(SecurityAction.Demand, Role = "Mod")]
+    //[PrincipalPermission(SecurityAction.Demand, Role = "Mod")]
     public partial class MainWindow : IView
     {
         #region IView Members
@@ -37,7 +40,10 @@ namespace ServerManagement
         {
             InitializeComponent();
             WindowState = WindowState.Maximized;
-            WindowStyle = WindowStyle.None;
+            WindowStyle = WindowStyle.SingleBorderWindow;
+            CustomPrincipal customPrincipal = Thread.CurrentPrincipal as CustomPrincipal;
+            Title = "Server Management Tool - Version " + Assembly.GetEntryAssembly().GetName().Version;
+            DataContext = customPrincipal;
         }
 
         private void NewServer_Click(object sender, RoutedEventArgs e)

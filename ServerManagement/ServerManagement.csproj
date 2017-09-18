@@ -115,6 +115,7 @@
       <DependentUpon>Server.xaml</DependentUpon>
     </Compile>
     <Compile Include="VML\DelegateCommand.cs" />
+    <Compile Include="VML\PasswordEncriptionHelper.cs" />
     <Compile Include="VML\PasswordHelper.cs" />
     <Compile Include="VML\Utils.cs" />
     <Compile Include="VML\ViewModelLocator.cs" />

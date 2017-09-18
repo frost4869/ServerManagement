@@ -48,7 +48,7 @@ namespace ServerManagement.ViewModel
 
         public bool IsAnySelected()
         {
-            if(Servers.Any(q => q.IsSelected))
+            if (Servers.Any(q => q.IsSelected))
             {
                 return false;
             }
@@ -56,6 +56,14 @@ namespace ServerManagement.ViewModel
             {
                 return true;
             }
+        }
+
+        public void Get(string keyWord)
+        {
+            Servers = new ObservableCollection<ServerModel>(
+                db.Servers.Where(q => q.Name.Contains(keyWord) && q.Active)
+                                .ProjectTo<ServerModel>(Mapper.Configuration)
+            );
         }
 
         public async Task DeleteSelected()

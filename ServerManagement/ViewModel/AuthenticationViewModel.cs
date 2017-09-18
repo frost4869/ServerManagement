@@ -93,6 +93,9 @@ namespace ServerManagement.ViewModel
                 Username = string.Empty; //reset
                 passwordBox.Password = string.Empty; //reset
                 Status = string.Empty;
+                IView main = new MainWindow();
+                main.Show();
+                LoginWindow.Instance.Close();
             }
             catch (UnauthorizedAccessException)
             {

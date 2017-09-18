@@ -31,10 +31,16 @@ namespace ServerManagement.View
     /// </summary>
     public partial class LoginWindow : IView
     {
+        public static LoginWindow Instance
+        {
+            get;
+            private set;
+        }
         public LoginWindow(AuthenticationViewModel viewModel)
         {
             ViewModel = viewModel;
             InitializeComponent();
+            Instance = this;
         }
 
         #region IView Members
