@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:ServerManagement"
-                      xmlns:views="clr-namespace:ServerManagement.View"
-                      mc:Ignorable="d"
+        xmlns:views="clr-namespace:ServerManagement.View"
+        mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="1000" MinWidth="700">
 
     <Window.Resources>
@@ -21,8 +21,9 @@
         <Controls:WindowCommands>
             <Button ToolTip="Logout" Content="Logout"
                     FontWeight="DemiBold"
-                    FontSize="15"></Button>
-        </Controls:WindowCommands>    
+                    FontSize="15"
+                    Command="{Binding LogoutCommand}"></Button>
+        </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
     <Grid>
         <Grid.RowDefinitions>
@@ -38,12 +39,8 @@
                     DockPanel.Dock="Left">
                 <MenuItem Header="New" Click="NewServer_Click"></MenuItem>
             </Menu>
-            <Button DockPanel.Dock="Right" Width="70" Height="30"
-                    HorizontalAlignment="Right"
-                    Content="Logout"
-                    Style="{DynamicResource SquareButtonStyle}"></Button>
         </DockPanel>
-        
+
         <Controls:MetroAnimatedSingleRowTabControl 
             TabItemClosingEvent="MainTabControl_TabItemClosingEvent" 
             x:Name="MainTabControl"
@@ -56,8 +53,8 @@
         <StatusBar Grid.Row="3">
             <StatusBarItem>Server Management Tool</StatusBarItem>
             <Separator Style="{StaticResource MetroStatusBarSeparator}" />
-            <StatusBarItem>Logged in as: </StatusBarItem>
-            <StatusBarItem Content="{Binding Path=Identity.Name, Mode=OneWay}" />
+            <StatusBarItem>Logged in as:</StatusBarItem>
+            <StatusBarItem Content="{Binding AuthenticatedUser, Mode=OneWay}" />
         </StatusBar>
     </Grid>
 </Controls:MetroWindow>

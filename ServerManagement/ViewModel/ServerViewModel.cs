@@ -15,18 +15,22 @@ namespace ServerManagement.ViewModel
         {
             LoadServers();
         }
+        public ServerViewModel(string keyWord)
+        {
+            Get(keyWord);
+        }
         private readonly ServerManagementEntities db = new ServerManagementEntities();
         public ObservableCollection<ServerModel> Servers { get; set; }
 
         public void LoadServers()
         {
+            Crypto c = new Crypto(Crypto.CryptoTypes.encTypeTripleDES);
             ObservableCollection<ServerModel> model = new ObservableCollection<ServerModel>();
-            model = new ObservableCollection<ServerModel>(
-                db.Servers.Where(q => q.Active)
+            var serverList = db.Servers.Where(q => q.Active)
                 .ProjectTo<ServerModel>(Mapper.Configuration)
                 .ToList()
-            );
-
+                .Select(q => { q.Password = c.Decrypt(q.Password); return q; });
+            model = new ObservableCollection<ServerModel>(serverList);
             Servers = model;
         }
 
@@ -60,9 +64,12 @@ namespace ServerManagement.ViewModel
 
         public void Get(string keyWord)
         {
+            Crypto c = new Crypto(Crypto.CryptoTypes.encTypeTripleDES);
             Servers = new ObservableCollection<ServerModel>(
                 db.Servers.Where(q => q.Name.Contains(keyWord) && q.Active)
                                 .ProjectTo<ServerModel>(Mapper.Configuration)
+                                .ToList()
+                                .Select(q => { q.Password = c.Decrypt(q.Password); return q; })
             );
         }
 

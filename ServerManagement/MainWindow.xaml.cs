@@ -35,15 +35,20 @@ namespace ServerManagement
             set { DataContext = value; }
         }
         #endregion
-
-        public MainWindow()
+        public static MainWindow Instance
         {
+            get;
+            private set;
+        }
+        public MainWindow(AuthenticationViewModel viewModel)
+        {
+            ViewModel = viewModel;
             InitializeComponent();
+            Instance = this;
+            this.EnableDWMDropShadow = true;
             WindowState = WindowState.Maximized;
             WindowStyle = WindowStyle.SingleBorderWindow;
-            CustomPrincipal customPrincipal = Thread.CurrentPrincipal as CustomPrincipal;
             Title = "Server Management Tool - Version " + Assembly.GetEntryAssembly().GetName().Version;
-            DataContext = customPrincipal;
         }
 
         private void NewServer_Click(object sender, RoutedEventArgs e)

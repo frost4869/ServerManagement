@@ -9,29 +9,35 @@
         Title="LoginWindow" Height="300" Width="600">
     <Grid VerticalAlignment="Center">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBox x:Name="txtUsername" Text="{Binding Username}" Grid.Row="0" 
+        <TextBox x:Name="txtUsername" Text="{Binding Username}" Grid.Row="0" Width="400" VerticalAlignment="Center"
                  Controls:TextBoxHelper.UseFloatingWatermark="True"
-                 Controls:TextBoxHelper.Watermark="Username"/>
+                 Controls:TextBoxHelper.Watermark="Username">
+            <TextBox.InputBindings>
+                <KeyBinding Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=passwordBox}"/>
+            </TextBox.InputBindings>
+        </TextBox>
 
-        <PasswordBox x:Name="passwordBox" Grid.Row="1" 
+        <PasswordBox x:Name="passwordBox" Grid.Row="1" Width="400" VerticalAlignment="Center"
                  Controls:TextBoxHelper.UseFloatingWatermark="True"
                  Controls:TextBoxHelper.Watermark="Password"
-                 Style="{StaticResource MetroButtonRevealedPasswordBox }"/>
-        <TextBlock Grid.Row="2" Text="{Binding AuthenticatedUser}"
-               FontSize="14" HorizontalAlignment="Right" TextWrapping="Wrap" FontWeight="Bold"
-               Margin="2,2,2,2"/>
-        <!--<TextBlock Text="{Binding Status}" Grid.Row="2" 
-                   VerticalAlignment="Center" Foreground="Red" TextWrapping="Wrap" HorizontalAlignment="Center"/>-->
+                 Style="{StaticResource MetroButtonRevealedPasswordBox }">
+            <PasswordBox.InputBindings>
+                <KeyBinding Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=passwordBox}" Key="Return"/>
+            </PasswordBox.InputBindings>
+        </PasswordBox>
+        <TextBlock Text="{Binding Status}" Grid.Row="2" 
+                   VerticalAlignment="Center" Foreground="Red" TextWrapping="Wrap" HorizontalAlignment="Center" 
+                   FontSize="13" FontWeight="DemiBold"/>
 
         <Button Grid.Row="3" Content="login" Style="{DynamicResource SquareButtonStyle}"
                 Command="{Binding LoginCommand}"
                 CommandParameter="{Binding ElementName=passwordBox}"
                 HorizontalAlignment="Center"
-                Width="100" FontSize="13"/>
+                Width="100" FontSize="13" Margin="0 30 0 0"/>
     </Grid>
 </Controls:MetroWindow>

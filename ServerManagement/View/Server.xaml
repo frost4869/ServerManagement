@@ -61,6 +61,7 @@
                   RowHeaderWidth="27"
                   HeadersVisibility="All"
                   SelectionUnit="CellOrRowHeader">
+
             <DataGrid.Columns>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.HeaderStyle>
@@ -77,11 +78,21 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn x:Name="nameColumn" Width="Auto" Header="Server Name" Binding="{Binding Name, Mode=TwoWay}"/>
-                <DataGridTextColumn x:Name="hostNameColumn" Width="Auto" Header="Host Name" Binding="{Binding HostName, Mode=TwoWay}"/>
-                <DataGridTextColumn x:Name="usernameColumn" Width="Auto" Header="Username" Binding="{Binding Username, Mode=TwoWay}"/>
-                <DataGridTextColumn x:Name="passwordColumn" Width="Auto" Header="Password" Binding="{Binding Password, Mode=TwoWay}"/>
-                <DataGridTextColumn x:Name="projectColumn" Width="Auto" Header="Project" Binding="{Binding Project, Mode=TwoWay}"/>
+                <DataGridTextColumn x:Name="nameColumn" Width="Auto" Header="Server Name" Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn x:Name="hostNameColumn" Width="Auto" Header="Host Name" Binding="{Binding HostName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn x:Name="usernameColumn" Width="Auto" Header="Username" Binding="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTemplateColumn Header="Password">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <PasswordBox Height="30" VerticalAlignment="center" 
+                             vml:PasswordHelper.Attach="True"
+                             vml:PasswordHelper.Password="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Style="{StaticResource MetroButtonRevealedPasswordBox}" Cursor="Arrow" Focusable="False"></PasswordBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn x:Name="projectColumn" Width="Auto" Header="Project" Binding="{Binding Project, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                
             </DataGrid.Columns>
         </DataGrid>
         <GridSplitter Grid.Column="1" Grid.RowSpan="2" Width="5" Height="Auto" HorizontalAlignment="Stretch"/>

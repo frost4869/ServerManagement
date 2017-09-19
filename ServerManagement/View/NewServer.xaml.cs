@@ -26,20 +26,26 @@ namespace ServerManagement.View
         {
             try
             {
+                Crypto c = new Crypto(Crypto.CryptoTypes.encTypeTripleDES);
+
                 ServerModel updatedServer = ((FrameworkElement)sender).DataContext as ServerModel;
                 var entity = db.Servers.Find(updatedServer.Id);
                 if (entity == null)//create server
                 {
+                    newServer.Password = c.Encrypt(newServer.Password);
+                    newServer.Active = true;
                     entity = Mapper.Map<Model.Entity.Server>(newServer);
                     db.Servers.Add(entity);
                 }
                 else//update server
                 {
+                    updatedServer.Password = c.Encrypt(updatedServer.Password);
                     db.Entry(entity).CurrentValues.SetValues(Mapper.Map<Model.Entity.Server>(updatedServer));
                     db.Entry(entity).State = System.Data.Entity.EntityState.Modified;
                 }
                 
                 db.SaveChanges();
+                
                 Server.Instance.DataContext = new ServerViewModel();
             }
             catch (System.Exception ex)

@@ -103,6 +103,7 @@
     <Compile Include="Model\Entity\User.cs">
       <DependentUpon>ServerManagementModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="RoleEnum.cs" />
     <Compile Include="ViewModel\AuthenticationViewModel.cs" />
     <Compile Include="ViewModel\ServerViewModel.cs" />
     <Compile Include="View\LoginWindow.xaml.cs">
@@ -114,6 +115,7 @@
     <Compile Include="View\Server.xaml.cs">
       <DependentUpon>Server.xaml</DependentUpon>
     </Compile>
+    <Compile Include="VML\Crypto.cs" />
     <Compile Include="VML\DelegateCommand.cs" />
     <Compile Include="VML\PasswordEncriptionHelper.cs" />
     <Compile Include="VML\PasswordHelper.cs" />

@@ -20,8 +20,9 @@ namespace ServerManagement.ViewModel
         private readonly IAuthenticationService _authenticationService;
         private readonly DelegateCommand _loginCommand;
         private readonly DelegateCommand _logoutCommand;
-        private readonly DelegateCommand _showViewCommand;
         private string _username;
+        private string _confirmPassword;
+        private RoleEnum _roleEnum;
         private string _status;
 
         public AuthenticationViewModel(IAuthenticationService authenticationService)
@@ -29,7 +30,6 @@ namespace ServerManagement.ViewModel
             _authenticationService = authenticationService;
             _loginCommand = new DelegateCommand(Login, CanLogin);
             _logoutCommand = new DelegateCommand(Logout, CanLogout);
-            _showViewCommand = new DelegateCommand(ShowView, null);
         }
 
         #region Properties
@@ -39,16 +39,23 @@ namespace ServerManagement.ViewModel
             set { _username = value; NotifyPropertyChanged("Username"); }
         }
 
+        public string ConfirmPassword
+        {
+            get { return _confirmPassword; }
+            set { _confirmPassword = value; NotifyPropertyChanged("ConfirmPassword"); }
+        }
+        public RoleEnum RoleEnum
+        {
+            get { return _roleEnum; }
+            set { _roleEnum = value; NotifyPropertyChanged("RoleEnum"); }
+        }
+
         public string AuthenticatedUser
         {
             get
             {
                 if (IsAuthenticated)
-                    return string.Format("Signed in as {0}. {1}",
-                          Thread.CurrentPrincipal.Identity.Name,
-                          Thread.CurrentPrincipal.IsInRole("Mod") ? "You are an administrator!"
-                              : "You are NOT a member of the administrators group.");
-
+                    return Thread.CurrentPrincipal.Identity.Name;
                 return "Not authenticated!";
             }
         }
@@ -64,8 +71,6 @@ namespace ServerManagement.ViewModel
         public DelegateCommand LoginCommand { get { return _loginCommand; } }
 
         public DelegateCommand LogoutCommand { get { return _logoutCommand; } }
-
-        public DelegateCommand ShowViewCommand { get { return _showViewCommand; } }
         #endregion
 
         private void Login(object parameter)
@@ -93,7 +98,8 @@ namespace ServerManagement.ViewModel
                 Username = string.Empty; //reset
                 passwordBox.Password = string.Empty; //reset
                 Status = string.Empty;
-                IView main = new MainWindow();
+                AuthenticationViewModel viewModel = new AuthenticationViewModel(new AuthenticationService());
+                IView main = new MainWindow(viewModel);
                 main.Show();
                 LoginWindow.Instance.Close();
             }
@@ -123,6 +129,10 @@ namespace ServerManagement.ViewModel
                 _loginCommand.RaiseCanExecuteChanged();
                 _logoutCommand.RaiseCanExecuteChanged();
                 Status = string.Empty;
+                AuthenticationViewModel viewModel = new AuthenticationViewModel(new AuthenticationService());
+                IView loginWindow = new LoginWindow(viewModel);
+                loginWindow.Show();
+                MainWindow.Instance.Close();
             }
         }
 
@@ -131,30 +141,20 @@ namespace ServerManagement.ViewModel
             return IsAuthenticated;
         }
 
+        private void Register(object parameter)
+        {
+            CustomPrincipal customPrincipal = Thread.CurrentPrincipal as CustomPrincipal;
+            PasswordBox passwordBox = parameter as PasswordBox;
+            string clearTextPassword = passwordBox.Password;
+            if (customPrincipal != null && customPrincipal.IsInRole("Admin"))
+            {
+                _authenticationService.Register(Username, clearTextPassword, ConfirmPassword, RoleEnum);
+            }
+        }
         public bool IsAuthenticated
         {
             get { return Thread.CurrentPrincipal.Identity.IsAuthenticated; }
         }
-
-        private void ShowView(object parameter)
-        {
-            try
-            {
-                Status = string.Empty;
-                IView view;
-                if (parameter == null)
-                    view = new MainWindow();
-                else
-                    view = new MainWindow();
-
-                view.Show();
-            }
-            catch (SecurityException)
-            {
-                Status = "You are not authorized!";
-            }
-        }
-
 
         #region INotifyPropertyChanged Members
         public event PropertyChangedEventHandler PropertyChanged;

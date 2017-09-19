@@ -83,8 +83,7 @@ namespace ServerManagement.View
             var keyWord = searchBox.Text;
             if (!string.IsNullOrEmpty(keyWord))
             {
-                var viewModel = new ServerViewModel();
-                viewModel.Get(keyWord);
+                var viewModel = new ServerViewModel(keyWord);
                 this.DataContext = viewModel;
             }
             else
