@@ -30,57 +30,65 @@ namespace ServerManagement.Identity
         public void Register(string username, string password, string confirmPassword, RoleEnum role)
         {
             ServerManagementEntities db = new ServerManagementEntities();
-            if (password.Equals(confirmPassword))
+            if (!string.IsNullOrEmpty(username) || !string.IsNullOrEmpty(password))
             {
-                if (!db.Users.Any(q => q.Username.Equals(username)))
+                if (password.Equals(confirmPassword))
                 {
-                    switch (role)
+                    if (!db.Users.Any(q => q.Username.Equals(username)))
                     {
-                        case RoleEnum.Admin:
-                            {
-                                db.Users.Add(new User
+                        switch (role)
+                        {
+                            case RoleEnum.Admin:
                                 {
-                                     Active = true,
-                                     Username = username,
-                                     Password = PasswordEncriptionHelper.HashPassword(password),
-                                     RoleId = 1
-                                });
-                            }
-                            break;
-                        case RoleEnum.Writer:
-                            {
-                                db.Users.Add(new User
+                                    db.Users.Add(new User
+                                    {
+                                        Active = true,
+                                        Username = username,
+                                        Password = PasswordEncriptionHelper.HashPassword(password),
+                                        RoleId = 1
+                                    });
+                                }
+                                break;
+                            case RoleEnum.Writer:
                                 {
-                                    Active = true,
-                                    Username = username,
-                                    Password = PasswordEncriptionHelper.HashPassword(password),
-                                    RoleId = 2
-                                });
-                            }
-                            break;
-                        case RoleEnum.Reader:
-                            {
-                                db.Users.Add(new User
+                                    db.Users.Add(new User
+                                    {
+                                        Active = true,
+                                        Username = username,
+                                        Password = PasswordEncriptionHelper.HashPassword(password),
+                                        RoleId = 2
+                                    });
+                                }
+                                break;
+                            case RoleEnum.Reader:
                                 {
-                                    Active = true,
-                                    Username = username,
-                                    Password = PasswordEncriptionHelper.HashPassword(password),
-                                    RoleId = 3
-                                });
-                            }
-                            break;
-                        default:
-                            break;
+                                    db.Users.Add(new User
+                                    {
+                                        Active = true,
+                                        Username = username,
+                                        Password = PasswordEncriptionHelper.HashPassword(password),
+                                        RoleId = 3
+                                    });
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        throw new Exception("Username already existed !");
                     }
                 }
                 else
                 {
-                    throw new Exception("Username already existed !");
+                    throw new Exception("Confirm Password Mismatched !");
                 }
             }
             else
             {
-                throw new Exception("Confirm Password Mismatched !");
+                throw new Exception("Please provide Username and Password");
             }
         }
     }

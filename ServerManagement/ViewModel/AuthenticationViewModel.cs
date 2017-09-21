@@ -4,6 +4,7 @@ using ServerManagement.View;
 using ServerManagement.VML;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Security;
@@ -20,36 +21,75 @@ namespace ServerManagement.ViewModel
         private readonly IAuthenticationService _authenticationService;
         private readonly DelegateCommand _loginCommand;
         private readonly DelegateCommand _logoutCommand;
+        private readonly DelegateCommand _registerCommand;
+        private bool _isAdmin = false;
         private string _username;
         private string _confirmPassword;
+        private string _password;
         private RoleEnum _roleEnum;
         private string _status;
+
+        public ObservableCollection<User> Accounts { get; set; }
+        public void LoadAccount()
+        {
+            ServerManagementEntities db = new ServerManagementEntities();
+            var accounts = db.Users.Where(q => q.Active);
+            Accounts = new ObservableCollection<User>(accounts);
+        }
+
+        public AuthenticationViewModel()
+        {
+            LoadAccount();
+        }
+
+        public AuthenticationViewModel(User user)
+        {
+            Username = user.Username;
+            Role_Enum = (RoleEnum)Enum.Parse(typeof(RoleEnum), user.Role.RoleName, true);
+        }
 
         public AuthenticationViewModel(IAuthenticationService authenticationService)
         {
             _authenticationService = authenticationService;
             _loginCommand = new DelegateCommand(Login, CanLogin);
             _logoutCommand = new DelegateCommand(Logout, CanLogout);
+            _registerCommand = new DelegateCommand(Register, CanRegister);
         }
 
         #region Properties
+        public bool IsAdmin
+        {
+            get
+            {
+                CustomPrincipal customPrincipal = Thread.CurrentPrincipal as CustomPrincipal;
+                return customPrincipal.IsInRole("Admin");
+            }
+        }
         public string Username
         {
             get { return _username; }
             set { _username = value; NotifyPropertyChanged("Username"); }
         }
-
+        public string Password
+        {
+            get { return _password; }
+            set { _password = value; NotifyPropertyChanged("Password"); }
+        }
         public string ConfirmPassword
         {
             get { return _confirmPassword; }
             set { _confirmPassword = value; NotifyPropertyChanged("ConfirmPassword"); }
         }
-        public RoleEnum RoleEnum
+        public RoleEnum Role_Enum
         {
             get { return _roleEnum; }
             set { _roleEnum = value; NotifyPropertyChanged("RoleEnum"); }
         }
-
+        public string Status
+        {
+            get { return _status; }
+            set { _status = value; NotifyPropertyChanged("Status"); }
+        }
         public string AuthenticatedUser
         {
             get
@@ -59,24 +99,18 @@ namespace ServerManagement.ViewModel
                 return "Not authenticated!";
             }
         }
-
-        public string Status
-        {
-            get { return _status; }
-            set { _status = value; NotifyPropertyChanged("Status"); }
-        }
         #endregion
 
         #region Commands
         public DelegateCommand LoginCommand { get { return _loginCommand; } }
-
         public DelegateCommand LogoutCommand { get { return _logoutCommand; } }
+        public DelegateCommand RegisterCommand { get { return _registerCommand; } }
         #endregion
 
         private void Login(object parameter)
         {
             PasswordBox passwordBox = parameter as PasswordBox;
-            string clearTextPassword = passwordBox.Password;
+            string clearTextPassword = PasswordEncriptionHelper.HashPassword(passwordBox.Password);
             try
             {
                 //Validate credentials through the authentication service
@@ -140,17 +174,22 @@ namespace ServerManagement.ViewModel
         {
             return IsAuthenticated;
         }
-
         private void Register(object parameter)
         {
-            CustomPrincipal customPrincipal = Thread.CurrentPrincipal as CustomPrincipal;
-            PasswordBox passwordBox = parameter as PasswordBox;
-            string clearTextPassword = passwordBox.Password;
-            if (customPrincipal != null && customPrincipal.IsInRole("Admin"))
+            try
             {
-                _authenticationService.Register(Username, clearTextPassword, ConfirmPassword, RoleEnum);
+                _authenticationService.Register(Username, Password, ConfirmPassword, Role_Enum);
+            }
+            catch (Exception ex)
+            {
+                Status = ex.Message;
             }
         }
+        private bool CanRegister(object parameter)
+        {
+            return IsAuthenticated;
+        }
+
         public bool IsAuthenticated
         {
             get { return Thread.CurrentPrincipal.Identity.IsAuthenticated; }

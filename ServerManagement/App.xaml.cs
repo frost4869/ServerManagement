@@ -38,6 +38,10 @@ namespace ServerManagement
             AuthenticationViewModel viewModel = new AuthenticationViewModel(new AuthenticationService());
             IView loginWindow = new LoginWindow(viewModel);
             loginWindow.Show();
+
+            //AuthenticationViewModel viewModel = new AuthenticationViewModel(new AuthenticationService());
+            //RegisterWindow registerWindow = new RegisterWindow(viewModel);
+            //registerWindow.Show();
         }
     }
 }

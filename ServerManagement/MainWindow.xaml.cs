@@ -71,5 +71,28 @@ namespace ServerManagement
             if (e.ClosingTabItem.Header.ToString().StartsWith("sizes"))
                 e.Cancel = true;
         }
+
+        private void Register_Click(object sender, RoutedEventArgs e)
+        {
+            AuthenticationViewModel viewModel = new AuthenticationViewModel(new AuthenticationService());
+            RegisterWindow registerWindow = new RegisterWindow(viewModel);
+            registerWindow.Show();
+        }
+
+        private void Accounts_Click(object sender, RoutedEventArgs e)
+        {
+            MetroTabItem item = new MetroTabItem
+            {
+                Header = "Manage Accounts",
+                CloseButtonEnabled = true,
+            };
+
+            AuthenticationViewModel viewModel = new AuthenticationViewModel();
+            Account accounts = new Account(viewModel);
+            item.Content = accounts;
+
+            MainTabControl.Items.Add(item);
+            item.Focus();
+        }
     }
 }

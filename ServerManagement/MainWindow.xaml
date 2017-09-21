@@ -37,7 +37,14 @@
                     HorizontalContentAlignment="Left"
                     VerticalAlignment="Stretch"
                     DockPanel.Dock="Left">
+                <Menu.Resources>
+                    <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+                </Menu.Resources>
                 <MenuItem Header="New" Click="NewServer_Click"></MenuItem>
+                <MenuItem Header="Account" Visibility="{Binding Path=IsAdmin, Converter={StaticResource BoolToVisConverter}}">
+                    <MenuItem Header="Manage Account" Click="Accounts_Click"></MenuItem>
+                    <MenuItem Header="Register" Click="Register_Click"></MenuItem>
+                </MenuItem>
             </Menu>
         </DockPanel>
 
