@@ -25,7 +25,8 @@ namespace ServerManagement
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    //[PrincipalPermission(SecurityAction.Demand, Role = "Mod")]
+    [PrincipalPermission(SecurityAction.Demand, Role = "Admin")]
+    [PrincipalPermission(SecurityAction.Demand, Role = "Writer")]
     public partial class MainWindow : IView
     {
         #region IView Members

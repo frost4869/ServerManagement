@@ -103,7 +103,11 @@
     <Compile Include="Model\Entity\User.cs">
       <DependentUpon>ServerManagementModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ReaderWindow.xaml.cs">
+      <DependentUpon>ReaderWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RoleEnum.cs" />
+    <Compile Include="ViewModel\AccountViewModel.cs" />
     <Compile Include="ViewModel\AuthenticationViewModel.cs" />
     <Compile Include="ViewModel\ServerViewModel.cs" />
     <Compile Include="View\Account.xaml.cs">
@@ -117,6 +121,9 @@
     </Compile>
     <Compile Include="View\NewServer.xaml.cs">
       <DependentUpon>NewServer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ReaderServerView.xaml.cs">
+      <DependentUpon>ReaderServerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\RegisterWindow.xaml.cs">
       <DependentUpon>RegisterWindow.xaml</DependentUpon>
@@ -142,6 +149,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ReaderWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Account.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -155,6 +166,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\NewServer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ReaderServerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

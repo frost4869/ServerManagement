@@ -20,7 +20,7 @@
         <TextBox x:Name="txtUsername" Grid.Row="0" Width="Auto" VerticalAlignment="Center"
                  Controls:TextBoxHelper.UseFloatingWatermark="True"
                  Controls:TextBoxHelper.Watermark="Username"
-                 Text="{Binding Username, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                 Text="{Binding Path=Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  IsReadOnly="True"
                  Margin="30 0 30 0"/>
         <PasswordBox x:Name="passwordBox" Grid.Row="1" Width="Auto" VerticalAlignment="Center"
@@ -45,14 +45,26 @@
                 <KeyBinding Command="{Binding UpdateAccountCommand}" Key="Return"/>
             </PasswordBox.InputBindings>
         </PasswordBox>
-        <ComboBox Grid.Row="3" Width="Auto"
+        <ComboBox Grid.Row="3" Width="Auto" 
                   Controls:TextBoxHelper.UseFloatingWatermark="True"
                   Controls:TextBoxHelper.Watermark="Please select an Role..."
                   Margin="30 0 30 0"
-                  x:Name="roleComboBox" Text="{Binding Role_Enum}"></ComboBox>
+                  x:Name="roleComboBox"
+                  SelectedItem="{Binding Path=CurrentRole, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
         <TextBlock Text="{Binding Status}" Grid.Row="4" 
                    VerticalAlignment="Center" Foreground="Red" TextWrapping="Wrap" HorizontalAlignment="Center" 
-                   FontSize="13" FontWeight="DemiBold"/>
+                   FontSize="13" FontWeight="DemiBold">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsSuccess, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Value="True">
+                            <Setter Property="Foreground" Value="Green"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
         <Button Grid.Row="5" Content="Update" Style="{DynamicResource SquareButtonStyle}"
                 Command="{Binding UpdateAccountCommand}"
                 CommandParameter="{Binding ElementName=passwordBox}"

@@ -37,11 +37,11 @@ namespace ServerManagement.View
                 ServerManagementEntities db = new ServerManagementEntities();
 
                 User user = ((DataGrid)sender).SelectedCells[0].Item as User;
-                accountUpdateView.DataContext = new AuthenticationViewModel(user);
-                var comboBox = accountUpdateView.FindName("roleComboBox") as ComboBox;
-                comboBox.ItemsSource = Enum.GetValues(typeof(RoleEnum)).Cast<RoleEnum>();
+                accountUpdateView.DataContext = new AccountViewModel(user);
+                //var comboBox = accountUpdateView.FindName("roleComboBox") as ComboBox;
+                //comboBox.ItemsSource = Enum.GetValues(typeof(RoleEnum)).Cast<RoleEnum>();
 
-                comboBox.SelectedItem = user.Role.RoleName;
+                //comboBox.SelectedItem = user.Role.RoleName;
             }
         }
 

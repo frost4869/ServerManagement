@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ServerManagement.Model.Entity;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +25,7 @@ namespace ServerManagement.View
         public AccountUpdate()
         {
             InitializeComponent();
+            roleComboBox.ItemsSource = Enum.GetValues(typeof(RoleEnum)).Cast<RoleEnum>();
         }
     }
 }

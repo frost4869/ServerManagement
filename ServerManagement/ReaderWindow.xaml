@@ -1,14 +1,13 @@
-﻿<Controls:MetroWindow x:Class="ServerManagement.MainWindow"
+﻿<Controls:MetroWindow x:Class="ServerManagement.ReaderWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:ServerManagement"
         xmlns:views="clr-namespace:ServerManagement.View"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="1000" MinWidth="700">
-
+        Title="ReaderWindow" Height="600" Width="1000">
     <Window.Resources>
         <Style x:Key="AppThemeMenuItemStyle"
                    BasedOn="{StaticResource MetroMenuItem}"
@@ -40,21 +39,14 @@
                 <Menu.Resources>
                     <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
                 </Menu.Resources>
-                <MenuItem Header="New" Click="NewServer_Click"></MenuItem>
-                <MenuItem Header="Account" Visibility="{Binding Path=IsAdmin, Converter={StaticResource BoolToVisConverter}}">
-                    <MenuItem Header="Manage Account" Click="Accounts_Click"></MenuItem>
-                    <MenuItem Header="Register" Click="Register_Click"></MenuItem>
-                </MenuItem>
             </Menu>
         </DockPanel>
-
         <Controls:MetroAnimatedSingleRowTabControl 
-            TabItemClosingEvent="MainTabControl_TabItemClosingEvent" 
             x:Name="MainTabControl"
             Grid.Row="2" 
             Controls:TabControlHelper.Underlined="TabPanel">
-            <Controls:MetroTabItem Header="Servers List" x:Name="AllServer">
-                <views:Server Grid.Row="2" x:Name="ServersView"/>
+            <Controls:MetroTabItem Header="Servers List" x:Name="AllPC">
+                <views:ReaderServerView Grid.Row="2" x:Name="ServersView"/>
             </Controls:MetroTabItem>
         </Controls:MetroAnimatedSingleRowTabControl>
         <StatusBar Grid.Row="3">

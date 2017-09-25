@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="ServerManagement.View.ReaderServerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ServerManagement.View"
+             mc:Ignorable="d" 
+             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:vml="clr-namespace:ServerManagement.VML"
+             d:DesignHeight="700" d:DesignWidth="1366"
+             Loaded="UserControl_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" MinWidth="300"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <DockPanel Grid.Row="0" HorizontalAlignment="Left">
+            <TextBox x:Name="searchBox" 
+                Controls:TextBoxHelper.ClearTextButton="True"
+                     Controls:TextBoxHelper.UseFloatingWatermark="True"
+                     Controls:TextBoxHelper.Watermark="Search..."
+                     Width="300" VerticalAlignment="Center"
+                     Margin="10 10 0 0"
+                     TextChanged="SearchBox_TextChanged">
+                <TextBox.Style>
+                    <Style BasedOn="{StaticResource SearchMetroTextBox}" TargetType="{x:Type TextBox}">
+                        <Style.Triggers>
+                            <Trigger Property="Controls:TextBoxHelper.HasText" Value="True">
+                                <Setter Property="Controls:TextBoxHelper.ButtonContent" Value="r" />
+                                <Setter Property="Controls:TextBoxHelper.ButtonContentTemplate" Value="{x:Null}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+        </DockPanel>
+        <DataGrid x:Name="serverDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" ItemsSource="{Binding Servers}" EnableRowVirtualization="True" AutoGenerateColumns="False"
+                  Grid.Row="1" Grid.Column="0"
+                  Margin="0,10,0,0" 
+                  CanUserAddRows="False"
+                  IsReadOnly="True"
+                  GridLinesVisibility="All"
+                  EnableColumnVirtualization="True"
+                  RowHeaderWidth="27"
+                  HeadersVisibility="All"
+                  SelectionUnit="CellOrRowHeader">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="nameColumn" Width="Auto" Header="Server Name" Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn x:Name="hostNameColumn" Width="Auto" Header="Host Name" Binding="{Binding HostName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn x:Name="usernameColumn" Width="Auto" Header="Username" Binding="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTemplateColumn Header="Password">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <PasswordBox Height="30" VerticalAlignment="center" 
+                             vml:PasswordHelper.Attach="True"
+                             vml:PasswordHelper.Password="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Style="{StaticResource MetroButtonRevealedPasswordBox}" Cursor="Arrow" Focusable="False"></PasswordBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn x:Name="Ip1Column" Width="Auto" Header="IP1" Binding="{Binding IP1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn x:Name="Ip2Column" Width="Auto" Header="IP2" Binding="{Binding IP2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn x:Name="Ip3Column" Width="Auto" Header="IP3" Binding="{Binding IP3, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn x:Name="Ip4Column" Width="Auto" Header="IP4" Binding="{Binding IP4, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn x:Name="projectColumn" Width="Auto" Header="Project" Binding="{Binding Project, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

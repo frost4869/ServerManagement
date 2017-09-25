@@ -33,7 +33,8 @@ namespace ServerManagement.ViewModel
         public void LoadAccount()
         {
             ServerManagementEntities db = new ServerManagementEntities();
-            var accounts = db.Users.Where(q => q.Active);
+            CustomPrincipal customPrincipal = Thread.CurrentPrincipal as CustomPrincipal;
+            var accounts = db.Users.Where(q => q.Active && q.Username != customPrincipal.Identity.Name);
             Accounts = new ObservableCollection<User>(accounts);
         }
 
@@ -133,8 +134,16 @@ namespace ServerManagement.ViewModel
                 passwordBox.Password = string.Empty; //reset
                 Status = string.Empty;
                 AuthenticationViewModel viewModel = new AuthenticationViewModel(new AuthenticationService());
-                IView main = new MainWindow(viewModel);
-                main.Show();
+                if (customPrincipal.IsInRole("Reader"))
+                {
+                    IView readerWindow = new ReaderWindow(viewModel);
+                    readerWindow.Show();
+                }
+                else
+                {
+                    IView main = new MainWindow(viewModel);
+                    main.Show();
+                }
                 LoginWindow.Instance.Close();
             }
             catch (UnauthorizedAccessException)
@@ -157,16 +166,25 @@ namespace ServerManagement.ViewModel
             CustomPrincipal customPrincipal = Thread.CurrentPrincipal as CustomPrincipal;
             if (customPrincipal != null)
             {
+                AuthenticationViewModel viewModel = new AuthenticationViewModel(new AuthenticationService());
+                IView loginWindow = new LoginWindow(viewModel);
+                loginWindow.Show();
+
+                if (customPrincipal.IsInRole("Reader"))
+                {
+                    ReaderWindow.Instance.Close();
+                }
+                else
+                {
+                    MainWindow.Instance.Close();
+                }
+
                 customPrincipal.Identity = new UnauthenticatedIdentity();
                 NotifyPropertyChanged("AuthenticatedUser");
                 NotifyPropertyChanged("IsAuthenticated");
                 _loginCommand.RaiseCanExecuteChanged();
                 _logoutCommand.RaiseCanExecuteChanged();
                 Status = string.Empty;
-                AuthenticationViewModel viewModel = new AuthenticationViewModel(new AuthenticationService());
-                IView loginWindow = new LoginWindow(viewModel);
-                loginWindow.Show();
-                MainWindow.Instance.Close();
             }
         }
 

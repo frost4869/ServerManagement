@@ -26,5 +26,10 @@ namespace ServerManagement.Model.Entity
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<User> Users { get; set; }
+
+        public override string ToString()
+        {
+            return RoleName;
+        }
     }
 }

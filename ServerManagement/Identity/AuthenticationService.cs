@@ -12,6 +12,7 @@ namespace ServerManagement.Identity
     {
         User AuthenticateUser(string username, string password);
         void Register(string username, string password, string confirmPassword, RoleEnum role);
+        void UpdateAccount(int Id, string password, string confirmPassword, RoleEnum role);
     }
     class AuthenticationService : IAuthenticationService
     {
@@ -89,6 +90,53 @@ namespace ServerManagement.Identity
             else
             {
                 throw new Exception("Please provide Username and Password");
+            }
+        }
+
+        public void UpdateAccount(int Id, string password, string confirmPassword, RoleEnum role)
+        {
+            ServerManagementEntities db = new ServerManagementEntities();
+            User user = db.Users.Find(Id);
+            if (user != null && user.Active)
+            {
+                try
+                {
+                    if (password != null && confirmPassword != null)
+                    {
+                        if (password.Equals(confirmPassword))
+                        {
+                            user.Password = PasswordEncriptionHelper.HashPassword(password);
+                        }
+                        else
+                        {
+                            throw new Exception("Confirm Password miss matched");
+                        }
+                    }
+                    switch (role)
+                    {
+                        case RoleEnum.Admin:
+                            user.RoleId = 1;
+                            break;
+                        case RoleEnum.Writer:
+                            user.RoleId = 2;
+                            break;
+                        case RoleEnum.Reader:
+                            user.RoleId = 3;
+                            break;
+                        default:
+                            break;
+                    }
+                    db.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+            else
+            {
+                throw new Exception("User do not existed");
             }
         }
     }

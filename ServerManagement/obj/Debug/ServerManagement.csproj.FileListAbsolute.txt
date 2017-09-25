@@ -40,3 +40,7 @@ F:\Projects\ServerManagement\ServerManagement\obj\Debug\View\Account.g.cs
 F:\Projects\ServerManagement\ServerManagement\obj\Debug\View\AccountUpdate.g.cs
 F:\Projects\ServerManagement\ServerManagement\obj\Debug\View\Account.baml
 F:\Projects\ServerManagement\ServerManagement\obj\Debug\View\AccountUpdate.baml
+F:\Projects\ServerManagement\ServerManagement\obj\Debug\ReaderWindow.g.cs
+F:\Projects\ServerManagement\ServerManagement\obj\Debug\View\ReaderServerView.g.cs
+F:\Projects\ServerManagement\ServerManagement\obj\Debug\ReaderWindow.baml
+F:\Projects\ServerManagement\ServerManagement\obj\Debug\View\ReaderServerView.baml
