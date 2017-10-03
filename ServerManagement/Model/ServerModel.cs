@@ -1,4 +1,6 @@
 ﻿using ServerManagement.Model.Entity;
+using ServerManagement.VML;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace ServerManagement.Model
@@ -9,15 +11,13 @@ namespace ServerManagement.Model
         private int mId;
         private string mName;
         private string mHostName;
-        private string mIP1;
-        private string mIP2;
-        private string mIP3;
-        private string mIP4;
+        private ObservableCollection<IpModel> mIps;
         private string mUsername;
         private string mPassword;
         private string mFunctionality;
         private string mProject;
         private bool mActive;
+
         public bool IsSelected
         {
             get
@@ -57,7 +57,8 @@ namespace ServerManagement.Model
                 }
             }
         }
-        public string HostName {
+        public string HostName
+        {
             get
             {
                 return this.mHostName;
@@ -71,63 +72,8 @@ namespace ServerManagement.Model
                 }
             }
         }
-        public string IP1 {
-            get
-            {
-                return this.mIP1;
-            }
-            set
-            {
-                if (value != this.mIP1)
-                {
-                    mIP1 = value;
-                    RaisePropertyChanged("IP1");
-                }
-            }
-        }
-        public string IP2 {
-            get
-            {
-                return this.mIP2;
-            }
-            set
-            {
-                if (value != this.mIP2)
-                {
-                    mIP2 = value;
-                    RaisePropertyChanged("IP2");
-                }
-            }
-        }
-        public string IP3 {
-            get
-            {
-                return this.mIP3;
-            }
-            set
-            {
-                if (value != this.mIP3)
-                {
-                    mIP3 = value;
-                    RaisePropertyChanged("IP3");
-                }
-            }
-        }
-        public string IP4 {
-            get
-            {
-                return this.mIP4;
-            }
-            set
-            {
-                if (value != this.mIP4)
-                {
-                    mIP4 = value;
-                    RaisePropertyChanged("IP4");
-                }
-            }
-        }
-        public string Username {
+        public string Username
+        {
             get
             {
                 return this.mUsername;
@@ -141,10 +87,11 @@ namespace ServerManagement.Model
                 }
             }
         }
-        public string Password {
+        public string Password
+        {
             get
             {
-                return this.mPassword;
+                return mPassword;
             }
             set
             {
@@ -155,7 +102,8 @@ namespace ServerManagement.Model
                 }
             }
         }
-        public string Functionality {
+        public string Functionality
+        {
             get
             {
                 return this.mFunctionality;
@@ -169,7 +117,8 @@ namespace ServerManagement.Model
                 }
             }
         }
-        public string Project {
+        public string Project
+        {
             get
             {
                 return this.mProject;
@@ -183,7 +132,14 @@ namespace ServerManagement.Model
                 }
             }
         }
-        public bool Active {
+        public ObservableCollection<IpModel> IpAddresses
+        {
+            get { return mIps; }
+            set { mIps = value; RaisePropertyChanged("IpAddresses"); }
+        }
+
+        public bool Active
+        {
             get
             {
                 return this.mActive;

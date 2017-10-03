@@ -11,8 +11,7 @@
             xmlns:vml="clr-namespace:ServerManagement.VML"
             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
             xmlns:views="clr-namespace:ServerManagement.View"
-            xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-            vml:ViewModelLocator.AutoHookedUpViewModel="True">
+            xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro">
     <!--<UserControl.Resources>
         <CollectionViewSource x:Key="serverViewSource" d:DesignSource="{d:DesignInstance {x:Type Entity:Server}, CreateList=True}"/>
     </UserControl.Resources>-->
@@ -23,28 +22,34 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" MinWidth="300"></ColumnDefinition>
-            <ColumnDefinition Width="5"></ColumnDefinition>
-            <ColumnDefinition Width="*" MinWidth="450"></ColumnDefinition>
+            <!--<ColumnDefinition Width="5"></ColumnDefinition>
+            <ColumnDefinition Width="*" MinWidth="450"></ColumnDefinition>-->
         </Grid.ColumnDefinitions>
         <DockPanel Grid.Row="0">
-            <TextBox x:Name="searchBox" 
+            <StackPanel Orientation="Horizontal">
+                <TextBox x:Name="searchBox" 
                 Controls:TextBoxHelper.ClearTextButton="True"
                      Controls:TextBoxHelper.UseFloatingWatermark="True"
                      Controls:TextBoxHelper.Watermark="Search..."
                      Width="300" VerticalAlignment="Center"
                      Margin="10 10 0 0"
                      TextChanged="SearchBox_TextChanged">
-                <TextBox.Style>
-                    <Style BasedOn="{StaticResource SearchMetroTextBox}" TargetType="{x:Type TextBox}">
-                        <Style.Triggers>
-                            <Trigger Property="Controls:TextBoxHelper.HasText" Value="True">
-                                <Setter Property="Controls:TextBoxHelper.ButtonContent" Value="r" />
-                                <Setter Property="Controls:TextBoxHelper.ButtonContentTemplate" Value="{x:Null}" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBox.Style>
-            </TextBox>
+                    <TextBox.Style>
+                        <Style BasedOn="{StaticResource SearchMetroTextBox}" TargetType="{x:Type TextBox}">
+                            <Style.Triggers>
+                                <Trigger Property="Controls:TextBoxHelper.HasText" Value="True">
+                                    <Setter Property="Controls:TextBoxHelper.ButtonContent" Value="r" />
+                                    <Setter Property="Controls:TextBoxHelper.ButtonContentTemplate" Value="{x:Null}" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+                <Button x:Name="btnRefresh" Content="Refresh" 
+                    VerticalAlignment="Center" Margin="30 10 10 0"
+                    Style="{DynamicResource SquareButtonStyle}" Width="70" FontSize="13"
+                    Click="ButtonRefresh_Click"></Button>
+            </StackPanel>
             <Button x:Name="btnDelete" Content="Delete" DockPanel.Dock="Right"
                     VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 10 10 0"
                     Style="{DynamicResource SquareButtonStyle}" Width="70" FontSize="13"
@@ -95,8 +100,8 @@
                 
             </DataGrid.Columns>
         </DataGrid>
-        <GridSplitter Grid.Column="1" Grid.RowSpan="2" Width="5" Height="Auto" HorizontalAlignment="Stretch"/>
-        <views:NewServer Grid.Row="1" Grid.Column="2"
-                         x:Name="DetailsView"/>
+        <!--<GridSplitter Grid.Column="1" Grid.RowSpan="2" Width="5" Height="Auto" HorizontalAlignment="Stretch"/>-->
+        <!--<views:NewServer Grid.Row="1" Grid.Column="2"
+                         x:Name="DetailsView"/>-->
     </Grid>
 </UserControl>

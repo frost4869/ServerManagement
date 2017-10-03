@@ -14,17 +14,22 @@ namespace ServerManagement.Model.Entity
     
     public partial class Server
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Server()
+        {
+            this.IPs = new HashSet<IP>();
+        }
+    
         public int Id { get; set; }
         public string Name { get; set; }
         public string HostName { get; set; }
-        public string IP1 { get; set; }
-        public string IP2 { get; set; }
-        public string IP3 { get; set; }
-        public string IP4 { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public string Functionality { get; set; }
         public string Project { get; set; }
         public bool Active { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<IP> IPs { get; set; }
     }
 }

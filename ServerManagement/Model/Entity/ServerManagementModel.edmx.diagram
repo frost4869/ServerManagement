@@ -5,10 +5,14 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="244be28c734f4e648dfccd4497b752f1" Name="Diagram1" ZoomLevel="96">
-        <EntityTypeShape EntityType="ServerManagementModel.Server" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="ServerManagementModel.Role" Width="1.5" PointX="3.375" PointY="1.125" />
-        <EntityTypeShape EntityType="ServerManagementModel.User" Width="1.5" PointX="5.625" PointY="0.875" />
+        <EntityTypeShape EntityType="ServerManagementModel.Role" Width="1.5" PointX="0.75" PointY="5.125" />
+        <EntityTypeShape EntityType="ServerManagementModel.Server" Width="1.5" PointX="0.75" PointY="1" />
+        <EntityTypeShape EntityType="ServerManagementModel.User" Width="1.5" PointX="3" PointY="4.875" />
         <AssociationConnector Association="ServerManagementModel.FK_User_Role" />
+        <EntityTypeShape EntityType="ServerManagementModel.IP" Width="1.5" PointX="3" PointY="1.25" />
+        <EntityTypeShape EntityType="ServerManagementModel.MacAddress" Width="1.5" PointX="0.75" PointY="8.5" />
+        <AssociationConnector Association="ServerManagementModel.FK_IP_MacAddress" />
+        <AssociationConnector Association="ServerManagementModel.FK_IP_Server" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

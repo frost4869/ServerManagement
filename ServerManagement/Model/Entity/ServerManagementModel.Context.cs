@@ -9,24 +9,60 @@
 
 namespace ServerManagement.Model.Entity
 {
-    using System;
     using System.Data.Entity;
+    using System.Data.Entity.Core.EntityClient;
     using System.Data.Entity.Infrastructure;
-    
+    using System.Data.SqlClient;
+
     public partial class ServerManagementEntities : DbContext
     {
-        public ServerManagementEntities()
-            : base("name=ServerManagementEntities")
+        //public ServerManagementEntities()
+        //    : base("name=ServerManagementEntities")
+        //{
+
+        //}
+        private static string GetEntityConnectionString()
         {
+            SqlConnectionStringBuilder sqlBuilder = new SqlConnectionStringBuilder();
+
+            // Set the properties for the data source.
+           
+            sqlBuilder.InitialCatalog = "ServerManagement";
+            sqlBuilder.PersistSecurityInfo = true;
+            sqlBuilder.MultipleActiveResultSets = true;
+            sqlBuilder.ApplicationName = "EntityFramework";
+            sqlBuilder.UserID = "user_conn_server";
+            sqlBuilder.Password = "Si*2bjSu#B";
+            sqlBuilder.DataSource = "11.0.4.221";
+
+
+            // Build the SqlConnection connection string.
+            string providerString = sqlBuilder.ToString();
+
+            EntityConnectionStringBuilder entityConStrBuilder = new EntityConnectionStringBuilder();
+            entityConStrBuilder.Provider = "System.Data.SqlClient";
+            entityConStrBuilder.ProviderConnectionString = providerString;
+            entityConStrBuilder.Metadata = @"res://*/Model.Entity.ServerManagementModel.csdl|res://*/Model.Entity.ServerManagementModel.ssdl|res://*/Model.Entity.ServerManagementModel.msl";
+
+            return entityConStrBuilder.ToString();
         }
-    
+
+        public ServerManagementEntities()
+            : base(GetEntityConnectionString())
+        {
+
+        }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
         }
-    
-        public virtual DbSet<Server> Servers { get; set; }
+
         public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<Server> Servers { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<IP> IPs { get; set; }
+        public virtual DbSet<MacAddress> MacAddresses { get; set; }
     }
+
 }

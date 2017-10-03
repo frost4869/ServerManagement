@@ -33,9 +33,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Elegantthemes-Beautiful-Flat-Gear.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper, Version=6.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.6.1.1\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoUpdater.NET, Version=1.4.3.0, Culture=neutral, PublicKeyToken=942f95247e354701, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autoupdater.NET.Official.1.4.3\lib\net452\AutoUpdater.NET.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
@@ -78,6 +84,12 @@
     <Compile Include="Identity\AuthenticationService.cs" />
     <Compile Include="Identity\CustomPrincipal.cs" />
     <Compile Include="Identity\CustomIdentity.cs" />
+    <Compile Include="Model\Entity\IP.cs">
+      <DependentUpon>ServerManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Entity\MacAddress.cs">
+      <DependentUpon>ServerManagementModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Entity\Role.cs">
       <DependentUpon>ServerManagementModel.tt</DependentUpon>
     </Compile>
@@ -103,6 +115,8 @@
     <Compile Include="Model\Entity\User.cs">
       <DependentUpon>ServerManagementModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\IpModel.cs" />
+    <Compile Include="Model\MacAddressModel.cs" />
     <Compile Include="ReaderWindow.xaml.cs">
       <DependentUpon>ReaderWindow.xaml</DependentUpon>
     </Compile>
@@ -115,6 +129,9 @@
     </Compile>
     <Compile Include="View\AccountUpdate.xaml.cs">
       <DependentUpon>AccountUpdate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\IpMac.xaml.cs">
+      <DependentUpon>IpMac.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
@@ -158,6 +175,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\AccountUpdate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\IpMac.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -225,6 +246,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Resource Include="Elegantthemes-Beautiful-Flat-Gear.ico" />
     <Content Include="Model\Entity\ServerManagementModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ServerManagementModel.edmx</DependentUpon>

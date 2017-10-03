@@ -1,5 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="ServerManagementModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="IP">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IPAddress" Type="nvarchar" MaxLength="15" />
+    <Property Name="ServerId" Type="int" Nullable="false" />
+    <Property Name="MacAddressId" Type="int" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MacAddress">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MacAddress" Type="nvarchar" MaxLength="17" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
   <EntityType Name="Role">
     <Key>
       <PropertyRef Name="Id" />
@@ -15,10 +33,6 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar" MaxLength="128" Nullable="false" />
     <Property Name="HostName" Type="nvarchar" MaxLength="128" Nullable="false" />
-    <Property Name="IP1" Type="nvarchar" MaxLength="15" />
-    <Property Name="IP2" Type="nvarchar" MaxLength="15" />
-    <Property Name="IP3" Type="nvarchar" MaxLength="15" />
-    <Property Name="IP4" Type="nvarchar" MaxLength="15" />
     <Property Name="Username" Type="nvarchar" MaxLength="128" Nullable="false" />
     <Property Name="Password" Type="nvarchar" MaxLength="128" Nullable="false" />
     <Property Name="Functionality" Type="nvarchar(max)" />
@@ -35,6 +49,30 @@
     <Property Name="RoleId" Type="int" Nullable="false" />
     <Property Name="Active" Type="bit" Nullable="false" />
   </EntityType>
+  <Association Name="FK_IP_MacAddress">
+    <End Role="MacAddress" Type="Self.MacAddress" Multiplicity="0..1" />
+    <End Role="IP" Type="Self.IP" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MacAddress">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="IP">
+        <PropertyRef Name="MacAddressId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_IP_Server">
+    <End Role="Server" Type="Self.Server" Multiplicity="1" />
+    <End Role="IP" Type="Self.IP" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Server">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="IP">
+        <PropertyRef Name="ServerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_User_Role">
     <End Role="Role" Type="Self.Role" Multiplicity="1" />
     <End Role="User" Type="Self.User" Multiplicity="*" />
@@ -48,9 +86,19 @@
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="ServerManagementModelStoreContainer">
+    <EntitySet Name="IP" EntityType="Self.IP" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MacAddress" EntityType="Self.MacAddress" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Server" EntityType="Self.Server" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_IP_MacAddress" Association="Self.FK_IP_MacAddress">
+      <End Role="MacAddress" EntitySet="MacAddress" />
+      <End Role="IP" EntitySet="IP" />
+    </AssociationSet>
+    <AssociationSet Name="FK_IP_Server" Association="Self.FK_IP_Server">
+      <End Role="Server" EntitySet="Server" />
+      <End Role="IP" EntitySet="IP" />
+    </AssociationSet>
     <AssociationSet Name="FK_User_Role" Association="Self.FK_User_Role">
       <End Role="Role" EntitySet="Role" />
       <End Role="User" EntitySet="User" />

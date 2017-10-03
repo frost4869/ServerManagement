@@ -1,9 +1,11 @@
-﻿using MahApps.Metro.Controls;
+﻿using AutoUpdaterDotNET;
+using MahApps.Metro.Controls;
 using ServerManagement.Identity;
 using ServerManagement.View;
 using ServerManagement.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Security.Permissions;
@@ -50,6 +52,21 @@ namespace ServerManagement
             WindowState = WindowState.Maximized;
             WindowStyle = WindowStyle.SingleBorderWindow;
             Title = "Server Management Tool - Version " + Assembly.GetEntryAssembly().GetName().Version;
+
+            MetroTabItem item = new MetroTabItem
+            {
+                Header = "Server List",
+            };
+
+            Server view = new Server();
+            item.Content = view;
+            MainTabControl.Items.Add(item);
+
+            AutoUpdater.CurrentCulture = new CultureInfo("en-EN");
+            AutoUpdater.LetUserSelectRemindLater = true;
+            AutoUpdater.RemindLaterTimeSpan = RemindLaterFormat.Minutes;
+            AutoUpdater.RemindLaterAt = 1;
+            AutoUpdater.ReportErrors = true;
         }
 
         private void NewServer_Click(object sender, RoutedEventArgs e)
@@ -94,6 +111,11 @@ namespace ServerManagement
 
             MainTabControl.Items.Add(item);
             item.Focus();
+        }
+
+        private void Update_Click(object sender, RoutedEventArgs e)
+        {
+            AutoUpdater.Start("https://raw.githubusercontent.com/frost4869/uploadfiles/master/updateServer.xml");
         }
     }
 }

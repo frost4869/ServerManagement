@@ -45,6 +45,7 @@
                     <MenuItem Header="Manage Account" Click="Accounts_Click"></MenuItem>
                     <MenuItem Header="Register" Click="Register_Click"></MenuItem>
                 </MenuItem>
+                <MenuItem Header="Check for Update" Click="Update_Click"></MenuItem>
             </Menu>
         </DockPanel>
 
@@ -53,9 +54,6 @@
             x:Name="MainTabControl"
             Grid.Row="2" 
             Controls:TabControlHelper.Underlined="TabPanel">
-            <Controls:MetroTabItem Header="Servers List" x:Name="AllServer">
-                <views:Server Grid.Row="2" x:Name="ServersView"/>
-            </Controls:MetroTabItem>
         </Controls:MetroAnimatedSingleRowTabControl>
         <StatusBar Grid.Row="3">
             <StatusBarItem>Server Management Tool</StatusBarItem>

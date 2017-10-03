@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MahApps.Metro.Controls;
 using ServerManagement.Identity;
 using ServerManagement.Model;
 using ServerManagement.Model.Entity;
@@ -26,6 +27,10 @@ namespace ServerManagement
             {
                 q.CreateMap<Model.Entity.Server, ServerModel>();
                 q.CreateMap<ServerModel, Model.Entity.Server>();
+                q.CreateMap<IpModel, IP>();
+                q.CreateMap<IP, IpModel>();
+                q.CreateMap<MacAddress, MacAddressModel>();
+                q.CreateMap<MacAddressModel, MacAddress>();
             });
 
             //Create a custom principal with an anonymous identity at startup
