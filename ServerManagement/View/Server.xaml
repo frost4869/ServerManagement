@@ -89,15 +89,34 @@
                 <DataGridTemplateColumn Header="Password">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <PasswordBox Height="30" VerticalAlignment="center" 
-                             vml:PasswordHelper.Attach="True"
-                             vml:PasswordHelper.Password="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             Style="{StaticResource MetroButtonRevealedPasswordBox}" Cursor="Arrow" Focusable="False"></PasswordBox>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                
+                                <PasswordBox x:Name="txtPassword" Grid.Column="0" Height="30" VerticalAlignment="center" Margin="0 0 5 0"
+                                    vml:PasswordHelper.Attach="True"
+                                    vml:PasswordHelper.Password="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource MetroButtonRevealedPasswordBox}" Cursor="Arrow" Focusable="False"></PasswordBox>
+
+                                <Button Grid.Row="0" Grid.Column="1" Margin="0 0 3 0"
+                                    Width="25"
+                                    Height="25"
+                                    Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}"
+                                    VerticalContentAlignment="Center" VerticalAlignment="Center" Click="CopyButton_Click">
+
+                                    <iconPacks:PackIconModern x:Name="CopyIcon"
+                                                              Width="15"
+                                                              Height="15"
+                                                              Kind="PageCopy" />
+                                </Button>
+                            </Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTextColumn x:Name="projectColumn" Width="Auto" Header="Project" Binding="{Binding Project, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                
+
             </DataGrid.Columns>
         </DataGrid>
         <!--<GridSplitter Grid.Column="1" Grid.RowSpan="2" Width="5" Height="Auto" HorizontalAlignment="Stretch"/>-->

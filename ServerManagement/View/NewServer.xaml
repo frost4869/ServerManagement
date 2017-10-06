@@ -45,10 +45,27 @@
                 </StackPanel>
                 <StackPanel Margin="0 0 30 0" Orientation="Vertical" Grid.Row="3" Grid.Column="0">
                     <Label FontWeight="DemiBold"  FontSize="13" VerticalAlignment="Top">Password</Label>
-                    <PasswordBox Height="30" Margin="0 0 20 10" VerticalAlignment="center" 
+                    <Grid Margin="0 0 20 10" Height="30" VerticalAlignment="center" HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        
+                        <PasswordBox Height="30" HorizontalAlignment="Stretch" Grid.Column="0" Margin="0 0 10 0"
                              w:PasswordHelper.Attach="True"
-                             w:PasswordHelper.Password="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             w:PasswordHelper.Password="{Binding Path=Password, Mode=TwoWay}"
                              Style="{StaticResource MetroButtonRevealedPasswordBox}"></PasswordBox>
+                        <Button Grid.Row="0" Grid.Column="1"
+                            Width="30"
+                            Height="30"
+                            Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}"
+                            VerticalContentAlignment="Center" VerticalAlignment="Center" Click="CopyButton_Click">
+
+                                <iconPacks:PackIconModern Width="18"
+                                                      Height="18"
+                                                      Kind="PageCopy" /> 
+                        </Button>
+                    </Grid>
                 </StackPanel>
                 <StackPanel Margin="0 0 30 0" Orientation="Vertical" Grid.Row="4" Grid.Column="0">
                     <Label FontWeight="DemiBold"  FontSize="13" VerticalAlignment="Top">Project</Label>

@@ -164,5 +164,10 @@ namespace ServerManagement.View
             var serverList = viewModel.Servers;
             GetCustomColumns(serverList);
         }
+
+        private void CopyButton_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(((PasswordBox)((Grid)((Button)sender).Parent).FindName("txtPassword")).Password);
+        }
     }
 }

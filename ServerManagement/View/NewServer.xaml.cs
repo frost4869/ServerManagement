@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MahApps.Metro.Controls;
 using ServerManagement.Model;
 using ServerManagement.Model.Entity;
 using ServerManagement.ViewModel;
@@ -105,11 +106,15 @@ namespace ServerManagement.View
                 }
 
                 db.SaveChanges();
-                btnSave.Content = "Saved";
+
+                if(!(this.Parent is MetroWindow))
+                {
+                    this.DataContext = new ServerModel();
+                }
             }
             catch (System.Exception ex)
             {
-                Utils.WriteLog(ex.Message);
+                VML.Utils.WriteLog(ex.Message);
             }
         }
 
@@ -129,6 +134,22 @@ namespace ServerManagement.View
                     {
                         DataContext = ip,
                     });
+                }
+            }
+        }
+
+        private void CopyButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (newServer.Password != null)
+            {
+                Clipboard.SetText(newServer.Password);
+            }
+            else
+            {
+                ServerModel updatedServer = ((FrameworkElement)sender).DataContext as ServerModel;
+                if(updatedServer.Password != null)
+                {
+                    Clipboard.SetText(updatedServer.Password);
                 }
             }
         }

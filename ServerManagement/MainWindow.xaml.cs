@@ -1,27 +1,20 @@
 ﻿using AutoUpdaterDotNET;
 using MahApps.Metro.Controls;
+using Microsoft.Win32;
 using ServerManagement.Identity;
+using ServerManagement.Model;
 using ServerManagement.View;
 using ServerManagement.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Dynamic;
 using System.Globalization;
-using System.Linq;
 using System.Reflection;
 using System.Security.Permissions;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
+using Excel = Microsoft.Office.Interop.Excel;
 namespace ServerManagement
 {
     /// <summary>
@@ -116,6 +109,26 @@ namespace ServerManagement
         private void Update_Click(object sender, RoutedEventArgs e)
         {
             AutoUpdater.Start("https://raw.githubusercontent.com/frost4869/uploadfiles/master/updateServer.xml");
+        }
+
+        private void Import_Click(object sender, RoutedEventArgs e)
+        {
+            MetroTabItem item = new MetroTabItem
+            {
+                Header = "Import Server",
+                CloseButtonEnabled = true,
+            };
+
+            ImportServers view = new ImportServers();
+            item.Content = view;
+
+            MainTabControl.Items.Add(item);
+            item.Focus();
+        }
+
+        private void Export_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

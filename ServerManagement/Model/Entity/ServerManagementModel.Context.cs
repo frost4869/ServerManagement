@@ -31,10 +31,12 @@ namespace ServerManagement.Model.Entity
             sqlBuilder.PersistSecurityInfo = true;
             sqlBuilder.MultipleActiveResultSets = true;
             sqlBuilder.ApplicationName = "EntityFramework";
-            sqlBuilder.UserID = "user_conn_server";
-            sqlBuilder.Password = "Si*2bjSu#B";
-            sqlBuilder.DataSource = "11.0.4.221";
-
+            //sqlBuilder.UserID = "user_conn_server";
+            //sqlBuilder.Password = "Si*2bjSu#B";
+            //sqlBuilder.DataSource = "11.0.4.221";
+            sqlBuilder.UserID = "sa";
+            sqlBuilder.Password = "aptx4869";
+            sqlBuilder.DataSource = "ANM-SONNVH";
 
             // Build the SqlConnection connection string.
             string providerString = sqlBuilder.ToString();

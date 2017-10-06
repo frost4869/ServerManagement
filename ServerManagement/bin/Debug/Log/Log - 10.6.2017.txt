@@ -1,0 +1,20 @@
+
+Log Entry : 2:54:27 PM
+  :
+  =====>:Object 'System.String' cannot be used as an accessor parameter for a PropertyPath. An accessor parameter must be DependencyProperty, PropertyInfo, or PropertyDescriptor.
+-------------------------------
+
+Log Entry : 2:56:00 PM
+  :
+  =====>:Object 'System.String' cannot be used as an accessor parameter for a PropertyPath. An accessor parameter must be DependencyProperty, PropertyInfo, or PropertyDescriptor.
+-------------------------------
+
+Log Entry : 2:57:00 PM
+  :
+  =====>:Object 'System.String' cannot be used as an accessor parameter for a PropertyPath. An accessor parameter must be DependencyProperty, PropertyInfo, or PropertyDescriptor.
+-------------------------------
+
+Log Entry : 3:05:54 PM
+  :
+  =====>:Cannot perform runtime binding on a null reference
+-------------------------------
