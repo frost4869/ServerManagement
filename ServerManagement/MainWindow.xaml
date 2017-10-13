@@ -42,12 +42,13 @@
                 </Menu.Resources>
                 <MenuItem Header="Edit">
                     <MenuItem Header="New Server" Click="NewServer_Click"/>
-                    <MenuItem Header="Import" Click="Import_Click"/>
-                    <MenuItem Header="Export" Click="Export_Click"/>
+                    <MenuItem Header="Import from Excel" Click="Import_Click"/>
+                    <MenuItem Header="Export to Excel" Click="Export_Click"/>
                 </MenuItem>
                 <MenuItem Header="Account" Visibility="{Binding Path=IsAdmin, Converter={StaticResource BoolToVisConverter}}">
                     <MenuItem Header="Manage Account" Click="Accounts_Click"></MenuItem>
                     <MenuItem Header="Register" Click="Register_Click"></MenuItem>
+                    <MenuItem Header="Change Password" Click="ChangePassword_Click" Visibility="{Binding Path=IsAdmin, Converter={StaticResource BoolToVisConverter}}"></MenuItem>
                 </MenuItem>
                 <MenuItem Header="Check for Update" Click="Update_Click"></MenuItem>
             </Menu>

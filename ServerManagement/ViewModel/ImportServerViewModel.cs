@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 using Excel = Microsoft.Office.Interop.Excel;
+using System.Threading.Tasks;
+using MahApps.Metro.Controls;
+using System.Windows.Controls;
 
 namespace ServerManagement.ViewModel
 {
@@ -13,15 +13,31 @@ namespace ServerManagement.ViewModel
     {
         private DataView _data;
         private string _fileName;
+        private StackPanel _progressSection;
 
-        public ImportServerViewModel(string FileName)
+        public ImportServerViewModel(string FileName, StackPanel ProgressSection)
         {
             _fileName = FileName;
+            _progressSection = ProgressSection;
+            LoadImportedDataAsync();
         }
 
         public DataView Data
         {
             get
+            {
+                return _data;
+            }
+            set
+            {
+                _data = value;
+                NotifyPropertyChanged("Data");
+            }
+        }
+
+        public async Task LoadImportedDataAsync()
+        {
+            await Task.Run(() =>
             {
                 Excel.Application app = new Excel.Application();
                 Excel.Workbook wb = app.Workbooks.Open(_fileName);
@@ -51,16 +67,21 @@ namespace ServerManagement.ViewModel
                         dt.Rows.Add(dr);
                         dt.AcceptChanges();
                     }
+                    wb.Close(true, Missing.Value, Missing.Value);
+                    app.Quit();
 
-                    return dt.DefaultView;
+                    Data = dt.DefaultView;
+                    _progressSection.Dispatcher.Invoke(new Action(() =>
+                    {
+                        _progressSection.Visibility = System.Windows.Visibility.Collapsed;
+                    }));
                 }
                 catch (Exception ex)
                 {
                     throw;
                 }
-            }
+            });
         }
-
 
         #region INotifyPropertyChanged Members
         public event PropertyChangedEventHandler PropertyChanged;

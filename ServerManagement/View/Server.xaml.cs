@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Windows.Threading;
 
 namespace ServerManagement.View
 {
@@ -33,38 +34,58 @@ namespace ServerManagement.View
             this.serverDataGrid.AddHandler(DataGridRow.MouseDoubleClickEvent,
                                         new MouseButtonEventHandler(DataGridRow_MouseDoubleClick), true);
 
-            var viewModel = new ServerViewModel();
-            this.DataContext = viewModel;
-            var serverList = viewModel.Servers;
-            GetCustomColumns(serverList);
+            LoadData();
         }
 
-        private void GetCustomColumns(ObservableCollection<ServerModel> serverList)
+        private void LoadData()
         {
-            foreach (var server in serverList)
-            {
-                var columns = new List<DataGridColumn>();
-                for (int i = 0; i < server.IpAddresses.Count; i++)
+            ProgressPanel.Visibility = Visibility.Visible;
+            var viewModel = new ServerViewModel();
+            this.DataContext = viewModel;
+
+            viewModel.LoadServersAsync()
+                .ContinueWith(_ =>
                 {
-                    var newColumn = new DataGridTextColumn();
-                    newColumn.Header = "IP " + (i + 1);
-                    newColumn.Width = new DataGridLength(1.0, DataGridLengthUnitType.Auto);
+                    GetCustomColumnsAsync(viewModel.Servers);
+                });
+        }
 
-                    Binding valueBinding = new Binding();
-                    valueBinding.Path = new PropertyPath("IpAddresses[" + i + "].IPAddress");
-                    valueBinding.Mode = BindingMode.TwoWay;
-                    valueBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
-                    valueBinding.NotifyOnSourceUpdated = true;
-                    valueBinding.NotifyOnTargetUpdated = true;
-
-                    newColumn.Binding = valueBinding;
-
-                    if (!CheckIfColumnAdded(newColumn.Header.ToString()))
+        private async Task GetCustomColumnsAsync(ObservableCollection<ServerModel> serverList)
+        {
+            await Task.Run(() =>
+            {
+                Application.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    foreach (var server in serverList)
                     {
-                        serverDataGrid.Columns.Add(newColumn);
+                        var columns = new List<DataGridColumn>();
+                        for (int i = 0; i < server.IpAddresses.Count; i++)
+                        {
+                            var newColumn = new DataGridTextColumn()
+                            {
+                                Header = "IP " + (i + 1),
+                                Width = new DataGridLength(1.0, DataGridLengthUnitType.Auto)
+                            };
+                            Binding valueBinding = new Binding()
+                            {
+                                Path = new PropertyPath("IpAddresses[" + i + "].IPAddress"),
+                                Mode = BindingMode.TwoWay,
+                                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+                                NotifyOnSourceUpdated = true,
+                                NotifyOnTargetUpdated = true
+                            };
+                            newColumn.Binding = valueBinding;
+
+                            if (!CheckIfColumnAdded(newColumn.Header.ToString()))
+                            {
+                                serverDataGrid.Columns.Add(newColumn);
+                            }
+                        }
                     }
-                }
-            }
+
+                    ProgressPanel.Visibility = Visibility.Collapsed;
+                }));
+            });
         }
 
         private bool CheckIfColumnAdded(string ColName)
@@ -96,11 +117,7 @@ namespace ServerManagement.View
         {
             var dataContext = this.DataContext as ServerViewModel;
             await dataContext.DeleteSelected();
-            var viewModel = new ServerViewModel();
-            serverDataGrid.Columns.Clear();
-            this.DataContext = viewModel;
-            var serverList = viewModel.Servers;
-            GetCustomColumns(serverList);
+            LoadData();
         }
 
         private void DataGridRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -140,34 +157,39 @@ namespace ServerManagement.View
         private async void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             await Task.Delay(1000);
-            var keyWord = searchBox.Text;
-            if (!string.IsNullOrEmpty(keyWord))
+            var keyWord = searchBox.Text.ToLower();
+
+            await Task.Run(new Action(() =>
             {
-                var viewModel = new ServerViewModel(keyWord);
-                this.DataContext = viewModel;
-                var serverList = viewModel.Servers;
-                GetCustomColumns(serverList);
-            }
-            else
-            {
-                var viewModel = new ServerViewModel();
-                this.DataContext = viewModel;
-                var serverList = viewModel.Servers;
-                GetCustomColumns(serverList);
-            }
+                Application.Current.Dispatcher.Invoke(new Action(() =>
+                {
+                    var view = CollectionViewSource.GetDefaultView((DataContext as ServerViewModel).Servers);
+                    view.Filter = o => (o as ServerModel).Name.ToLower().Contains(keyWord) ||
+                                        (o as ServerModel).HostName.ToLower().Contains(keyWord) ||
+                                        (o as ServerModel).Project.ToLower().Contains(keyWord) ||
+                                        (o as ServerModel).IpAddresses.Any(i => i.IPAddress != null ? 
+                                                    i.IPAddress.ToLower().Contains(keyWord) : false) ||
+                                        (o as ServerModel).IpAddresses.Any(i => i.MacAddressModel != null ? 
+                                                    i.MacAddressModel.MacAddress1.ToLower().Contains(keyWord) : false);
+                }));
+            }));
         }
 
         private void ButtonRefresh_Click(object sender, RoutedEventArgs e)
         {
-            var viewModel = new ServerViewModel();
-            this.DataContext = viewModel;
-            var serverList = viewModel.Servers;
-            GetCustomColumns(serverList);
+            LoadData();
         }
 
         private void CopyButton_Click(object sender, RoutedEventArgs e)
         {
             Clipboard.SetText(((PasswordBox)((Grid)((Button)sender).Parent).FindName("txtPassword")).Password);
+        }
+
+        private bool IsMatch(object o)
+        {
+            ServerModel server = o as ServerModel;
+
+            return (DataContext as ServerViewModel).Servers.Any(q => q.Name.ToLower().Contains(searchBox.Text.ToLower()));
         }
     }
 }

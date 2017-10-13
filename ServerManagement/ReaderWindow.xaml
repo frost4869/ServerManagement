@@ -36,9 +36,7 @@
                     HorizontalContentAlignment="Left"
                     VerticalAlignment="Stretch"
                     DockPanel.Dock="Left">
-                <Menu.Resources>
-                    <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
-                </Menu.Resources>
+                <MenuItem Header="Check for Update" Click="Update_Click"></MenuItem>
             </Menu>
         </DockPanel>
         <Controls:MetroAnimatedSingleRowTabControl 

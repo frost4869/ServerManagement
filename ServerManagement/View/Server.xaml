@@ -12,9 +12,6 @@
             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
             xmlns:views="clr-namespace:ServerManagement.View"
             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro">
-    <!--<UserControl.Resources>
-        <CollectionViewSource x:Key="serverViewSource" d:DesignSource="{d:DesignInstance {x:Type Entity:Server}, CreateList=True}"/>
-    </UserControl.Resources>-->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -22,8 +19,6 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" MinWidth="300"></ColumnDefinition>
-            <!--<ColumnDefinition Width="5"></ColumnDefinition>
-            <ColumnDefinition Width="*" MinWidth="450"></ColumnDefinition>-->
         </Grid.ColumnDefinitions>
         <DockPanel Grid.Row="0">
             <StackPanel Orientation="Horizontal">
@@ -56,6 +51,15 @@
                     Click="ButtonDelete_Click"
                     Visibility="Hidden"></Button>
         </DockPanel>
+
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center" x:Name="ProgressPanel"
+                    Grid.Row="1" Grid.Column="0" Panel.ZIndex="1" Visibility="Collapsed">
+            <TextBlock HorizontalAlignment="Center"> Loading...</TextBlock>
+            <Controls:ProgressRing x:Name="Progress_Ring"
+                                       Width="40"
+                                       Height="40" />
+        </StackPanel>
+        
         <DataGrid x:Name="serverDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" ItemsSource="{Binding Servers}" EnableRowVirtualization="True" AutoGenerateColumns="False"
                   Grid.Row="1" Grid.Column="0"
                   Margin="0,10,0,0" 
@@ -119,8 +123,5 @@
 
             </DataGrid.Columns>
         </DataGrid>
-        <!--<GridSplitter Grid.Column="1" Grid.RowSpan="2" Width="5" Height="Auto" HorizontalAlignment="Stretch"/>-->
-        <!--<views:NewServer Grid.Row="1" Grid.Column="2"
-                         x:Name="DetailsView"/>-->
     </Grid>
 </UserControl>

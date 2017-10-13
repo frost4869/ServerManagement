@@ -1,20 +1,12 @@
 ﻿using AutoUpdaterDotNET;
 using MahApps.Metro.Controls;
-using Microsoft.Win32;
 using ServerManagement.Identity;
-using ServerManagement.Model;
 using ServerManagement.View;
 using ServerManagement.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Dynamic;
 using System.Globalization;
 using System.Reflection;
 using System.Security.Permissions;
-using System.Threading.Tasks;
 using System.Windows;
-using Excel = Microsoft.Office.Interop.Excel;
 namespace ServerManagement
 {
     /// <summary>
@@ -129,6 +121,13 @@ namespace ServerManagement
         private void Export_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void ChangePassword_Click(object sender, RoutedEventArgs e)
+        {
+            AuthenticationViewModel viewModel = new AuthenticationViewModel(new AuthenticationService());
+            UpdateAdminPasswordWindow window = new UpdateAdminPasswordWindow(viewModel);
+            window.Show();
         }
     }
 }

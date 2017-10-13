@@ -8,7 +8,7 @@
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:vml="clr-namespace:ServerManagement.VML"
              d:DesignHeight="700" d:DesignWidth="1366"
-             Loaded="UserControl_Loaded">
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -17,26 +17,41 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" MinWidth="300"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <DockPanel Grid.Row="0" HorizontalAlignment="Left">
-            <TextBox x:Name="searchBox" 
+        <DockPanel Grid.Row="0">
+            <StackPanel Orientation="Horizontal">
+                <TextBox x:Name="searchBox" 
                 Controls:TextBoxHelper.ClearTextButton="True"
                      Controls:TextBoxHelper.UseFloatingWatermark="True"
                      Controls:TextBoxHelper.Watermark="Search..."
                      Width="300" VerticalAlignment="Center"
                      Margin="10 10 0 0"
                      TextChanged="SearchBox_TextChanged">
-                <TextBox.Style>
-                    <Style BasedOn="{StaticResource SearchMetroTextBox}" TargetType="{x:Type TextBox}">
-                        <Style.Triggers>
-                            <Trigger Property="Controls:TextBoxHelper.HasText" Value="True">
-                                <Setter Property="Controls:TextBoxHelper.ButtonContent" Value="r" />
-                                <Setter Property="Controls:TextBoxHelper.ButtonContentTemplate" Value="{x:Null}" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBox.Style>
-            </TextBox>
+                    <TextBox.Style>
+                        <Style BasedOn="{StaticResource SearchMetroTextBox}" TargetType="{x:Type TextBox}">
+                            <Style.Triggers>
+                                <Trigger Property="Controls:TextBoxHelper.HasText" Value="True">
+                                    <Setter Property="Controls:TextBoxHelper.ButtonContent" Value="r" />
+                                    <Setter Property="Controls:TextBoxHelper.ButtonContentTemplate" Value="{x:Null}" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+                <Button x:Name="btnRefresh" Content="Refresh" 
+                    VerticalAlignment="Center" Margin="30 10 10 0"
+                    Style="{DynamicResource SquareButtonStyle}" Width="70" FontSize="13"
+                    Click="ButtonRefresh_Click"></Button>
+            </StackPanel>
         </DockPanel>
+
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center" x:Name="ProgressPanel"
+                    Grid.Row="1" Grid.Column="0" Panel.ZIndex="1" Visibility="Collapsed">
+            <TextBlock HorizontalAlignment="Center"> Loading...</TextBlock>
+            <Controls:ProgressRing x:Name="Progress_Ring"
+                                       Width="40"
+                                       Height="40" />
+        </StackPanel>
+
         <DataGrid x:Name="serverDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" ItemsSource="{Binding Servers}" EnableRowVirtualization="True" AutoGenerateColumns="False"
                   Grid.Row="1" Grid.Column="0"
                   Margin="0,10,0,0" 
@@ -55,17 +70,32 @@
                 <DataGridTemplateColumn Header="Password">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <PasswordBox Height="30" VerticalAlignment="center" 
-                             vml:PasswordHelper.Attach="True"
-                             vml:PasswordHelper.Password="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             Style="{StaticResource MetroButtonRevealedPasswordBox}" Cursor="Arrow" Focusable="False"></PasswordBox>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+
+                                <PasswordBox x:Name="txtPassword" Grid.Column="0" Height="30" VerticalAlignment="center" Margin="0 0 5 0"
+                                    vml:PasswordHelper.Attach="True"
+                                    vml:PasswordHelper.Password="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource MetroButtonRevealedPasswordBox}" Cursor="Arrow" Focusable="False"></PasswordBox>
+
+                                <Button Grid.Row="0" Grid.Column="1" Margin="0 0 3 0"
+                                    Width="25"
+                                    Height="25"
+                                    Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}"
+                                    VerticalContentAlignment="Center" VerticalAlignment="Center" Click="CopyButton_Click">
+
+                                    <iconPacks:PackIconModern x:Name="CopyIcon"
+                                                              Width="15"
+                                                              Height="15"
+                                                              Kind="PageCopy" />
+                                </Button>
+                            </Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn x:Name="Ip1Column" Width="Auto" Header="IP1" Binding="{Binding IP1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridTextColumn x:Name="Ip2Column" Width="Auto" Header="IP2" Binding="{Binding IP2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridTextColumn x:Name="Ip3Column" Width="Auto" Header="IP3" Binding="{Binding IP3, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridTextColumn x:Name="Ip4Column" Width="Auto" Header="IP4" Binding="{Binding IP4, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn x:Name="projectColumn" Width="Auto" Header="Project" Binding="{Binding Project, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             </DataGrid.Columns>

@@ -1,4 +1,6 @@
-﻿using ServerManagement.Identity;
+﻿using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using ServerManagement.Identity;
 using ServerManagement.Model.Entity;
 using ServerManagement.View;
 using ServerManagement.VML;
@@ -11,7 +13,9 @@ using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace ServerManagement.ViewModel
 {
@@ -22,12 +26,15 @@ namespace ServerManagement.ViewModel
         private readonly DelegateCommand _loginCommand;
         private readonly DelegateCommand _logoutCommand;
         private readonly DelegateCommand _registerCommand;
+        private readonly DelegateCommand _updateAdminPasswordCommand;
         private bool _isAdmin = false;
         private string _username;
         private string _confirmPassword;
         private string _password;
+        private string _oldPassword;
         private RoleEnum _roleEnum;
         private string _status;
+        private Brush _statusColor;
 
         public ObservableCollection<User> Accounts { get; set; }
         public void LoadAccount()
@@ -55,6 +62,7 @@ namespace ServerManagement.ViewModel
             _loginCommand = new DelegateCommand(Login, CanLogin);
             _logoutCommand = new DelegateCommand(Logout, CanLogout);
             _registerCommand = new DelegateCommand(Register, CanRegister);
+            _updateAdminPasswordCommand = new DelegateCommand(UpdateAdminPassword, CanUpdateAdminPassword);
         }
 
         #region Properties
@@ -62,8 +70,7 @@ namespace ServerManagement.ViewModel
         {
             get
             {
-                CustomPrincipal customPrincipal = Thread.CurrentPrincipal as CustomPrincipal;
-                return customPrincipal.IsInRole("Admin");
+                return (Thread.CurrentPrincipal as CustomPrincipal).IsInRole("Admin");
             }
         }
         public string Username
@@ -80,6 +87,18 @@ namespace ServerManagement.ViewModel
         {
             get { return _confirmPassword; }
             set { _confirmPassword = value; NotifyPropertyChanged("ConfirmPassword"); }
+        }
+        public string OldPassword
+        {
+            get
+            {
+                return _oldPassword;
+            }
+            set
+            {
+                _oldPassword = value;
+                NotifyPropertyChanged("OldPassword");
+            }
         }
         public RoleEnum Role_Enum
         {
@@ -100,12 +119,25 @@ namespace ServerManagement.ViewModel
                 return "Not authenticated!";
             }
         }
+        public Brush StatusColor
+        {
+            get
+            {
+                return _statusColor;
+            }
+            set
+            {
+                _statusColor = value;
+                NotifyPropertyChanged("StatusColor");
+            }
+        }
         #endregion
 
         #region Commands
         public DelegateCommand LoginCommand { get { return _loginCommand; } }
         public DelegateCommand LogoutCommand { get { return _logoutCommand; } }
         public DelegateCommand RegisterCommand { get { return _registerCommand; } }
+        public DelegateCommand UpdateAdminPasswordCommand { get { return _updateAdminPasswordCommand; } }
         #endregion
 
         private void Login(object parameter)
@@ -148,14 +180,15 @@ namespace ServerManagement.ViewModel
             }
             catch (UnauthorizedAccessException)
             {
+                StatusColor = Brushes.Red;
                 Status = "Login failed! Please provide some valid credentials.";
             }
             catch (Exception ex)
             {
+                StatusColor = Brushes.Red;
                 Status = string.Format("ERROR: {0}", ex.Message);
             }
         }
-
         private bool CanLogin(object parameter)
         {
             return !IsAuthenticated;
@@ -187,25 +220,85 @@ namespace ServerManagement.ViewModel
                 Status = string.Empty;
             }
         }
-
         private bool CanLogout(object parameter)
         {
             return IsAuthenticated;
         }
+
         private void Register(object parameter)
         {
             try
             {
                 _authenticationService.Register(Username, Password, ConfirmPassword, Role_Enum);
+                StatusColor = Brushes.Green;
+                Status = "User Registed Successfully";
             }
             catch (Exception ex)
             {
+                StatusColor = Brushes.Red;
                 Status = ex.Message;
             }
         }
         private bool CanRegister(object parameter)
         {
             return IsAuthenticated;
+        }
+
+        private async void UpdateAdminPassword(object parameter)
+        {
+            try
+            {
+                if (IsAdmin)
+                {
+                    if(!string.IsNullOrEmpty(OldPassword) || !string.IsNullOrEmpty(Password) || !string.IsNullOrEmpty(ConfirmPassword))
+                    {
+                        var currentUser = (Thread.CurrentPrincipal as CustomPrincipal);
+                        using (ServerManagementEntities db = new ServerManagementEntities())
+                        {
+                            using (var trans = db.Database.BeginTransaction())
+                            {
+                                User user = db.Users.FirstOrDefault(q => q.Username.Equals(currentUser.Identity.Name));
+                                if (user != null)
+                                {
+                                    _authenticationService.UpdateAdminPassword(user.Id, OldPassword, Password, ConfirmPassword);
+                                    var metroWindow = (Application.Current.Windows.OfType<Window>().SingleOrDefault(q => q.IsActive) as MetroWindow);
+                                    MessageDialogStyle style = MessageDialogStyle.Affirmative;
+                                    var result = await metroWindow.ShowMessageAsync("Logout", "Please login again with the new Password ", style);
+                                    if (result == MessageDialogResult.Affirmative)
+                                    {
+                                        this.Logout(null);
+                                        UpdateAdminPasswordWindow.Instance.Close();
+                                    }
+                                }
+                                else
+                                {
+                                    StatusColor = Brushes.Red;
+                                    Status = "User information not found!";
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        StatusColor = Brushes.Red;
+                        Status = "Please provide required Information";
+                    }
+                }
+                else
+                {
+                    StatusColor = Brushes.Red;
+                    Status = "Current user is not an Administrator";
+                }
+            }
+            catch (Exception ex)
+            {
+                StatusColor = Brushes.Red;
+                Status = ex.Message;
+            }
+        }
+        private bool CanUpdateAdminPassword(object parameter)
+        {
+            return IsAdmin && IsAuthenticated;
         }
 
         public bool IsAuthenticated

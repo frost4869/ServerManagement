@@ -30,12 +30,12 @@
                   HeadersVisibility="All"
                   SelectionUnit="CellOrRowHeader">
             <DataGrid.Columns>
-                <DataGridTextColumn x:Name="usernameColumn" Width="*" Header="Username" Binding="{Binding Username, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridTextColumn x:Name="roleColumn" Width="*" Header="Role" Binding="{Binding Path=Role.RoleName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn x:Name="usernameColumn" Width="*" Header="Username" Binding="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn x:Name="roleColumn" Width="*" Header="Role" Binding="{Binding Path=Role.RoleName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTemplateColumn Header="Active">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox IsChecked="{Binding Active, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" MinWidth="0" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                            <CheckBox IsChecked="{Binding Active, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" MinWidth="0"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

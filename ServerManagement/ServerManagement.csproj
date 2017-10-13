@@ -152,6 +152,9 @@
     <Compile Include="View\Server.xaml.cs">
       <DependentUpon>Server.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\UpdateAdminPasswordWindow.xaml.cs">
+      <DependentUpon>UpdateAdminPasswordWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="VML\Crypto.cs" />
     <Compile Include="VML\DelegateCommand.cs" />
     <Compile Include="VML\PasswordEncriptionHelper.cs" />
@@ -207,6 +210,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Server.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UpdateAdminPasswordWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

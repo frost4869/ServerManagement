@@ -34,25 +34,9 @@ namespace ServerManagement.View
         {
             if (((DataGrid)sender).SelectedCells.Count > 0)
             {
-                ServerManagementEntities db = new ServerManagementEntities();
-
                 User user = ((DataGrid)sender).SelectedCells[0].Item as User;
                 accountUpdateView.DataContext = new AccountViewModel(user);
-                //var comboBox = accountUpdateView.FindName("roleComboBox") as ComboBox;
-                //comboBox.ItemsSource = Enum.GetValues(typeof(RoleEnum)).Cast<RoleEnum>();
-
-                //comboBox.SelectedItem = user.Role.RoleName;
             }
-        }
-
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

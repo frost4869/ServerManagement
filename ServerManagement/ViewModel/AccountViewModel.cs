@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
+using System.Windows.Media;
 
 namespace ServerManagement.ViewModel
 {
@@ -29,7 +30,7 @@ namespace ServerManagement.ViewModel
         private string _password;
         private string _confirmPassword;
         private string _status;
-        private bool _isSuccess;
+        private Brush _statusColor;
 
         public int Id
         {
@@ -77,13 +78,13 @@ namespace ServerManagement.ViewModel
             get { return _status; }
             set { _status = value; NotifyPropertyChanged("Status"); }
         }
-        public bool IsSuccess
+        public Brush StatusColor
         {
-            get { return _isSuccess; }
+            get { return _statusColor; }
             set
             {
-                _isSuccess = value;
-                NotifyPropertyChanged("IsSuccess");
+                _statusColor = value;
+                NotifyPropertyChanged("StatusColor");
             }
         }
 
@@ -111,12 +112,12 @@ namespace ServerManagement.ViewModel
             {
                 AuthenticationService service = new AuthenticationService();
                 service.UpdateAccount(Id, Password, ConfirmPassword, CurrentRole);
-                IsSuccess = true;
+                StatusColor = Brushes.Green;
                 Status = "User updated successfully";
             }
             catch (Exception ex)
             {
-                IsSuccess = false;
+                StatusColor = Brushes.Red;
                 Status = ex.Message;
             }
         }
@@ -124,6 +125,7 @@ namespace ServerManagement.ViewModel
         {
             return IsAuthenticated;
         }
+
         public bool IsAuthenticated
         {
             get { return Thread.CurrentPrincipal.Identity.IsAuthenticated; }

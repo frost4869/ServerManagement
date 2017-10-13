@@ -13,6 +13,7 @@ namespace ServerManagement.Identity
         User AuthenticateUser(string username, string password);
         void Register(string username, string password, string confirmPassword, RoleEnum role);
         void UpdateAccount(int Id, string password, string confirmPassword, RoleEnum role);
+        void UpdateAdminPassword(int id, string oldPassword, string newPassword, string confirmNewPassword);
     }
     class AuthenticationService : IAuthenticationService
     {
@@ -30,113 +31,168 @@ namespace ServerManagement.Identity
 
         public void Register(string username, string password, string confirmPassword, RoleEnum role)
         {
-            ServerManagementEntities db = new ServerManagementEntities();
-            if (!string.IsNullOrEmpty(username) || !string.IsNullOrEmpty(password))
+            using (ServerManagementEntities db = new ServerManagementEntities())
             {
-                if (password.Equals(confirmPassword))
+                using (var transaction = db.Database.BeginTransaction())
                 {
-                    if (!db.Users.Any(q => q.Username.Equals(username)))
+                    if (!string.IsNullOrEmpty(username) || !string.IsNullOrEmpty(password))
                     {
-                        switch (role)
+                        if (password.Equals(confirmPassword))
                         {
-                            case RoleEnum.Admin:
+                            if (!db.Users.Any(q => q.Username.Equals(username)))
+                            {
+                                switch (role)
                                 {
-                                    db.Users.Add(new User
-                                    {
-                                        Active = true,
-                                        Username = username,
-                                        Password = PasswordEncriptionHelper.HashPassword(password),
-                                        RoleId = 1
-                                    });
+                                    case RoleEnum.Admin:
+                                        {
+                                            db.Users.Add(new User
+                                            {
+                                                Active = true,
+                                                Username = username,
+                                                Password = PasswordEncriptionHelper.HashPassword(password),
+                                                RoleId = 1
+                                            });
+                                        }
+                                        break;
+                                    case RoleEnum.Writer:
+                                        {
+                                            db.Users.Add(new User
+                                            {
+                                                Active = true,
+                                                Username = username,
+                                                Password = PasswordEncriptionHelper.HashPassword(password),
+                                                RoleId = 2
+                                            });
+                                        }
+                                        break;
+                                    case RoleEnum.Reader:
+                                        {
+                                            db.Users.Add(new User
+                                            {
+                                                Active = true,
+                                                Username = username,
+                                                Password = PasswordEncriptionHelper.HashPassword(password),
+                                                RoleId = 3
+                                            });
+                                        }
+                                        break;
+                                    default:
+                                        break;
                                 }
-                                break;
-                            case RoleEnum.Writer:
-                                {
-                                    db.Users.Add(new User
-                                    {
-                                        Active = true,
-                                        Username = username,
-                                        Password = PasswordEncriptionHelper.HashPassword(password),
-                                        RoleId = 2
-                                    });
-                                }
-                                break;
-                            case RoleEnum.Reader:
-                                {
-                                    db.Users.Add(new User
-                                    {
-                                        Active = true,
-                                        Username = username,
-                                        Password = PasswordEncriptionHelper.HashPassword(password),
-                                        RoleId = 3
-                                    });
-                                }
-                                break;
-                            default:
-                                break;
+                                db.SaveChanges();
+                                transaction.Commit();
+                            }
+                            else
+                            {
+                                transaction.Rollback();
+                                throw new Exception("Username already existed !");
+                            }
                         }
-                        db.SaveChanges();
+                        else
+                        {
+                            transaction.Rollback();
+                            throw new Exception("Confirm Password Mismatched !");
+                        }
                     }
                     else
                     {
-                        throw new Exception("Username already existed !");
+                        transaction.Rollback();
+                        throw new Exception("Please provide Username and Password");
                     }
                 }
-                else
-                {
-                    throw new Exception("Confirm Password Mismatched !");
-                }
-            }
-            else
-            {
-                throw new Exception("Please provide Username and Password");
             }
         }
 
         public void UpdateAccount(int Id, string password, string confirmPassword, RoleEnum role)
         {
-            ServerManagementEntities db = new ServerManagementEntities();
-            User user = db.Users.Find(Id);
-            if (user != null && user.Active)
+            using (ServerManagementEntities db = new ServerManagementEntities())
             {
-                try
+                using (var transaction = db.Database.BeginTransaction())
                 {
-                    if (password != null && confirmPassword != null)
+                    User user = db.Users.Find(Id);
+                    if (user != null && user.Active)
                     {
-                        if (password.Equals(confirmPassword))
+                        try
                         {
-                            user.Password = PasswordEncriptionHelper.HashPassword(password);
+                            if (password != null && confirmPassword != null)
+                            {
+                                if (password.Equals(confirmPassword))
+                                {
+                                    user.Password = PasswordEncriptionHelper.HashPassword(password);
+                                }
+                                else
+                                {
+                                    throw new Exception("Confirm Password miss matched");
+                                }
+                            }
+                            switch (role)
+                            {
+                                case RoleEnum.Admin:
+                                    user.RoleId = 1;
+                                    break;
+                                case RoleEnum.Writer:
+                                    user.RoleId = 2;
+                                    break;
+                                case RoleEnum.Reader:
+                                    user.RoleId = 3;
+                                    break;
+                                default:
+                                    break;
+                            }
+                            db.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                            db.SaveChanges();
+                            transaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback();
+                            throw ex;
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("User do not existed");
+                    }
+                }
+            }
+        }
+
+        public void UpdateAdminPassword(int id, string oldPassword, string newPassword, string confirmNewPassword)
+        {
+            using (ServerManagementEntities db = new ServerManagementEntities())
+            {
+                using (var transaction = db.Database.BeginTransaction())
+                {
+                    User user = db.Users.Find(id);
+                    if (user != null)
+                    {
+                        if (user.Password.Equals(PasswordEncriptionHelper.HashPassword(oldPassword)))
+                        {
+                            if (newPassword.Equals(confirmNewPassword))
+                            {
+                                user.Password = PasswordEncriptionHelper.HashPassword(newPassword);
+                                db.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                                db.SaveChanges();
+                                transaction.Commit();
+                            }
+                            else
+                            {
+                                transaction.Rollback();
+                                throw new Exception("Confirm New Password miss matched!");
+                            }
                         }
                         else
                         {
-                            throw new Exception("Confirm Password miss matched");
+                            transaction.Rollback();
+                            throw new Exception("Old Password is not matched!");
                         }
                     }
-                    switch (role)
+                    else
                     {
-                        case RoleEnum.Admin:
-                            user.RoleId = 1;
-                            break;
-                        case RoleEnum.Writer:
-                            user.RoleId = 2;
-                            break;
-                        case RoleEnum.Reader:
-                            user.RoleId = 3;
-                            break;
-                        default:
-                            break;
+                        transaction.Rollback();
+                        throw new Exception("User does not exist!");
                     }
-                    db.Entry(user).State = System.Data.Entity.EntityState.Modified;
-                    db.SaveChanges();
                 }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-            }
-            else
-            {
-                throw new Exception("User do not existed");
             }
         }
     }

@@ -1,7 +1,9 @@
-﻿using ServerManagement.View;
+﻿using AutoUpdaterDotNET;
+using ServerManagement.View;
 using ServerManagement.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Security.Permissions;
@@ -38,6 +40,12 @@ namespace ServerManagement
             WindowState = WindowState.Maximized;
             WindowStyle = WindowStyle.SingleBorderWindow;
             Title = "Server Management Tool - Version " + Assembly.GetEntryAssembly().GetName().Version;
+
+            AutoUpdater.CurrentCulture = new CultureInfo("en-EN");
+            AutoUpdater.LetUserSelectRemindLater = true;
+            AutoUpdater.RemindLaterTimeSpan = RemindLaterFormat.Minutes;
+            AutoUpdater.RemindLaterAt = 1;
+            AutoUpdater.ReportErrors = true;
         }
 
         #region IView Members
@@ -47,5 +55,10 @@ namespace ServerManagement
             set { DataContext = value; }
         }
         #endregion
+
+        private void Update_Click(object sender, RoutedEventArgs e)
+        {
+            AutoUpdater.Start("https://raw.githubusercontent.com/frost4869/uploadfiles/master/updateServer.xml");
+        }
     }
 }

@@ -52,18 +52,8 @@
                   x:Name="roleComboBox"
                   SelectedItem="{Binding Path=CurrentRole, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
         <TextBlock Text="{Binding Status}" Grid.Row="4" 
-                   VerticalAlignment="Center" Foreground="Red" TextWrapping="Wrap" HorizontalAlignment="Center" 
+                   VerticalAlignment="Center" Foreground="{Binding StatusColor}" TextWrapping="Wrap" HorizontalAlignment="Center" 
                    FontSize="13" FontWeight="DemiBold">
-            <TextBlock.Style>
-                <Style TargetType="TextBlock">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Path=IsSuccess, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 Value="True">
-                            <Setter Property="Foreground" Value="Green"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBlock.Style>
         </TextBlock>
         <Button Grid.Row="5" Content="Update" Style="{DynamicResource SquareButtonStyle}"
                 Command="{Binding UpdateAccountCommand}"
