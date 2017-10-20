@@ -18,6 +18,7 @@ namespace ServerManagement.Model.Entity
         public string IPAddress { get; set; }
         public int ServerId { get; set; }
         public Nullable<int> MacAddressId { get; set; }
+        public Nullable<int> Type { get; set; }
         public bool Active { get; set; }
     
         public virtual MacAddress MacAddress { get; set; }

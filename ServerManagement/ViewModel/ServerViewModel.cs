@@ -8,22 +8,28 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace ServerManagement.ViewModel
 {
     public class ServerViewModel : INotifyPropertyChanged
     {
-        public ServerViewModel()
-        {
-            //LoadServersAsync();
-        }
-        public ServerViewModel(string keyWord)
-        {
-            Get(keyWord);
-        }
         private readonly ServerManagementEntities db = new ServerManagementEntities();
         private ObservableCollection<ServerModel> _servers;
+        private DataGridRowDetailsVisibilityMode _rowDetailsVisibility;
 
+        public DataGridRowDetailsVisibilityMode RowDetailsVisibility
+        {
+            get
+            {
+                return _rowDetailsVisibility;
+            }
+            set
+            {
+                _rowDetailsVisibility = value;
+                RaisePropertyChanged("RowDetailsVisibility");
+            }
+        }
         public ObservableCollection<ServerModel> Servers
         {
             get
@@ -49,24 +55,38 @@ namespace ServerManagement.ViewModel
                     .Select(q =>
                     {
                         q.Password = c.Decrypt(q.Password, Crypto.CryptoTypes.encTypeTripleDES);
-                        var IpModelList = db.IPs.Where(i => i.ServerId == q.Id && i.Active)
-                            .ProjectTo<IpModel>(Mapper.Configuration)
-                            .ToList()
-                            .Select(i =>
-                            {
-                                var mac = db.MacAddresses.Find(i.MacAddressId);
-                                if (mac != null)
-                                {
-                                    i.MacAddressModel = Mapper.Map<MacAddressModel>(mac);
-                                }
-                                return i;
-                            })
-                            .AsQueryable();
-                        q.IpAddresses = new ObservableCollection<IpModel>(IpModelList);
+                        var IpMng = db.IPs.FirstOrDefault(i => i.Active && i.ServerId == q.Id && i.Type == (int)IpType.Management);
+                        var IpWan = db.IPs.FirstOrDefault(i => i.Active && i.ServerId == q.Id && i.Type == (int)IpType.Wan);
+                        var IpLan = db.IPs.FirstOrDefault(i => i.Active && i.ServerId == q.Id && i.Type == (int)IpType.Lan);
+                        var IpDB = db.IPs.FirstOrDefault(i => i.Active && i.ServerId == q.Id && i.Type == (int)IpType.Database);
+
+                        if(IpMng != null)
+                        {
+                            q.IpMng = IpMng.IPAddress;
+                            var macMng = db.MacAddresses.FirstOrDefault(m => m.Id == IpMng.MacAddressId && m.Active);
+                            q.MacMng = macMng == null ? "" : macMng.MacAddress1;
+                        }
+                        if (IpWan != null)
+                        {
+                            q.IpWan = IpWan.IPAddress;
+                            var macWan = db.MacAddresses.FirstOrDefault(m => m.Id == IpWan.MacAddressId && m.Active);
+                            q.MacWan = macWan == null ? "" : macWan.MacAddress1;
+                        }
+                        if (IpLan != null)
+                        {
+                            q.IpLan = IpLan.IPAddress;
+                            var macLan = db.MacAddresses.FirstOrDefault(m => m.Id == IpLan.MacAddressId && m.Active);
+                            q.MacLan = macLan == null ? "" : macLan.MacAddress1;
+                        }
+                        if (IpDB != null)
+                        {
+                            q.IpDB = IpDB.IPAddress;
+                            var macDb = db.MacAddresses.FirstOrDefault(m => m.Id == IpDB.MacAddressId && m.Active);
+                            q.MacDB = macDb == null ? "" : macDb.MacAddress1;
+                        }
+
                         return q;
                     });
-
-
                 model = new ObservableCollection<ServerModel>(serverList);
                 Servers = model;
             });
@@ -100,26 +120,11 @@ namespace ServerManagement.ViewModel
             }
         }
 
-        public async Task Get(string keyWord)
-        {
-            await Task.Run(() =>
-            {
-                keyWord = keyWord.ToLower();
-
-
-                //Servers = new ObservableCollection<ServerModel>(Servers.Where(q => q.Name.ToLower().Contains(keyWord) ||
-                //                           q.HostName.ToLower().Contains(keyWord) ||
-                //                           q.Project.ToLower().Contains(keyWord) ||
-                //                           q.IpAddresses.Any(i => i.IPAddress.ToLower().Contains(keyWord)) ||
-                //                           q.IpAddresses.Any(i => i.MacAddressModel == null ? i.MacAddressModel.MacAddress1.ToLower().Contains(keyWord) : false)));
-            });
-        }
-
         public async Task DeleteSelected()
         {
             using (ServerManagementEntities db = new ServerManagementEntities())
             {
-                using(var transaction = db.Database.BeginTransaction())
+                using (var transaction = db.Database.BeginTransaction())
                 {
                     try
                     {

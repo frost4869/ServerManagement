@@ -1,12 +1,24 @@
 ﻿using AutoUpdaterDotNET;
 using MahApps.Metro.Controls;
+using Microsoft.Win32;
 using ServerManagement.Identity;
+using ServerManagement.Model;
 using ServerManagement.View;
 using ServerManagement.ViewModel;
+using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Data;
 using System.Globalization;
+using System.IO;
 using System.Reflection;
 using System.Security.Permissions;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using Excel = Microsoft.Office.Interop.Excel;
 namespace ServerManagement
 {
     /// <summary>
@@ -53,7 +65,6 @@ namespace ServerManagement
             AutoUpdater.RemindLaterAt = 1;
             AutoUpdater.ReportErrors = true;
         }
-
         private void NewServer_Click(object sender, RoutedEventArgs e)
         {
             MetroTabItem item = new MetroTabItem
@@ -68,20 +79,17 @@ namespace ServerManagement
             MainTabControl.Items.Add(item);
             item.Focus();
         }
-
         private void MainTabControl_TabItemClosingEvent(object sender, BaseMetroTabControl.TabItemClosingEventArgs e)
         {
             if (e.ClosingTabItem.Header.ToString().StartsWith("sizes"))
                 e.Cancel = true;
         }
-
         private void Register_Click(object sender, RoutedEventArgs e)
         {
             AuthenticationViewModel viewModel = new AuthenticationViewModel(new AuthenticationService());
             RegisterWindow registerWindow = new RegisterWindow(viewModel);
             registerWindow.Show();
         }
-
         private void Accounts_Click(object sender, RoutedEventArgs e)
         {
             MetroTabItem item = new MetroTabItem
@@ -97,12 +105,10 @@ namespace ServerManagement
             MainTabControl.Items.Add(item);
             item.Focus();
         }
-
         private void Update_Click(object sender, RoutedEventArgs e)
         {
             AutoUpdater.Start("https://raw.githubusercontent.com/frost4869/uploadfiles/master/updateServer.xml");
         }
-
         private void Import_Click(object sender, RoutedEventArgs e)
         {
             MetroTabItem item = new MetroTabItem
@@ -120,7 +126,80 @@ namespace ServerManagement
 
         private void Export_Click(object sender, RoutedEventArgs e)
         {
+            SaveFileDialog fsave = new SaveFileDialog();
+            fsave.Filter = "Excel File|*.xlsx";
+            fsave.ShowDialog();
+            if (fsave.FileName != "")
+            {
+                Export(fsave.FileName);
+            }
+        }
 
+        private async Task Export(string fileName)
+        {
+            progressText.Visibility = Visibility.Visible;
+            ExportPB.Visibility = Visibility.Visible;
+
+            Excel.Application app = new Excel.Application();
+            Excel.Workbook wb = app.Workbooks.Add(Type.Missing);
+            Excel._Worksheet sheet = null;
+            sheet = wb.ActiveSheet;
+            sheet.Name = "Danh sách Servers";
+
+            DataGrid serverDataGrid = this.FindChild<DataGrid>("serverDataGrid");
+
+            if (serverDataGrid != null)
+            {
+                try
+                {
+                    DataTable dt = await VML.Utils.ToDataTable((serverDataGrid.ItemsSource as ObservableCollection<ServerModel>));
+                    await Task.Run(() =>
+                    {
+
+                        //headers
+                        for (int i = 1; i <= 14; i++)
+                        {
+                            sheet.Cells[1, i] = dt.Columns[i - 1].ColumnName;
+                            sheet.Cells[1, i].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+                            sheet.Cells[1, i].VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+                            sheet.Cells[1, i].Font.Size = 11;
+                            sheet.Cells[1, i].Font.Bold = true;
+                            sheet.Cells[1, i].Borders.Weight = Excel.XlBorderWeight.xlThin;
+                            sheet.Cells[1, i].Interior.Color = Excel.XlRgbColor.rgbLightBlue;
+                            sheet.Cells[1, i].EntireColumn.AutoFit();
+                        }
+                        //data
+                        int rowCnt = 2;
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            for (int i = 1; i <= 14; i++)
+                            {
+                                sheet.Cells[rowCnt, i] = row[i - 1].ToString();
+                                sheet.Cells[rowCnt, i].HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
+                                sheet.Cells[rowCnt, i].VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+                                sheet.Cells[rowCnt, i].Font.Size = 11;
+                                sheet.Cells[rowCnt, i].Borders.Weight = Excel.XlBorderWeight.xlThin;
+                                sheet.Cells[rowCnt, i].EntireColumn.AutoFit();
+                            }
+                            ExportPB.Dispatcher.Invoke(new Action(() =>
+                            {
+                                ExportPB.Value = rowCnt * 100 / dt.Rows.Count;
+                            }));
+                            rowCnt++;
+                        }
+                    });
+
+                    ExportPB.Visibility = Visibility.Collapsed;
+                    progressText.Visibility = Visibility.Collapsed;
+                    wb.SaveAs(fileName);
+                    app.Quit();
+                    wb = null;
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
         }
 
         private void ChangePassword_Click(object sender, RoutedEventArgs e)

@@ -25,7 +25,7 @@ namespace ServerManagement.View
             Title = "Server Management Tool | Register - Version " + Assembly.GetEntryAssembly().GetName().Version;
             this.EnableDWMDropShadow = true;
             txtUsername.Focus();
-            roleComboBox.ItemsSource = Enum.GetValues(typeof(RoleEnum)).Cast<RoleEnum>();
+            roleComboBox.ItemsSource = Enum.GetValues(typeof(Enums)).Cast<Enums>();
         }
 
         #region IView Members

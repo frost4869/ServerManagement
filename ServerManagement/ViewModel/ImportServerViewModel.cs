@@ -6,6 +6,9 @@ using Excel = Microsoft.Office.Interop.Excel;
 using System.Threading.Tasks;
 using MahApps.Metro.Controls;
 using System.Windows.Controls;
+using System.Windows;
+using System.Linq;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace ServerManagement.ViewModel
 {
@@ -37,6 +40,8 @@ namespace ServerManagement.ViewModel
 
         public async Task LoadImportedDataAsync()
         {
+            var metroWindow = (System.Windows.Application.Current.Windows.OfType<Window>().SingleOrDefault(q => q.IsActive) as MetroWindow);
+
             await Task.Run(() =>
             {
                 Excel.Application app = new Excel.Application();
@@ -68,7 +73,6 @@ namespace ServerManagement.ViewModel
                         dt.AcceptChanges();
                     }
                     wb.Close(true, Missing.Value, Missing.Value);
-                    app.Quit();
 
                     Data = dt.DefaultView;
                     _progressSection.Dispatcher.Invoke(new Action(() =>
@@ -78,7 +82,12 @@ namespace ServerManagement.ViewModel
                 }
                 catch (Exception ex)
                 {
-                    throw;
+                    metroWindow.ShowMessageAsync("Error", ex.Message);
+                }
+                finally
+                {
+                    app.Quit();
+                    wb = null;
                 }
             });
         }

@@ -2,18 +2,18 @@
 <Schema Namespace="ServerManagementModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
   <EntityContainer Name="ServerManagementEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Roles" EntityType="ServerManagementModel.Role" />
-    <EntitySet Name="Servers" EntityType="ServerManagementModel.Server" />
     <EntitySet Name="Users" EntityType="ServerManagementModel.User" />
     <AssociationSet Name="FK_User_Role" Association="ServerManagementModel.FK_User_Role">
       <End Role="Role" EntitySet="Roles" />
       <End Role="User" EntitySet="Users" />
     </AssociationSet>
-    <EntitySet Name="IPs" EntityType="ServerManagementModel.IP" />
     <EntitySet Name="MacAddresses" EntityType="ServerManagementModel.MacAddress" />
+    <EntitySet Name="IPs" EntityType="ServerManagementModel.IP" />
     <AssociationSet Name="FK_IP_MacAddress" Association="ServerManagementModel.FK_IP_MacAddress">
       <End Role="MacAddress" EntitySet="MacAddresses" />
       <End Role="IP" EntitySet="IPs" />
     </AssociationSet>
+    <EntitySet Name="Servers" EntityType="ServerManagementModel.Server" />
     <AssociationSet Name="FK_IP_Server" Association="ServerManagementModel.FK_IP_Server">
       <End Role="Server" EntitySet="Servers" />
       <End Role="IP" EntitySet="IPs" />
@@ -27,20 +27,6 @@
     <Property Name="RoleName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Active" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="Users" Relationship="ServerManagementModel.FK_User_Role" FromRole="Role" ToRole="User" />
-  </EntityType>
-  <EntityType Name="Server">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-    <Property Name="HostName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-    <Property Name="Username" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-    <Property Name="Password" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-    <Property Name="Functionality" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="Project" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-    <Property Name="Active" Type="Boolean" Nullable="false" />
-    <NavigationProperty Name="IPs" Relationship="ServerManagementModel.FK_IP_Server" FromRole="Server" ToRole="IP" />
   </EntityType>
   <EntityType Name="User">
     <Key>
@@ -65,18 +51,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityType Name="IP">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="IPAddress" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-    <Property Name="ServerId" Type="Int32" Nullable="false" />
-    <Property Name="MacAddressId" Type="Int32" />
-    <Property Name="Active" Type="Boolean" Nullable="false" />
-    <NavigationProperty Name="MacAddress" Relationship="ServerManagementModel.FK_IP_MacAddress" FromRole="IP" ToRole="MacAddress" />
-    <NavigationProperty Name="Server" Relationship="ServerManagementModel.FK_IP_Server" FromRole="IP" ToRole="Server" />
-  </EntityType>
   <EntityType Name="MacAddress">
     <Key>
       <PropertyRef Name="Id" />
@@ -85,6 +59,19 @@
     <Property Name="MacAddress1" Type="String" Nullable="false" MaxLength="17" FixedLength="false" Unicode="true" />
     <Property Name="Active" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="IPs" Relationship="ServerManagementModel.FK_IP_MacAddress" FromRole="MacAddress" ToRole="IP" />
+  </EntityType>
+  <EntityType Name="IP">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IPAddress" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="ServerId" Type="Int32" Nullable="false" />
+    <Property Name="MacAddressId" Type="Int32" />
+    <Property Name="Type" Type="Int32" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="MacAddress" Relationship="ServerManagementModel.FK_IP_MacAddress" FromRole="IP" ToRole="MacAddress" />
+    <NavigationProperty Name="Server" Relationship="ServerManagementModel.FK_IP_Server" FromRole="IP" ToRole="Server" />
   </EntityType>
   <Association Name="FK_IP_MacAddress">
     <End Type="ServerManagementModel.MacAddress" Role="MacAddress" Multiplicity="0..1" />
@@ -98,6 +85,21 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="Server">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="HostName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="NameTag" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="Username" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="Functionality" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Project" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="IPs" Relationship="ServerManagementModel.FK_IP_Server" FromRole="Server" ToRole="IP" />
+  </EntityType>
   <Association Name="FK_IP_Server">
     <End Type="ServerManagementModel.Server" Role="Server" Multiplicity="1" />
     <End Type="ServerManagementModel.IP" Role="IP" Multiplicity="*" />

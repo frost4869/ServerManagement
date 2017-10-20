@@ -52,7 +52,7 @@
                                        Height="40" />
         </StackPanel>
 
-        <DataGrid x:Name="serverDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" ItemsSource="{Binding Servers}" EnableRowVirtualization="True" AutoGenerateColumns="False"
+        <DataGrid x:Name="serverDataGrid" ItemsSource="{Binding Servers}" EnableRowVirtualization="True" AutoGenerateColumns="False"
                   Grid.Row="1" Grid.Column="0"
                   Margin="0,10,0,0" 
                   CanUserAddRows="False"
@@ -61,7 +61,9 @@
                   EnableColumnVirtualization="True"
                   RowHeaderWidth="27"
                   HeadersVisibility="All"
-                  SelectionUnit="CellOrRowHeader">
+                  SelectionUnit="CellOrRowHeader"
+                  RowDetailsVisibilityMode="{Binding RowDetailsVisibility}"
+                  MouseUp="serverDataGrid_MouseUp">
 
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="nameColumn" Width="Auto" Header="Server Name" Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
@@ -97,8 +99,33 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTextColumn x:Name="projectColumn" Width="Auto" Header="Project" Binding="{Binding Project, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
+                <DataGridTextColumn x:Name="IpMngColumn" Width="Auto" Header="Ip Mng" Binding="{Binding IpMng, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn x:Name="IpWanColumn" Width="Auto" Header="Ip Wan" Binding="{Binding IpWan, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn x:Name="IpLanColumn" Width="Auto" Header="Ip Lan" Binding="{Binding IpLan, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn x:Name="IpDbColumn" Width="Auto" Header="Ip DB" Binding="{Binding IpDB, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </DataGrid.Columns>
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical" Margin="30 10 0 10">
+                        <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
+                            <TextBlock Text="Ip Management MacAddress:  " FontWeight="SemiBold"></TextBlock>
+                            <TextBlock Text="{Binding MacMng}"></TextBlock>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
+                            <TextBlock Text="Ip WAN MacAddress:  " FontWeight="SemiBold"></TextBlock>
+                            <TextBlock Text="{Binding MacWan}"></TextBlock>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
+                            <TextBlock Text="Ip LAN MacAddress:  " FontWeight="SemiBold"></TextBlock>
+                            <TextBlock Text="{Binding MacLan}"></TextBlock>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
+                            <TextBlock Text="Ip DB MacAddress:  " FontWeight="SemiBold"></TextBlock>
+                            <TextBlock Text="{Binding MacDB}"></TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
         </DataGrid>
     </Grid>
 </UserControl>

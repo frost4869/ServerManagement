@@ -18,7 +18,7 @@ namespace ServerManagement.ViewModel
 
             Id = sourceUser.Id;
             Username = sourceUser.Username;
-            RoleEnum sourceUserRole;
+            Enums sourceUserRole;
             if(Enum.TryParse(sourceUser.Role.RoleName, true, out sourceUserRole))
             {
                 CurrentRole = sourceUserRole;
@@ -88,8 +88,8 @@ namespace ServerManagement.ViewModel
             }
         }
 
-        private RoleEnum _currentRole;
-        public RoleEnum CurrentRole
+        private Enums _currentRole;
+        public Enums CurrentRole
         {
             get
             {

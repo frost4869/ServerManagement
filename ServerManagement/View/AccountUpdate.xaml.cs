@@ -25,7 +25,7 @@ namespace ServerManagement.View
         public AccountUpdate()
         {
             InitializeComponent();
-            roleComboBox.ItemsSource = Enum.GetValues(typeof(RoleEnum)).Cast<RoleEnum>();
+            roleComboBox.ItemsSource = Enum.GetValues(typeof(Enums)).Cast<Enums>();
         }
     }
 }

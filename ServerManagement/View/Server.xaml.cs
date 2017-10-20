@@ -43,11 +43,13 @@ namespace ServerManagement.View
             var viewModel = new ServerViewModel();
             this.DataContext = viewModel;
 
-            viewModel.LoadServersAsync()
-                .ContinueWith(_ =>
+            viewModel.LoadServersAsync().ContinueWith(_ =>
+            {
+                this.Dispatcher.Invoke(new Action(() =>
                 {
-                    GetCustomColumnsAsync(viewModel.Servers);
-                });
+                    ProgressPanel.Visibility = Visibility.Hidden;
+                }));
+            });
         }
 
         private async Task GetCustomColumnsAsync(ObservableCollection<ServerModel> serverList)
@@ -59,28 +61,28 @@ namespace ServerManagement.View
                     foreach (var server in serverList)
                     {
                         var columns = new List<DataGridColumn>();
-                        for (int i = 0; i < server.IpAddresses.Count; i++)
-                        {
-                            var newColumn = new DataGridTextColumn()
-                            {
-                                Header = "IP " + (i + 1),
-                                Width = new DataGridLength(1.0, DataGridLengthUnitType.Auto)
-                            };
-                            Binding valueBinding = new Binding()
-                            {
-                                Path = new PropertyPath("IpAddresses[" + i + "].IPAddress"),
-                                Mode = BindingMode.TwoWay,
-                                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-                                NotifyOnSourceUpdated = true,
-                                NotifyOnTargetUpdated = true
-                            };
-                            newColumn.Binding = valueBinding;
+                        //for (int i = 0; i < server.IpAddresses.Count; i++)
+                        //{
+                        //    var newColumn = new DataGridTextColumn()
+                        //    {
+                        //        Header = "IP " + (i + 1),
+                        //        Width = new DataGridLength(1.0, DataGridLengthUnitType.Auto)
+                        //    };
+                        //    Binding valueBinding = new Binding()
+                        //    {
+                        //        Path = new PropertyPath("IpAddresses[" + i + "].IPAddress"),
+                        //        Mode = BindingMode.TwoWay,
+                        //        UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+                        //        NotifyOnSourceUpdated = true,
+                        //        NotifyOnTargetUpdated = true
+                        //    };
+                        //    newColumn.Binding = valueBinding;
 
-                            if (!CheckIfColumnAdded(newColumn.Header.ToString()))
-                            {
-                                serverDataGrid.Columns.Add(newColumn);
-                            }
-                        }
+                        //    if (!CheckIfColumnAdded(newColumn.Header.ToString()))
+                        //    {
+                        //        serverDataGrid.Columns.Add(newColumn);
+                        //    }
+                        //}
                     }
 
                     ProgressPanel.Visibility = Visibility.Collapsed;
@@ -157,20 +159,79 @@ namespace ServerManagement.View
         private async void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             await Task.Delay(1000);
-            var keyWord = searchBox.Text.ToLower();
 
+            var keyWord = searchBox.Text.ToLower();
             await Task.Run(new Action(() =>
             {
                 Application.Current.Dispatcher.Invoke(new Action(() =>
                 {
                     var view = CollectionViewSource.GetDefaultView((DataContext as ServerViewModel).Servers);
-                    view.Filter = o => (o as ServerModel).Name.ToLower().Contains(keyWord) ||
-                                        (o as ServerModel).HostName.ToLower().Contains(keyWord) ||
-                                        (o as ServerModel).Project.ToLower().Contains(keyWord) ||
-                                        (o as ServerModel).IpAddresses.Any(i => i.IPAddress != null ? 
-                                                    i.IPAddress.ToLower().Contains(keyWord) : false) ||
-                                        (o as ServerModel).IpAddresses.Any(i => i.MacAddressModel != null ? 
-                                                    i.MacAddressModel.MacAddress1.ToLower().Contains(keyWord) : false);
+                    view.Filter = item =>
+                    {
+                        ServerModel model = item as ServerModel;
+                        if (model == null)
+                            return false;
+
+                        bool flag = false;
+
+                        if (model.Name != null)
+                        {
+                            if (model.Name.ToLower().Contains(keyWord))
+                                flag = true;
+                        }
+                        if (model.HostName != null)
+                        {
+                            if (model.HostName.ToLower().Contains(keyWord))
+                                flag = true;
+                        }
+                        if (model.Project != null)
+                        {
+                            if (model.Project.ToLower().Contains(keyWord))
+                                flag = true;
+                        }
+                        if (model.IpMng != null)
+                        {
+                            if (model.IpMng.ToLower().Contains(keyWord))
+                                flag = true;
+                        }
+                        if (model.IpWan != null)
+                        {
+                            if (model.IpWan.ToLower().Contains(keyWord))
+                                flag = true;
+                        }
+                        if (model.IpLan != null)
+                        {
+                            if (model.IpLan.ToLower().Contains(keyWord))
+                                flag = true;
+                        }
+                        if (model.IpDB != null)
+                        {
+                            if (model.IpDB.ToLower().Contains(keyWord))
+                                flag = true;
+                        }
+                        if (model.MacMng != null)
+                        {
+                            if (model.MacMng.ToLower().Contains(keyWord))
+                                flag = true;
+                        }
+                        if (model.MacWan != null)
+                        {
+                            if (model.MacWan.ToLower().Contains(keyWord))
+                                flag = true;
+                        }
+                        if (model.MacLan != null)
+                        {
+                            if (model.MacLan.ToLower().Contains(keyWord))
+                                flag = true;
+                        }
+                        if (model.MacDB != null)
+                        {
+                            if (model.MacDB.ToLower().Contains(keyWord))
+                                flag = true;
+                        }
+
+                        return flag;
+                    };
                 }));
             }));
         }
@@ -190,6 +251,19 @@ namespace ServerManagement.View
             ServerModel server = o as ServerModel;
 
             return (DataContext as ServerViewModel).Servers.Any(q => q.Name.ToLower().Contains(searchBox.Text.ToLower()));
+        }
+
+        private void serverDataGrid_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            var viewModel = this.DataContext as ServerViewModel;
+            if (viewModel.RowDetailsVisibility == DataGridRowDetailsVisibilityMode.Collapsed)
+            {
+                viewModel.RowDetailsVisibility = DataGridRowDetailsVisibilityMode.VisibleWhenSelected;
+            }
+            else
+            {
+                viewModel.RowDetailsVisibility = DataGridRowDetailsVisibilityMode.Collapsed;
+            }
         }
     }
 }

@@ -1,14 +1,10 @@
-﻿using AutoMapper;
-using MahApps.Metro.Controls;
+﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Win32;
-using ServerManagement.Model;
 using ServerManagement.Model.Entity;
 using ServerManagement.ViewModel;
 using ServerManagement.VML;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -96,18 +92,20 @@ namespace ServerManagement.View
                                     Username = items[2],
                                     Password = c.Encrypt(items[3]),
                                     Project = items[4],
+                                    NameTag = items[5],
                                     Active = true,
                                 };
                                 db.Servers.Add(server);
                                 db.SaveChanges();
 
-                                for (int i = 5; i <= 8; i++)
+                                for (int i = 6; i <= 9; i++)
                                 {
                                     if (!string.IsNullOrEmpty(items[i]))
                                         db.IPs.Add(new IP
                                         {
                                             IPAddress = items[i],
                                             ServerId = server.Id,
+                                            Type = i - 5,
                                             Active = true
                                         });
                                 }
@@ -117,6 +115,7 @@ namespace ServerManagement.View
                             trans.Commit();
                             await controller.CloseAsync();
                             await metroWindow.ShowMessageAsync("Success", "Saved");
+                            
                         }
                         catch (Exception ex)
                         {

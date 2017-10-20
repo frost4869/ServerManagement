@@ -32,7 +32,7 @@ namespace ServerManagement.ViewModel
         private string _confirmPassword;
         private string _password;
         private string _oldPassword;
-        private RoleEnum _roleEnum;
+        private Enums _roleEnum;
         private string _status;
         private Brush _statusColor;
 
@@ -53,7 +53,7 @@ namespace ServerManagement.ViewModel
         public AuthenticationViewModel(User user)
         {
             Username = user.Username;
-            Role_Enum = (RoleEnum)Enum.Parse(typeof(RoleEnum), user.Role.RoleName, true);
+            Role_Enum = (Enums)Enum.Parse(typeof(Enums), user.Role.RoleName, true);
         }
 
         public AuthenticationViewModel(IAuthenticationService authenticationService)
@@ -100,7 +100,7 @@ namespace ServerManagement.ViewModel
                 NotifyPropertyChanged("OldPassword");
             }
         }
-        public RoleEnum Role_Enum
+        public Enums Role_Enum
         {
             get { return _roleEnum; }
             set { _roleEnum = value; NotifyPropertyChanged("RoleEnum"); }

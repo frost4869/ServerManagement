@@ -11,8 +11,8 @@ namespace ServerManagement.Identity
     public interface IAuthenticationService
     {
         User AuthenticateUser(string username, string password);
-        void Register(string username, string password, string confirmPassword, RoleEnum role);
-        void UpdateAccount(int Id, string password, string confirmPassword, RoleEnum role);
+        void Register(string username, string password, string confirmPassword, Enums role);
+        void UpdateAccount(int Id, string password, string confirmPassword, Enums role);
         void UpdateAdminPassword(int id, string oldPassword, string newPassword, string confirmNewPassword);
     }
     class AuthenticationService : IAuthenticationService
@@ -29,7 +29,7 @@ namespace ServerManagement.Identity
             return user;
         }
 
-        public void Register(string username, string password, string confirmPassword, RoleEnum role)
+        public void Register(string username, string password, string confirmPassword, Enums role)
         {
             using (ServerManagementEntities db = new ServerManagementEntities())
             {
@@ -43,7 +43,7 @@ namespace ServerManagement.Identity
                             {
                                 switch (role)
                                 {
-                                    case RoleEnum.Admin:
+                                    case Enums.Admin:
                                         {
                                             db.Users.Add(new User
                                             {
@@ -54,7 +54,7 @@ namespace ServerManagement.Identity
                                             });
                                         }
                                         break;
-                                    case RoleEnum.Writer:
+                                    case Enums.Writer:
                                         {
                                             db.Users.Add(new User
                                             {
@@ -65,7 +65,7 @@ namespace ServerManagement.Identity
                                             });
                                         }
                                         break;
-                                    case RoleEnum.Reader:
+                                    case Enums.Reader:
                                         {
                                             db.Users.Add(new User
                                             {
@@ -103,7 +103,7 @@ namespace ServerManagement.Identity
             }
         }
 
-        public void UpdateAccount(int Id, string password, string confirmPassword, RoleEnum role)
+        public void UpdateAccount(int Id, string password, string confirmPassword, Enums role)
         {
             using (ServerManagementEntities db = new ServerManagementEntities())
             {
@@ -127,13 +127,13 @@ namespace ServerManagement.Identity
                             }
                             switch (role)
                             {
-                                case RoleEnum.Admin:
+                                case Enums.Admin:
                                     user.RoleId = 1;
                                     break;
-                                case RoleEnum.Writer:
+                                case Enums.Writer:
                                     user.RoleId = 2;
                                     break;
-                                case RoleEnum.Reader:
+                                case Enums.Reader:
                                     user.RoleId = 3;
                                     break;
                                 default:

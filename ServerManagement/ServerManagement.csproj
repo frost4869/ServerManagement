@@ -120,7 +120,7 @@
     <Compile Include="ReaderWindow.xaml.cs">
       <DependentUpon>ReaderWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RoleEnum.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="ViewModel\AccountViewModel.cs" />
     <Compile Include="ViewModel\AuthenticationViewModel.cs" />
     <Compile Include="ViewModel\ImportServerViewModel.cs" />
@@ -155,8 +155,10 @@
     <Compile Include="View\UpdateAdminPasswordWindow.xaml.cs">
       <DependentUpon>UpdateAdminPasswordWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="VML\AsyncDelegateCommand.cs" />
     <Compile Include="VML\Crypto.cs" />
     <Compile Include="VML\DelegateCommand.cs" />
+    <Compile Include="VML\MyDelegateCommand.cs" />
     <Compile Include="VML\PasswordEncriptionHelper.cs" />
     <Compile Include="VML\PasswordHelper.cs" />
     <Compile Include="VML\Utils.cs" />

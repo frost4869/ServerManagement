@@ -50,7 +50,7 @@
                             <ColumnDefinition></ColumnDefinition>
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        
+
                         <PasswordBox Height="30" HorizontalAlignment="Stretch" Grid.Column="0" Margin="0 0 10 0"
                              w:PasswordHelper.Attach="True"
                              w:PasswordHelper.Password="{Binding Path=Password, Mode=TwoWay}"
@@ -61,9 +61,9 @@
                             Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}"
                             VerticalContentAlignment="Center" VerticalAlignment="Center" Click="CopyButton_Click">
 
-                                <iconPacks:PackIconModern Width="18"
+                            <iconPacks:PackIconModern Width="18"
                                                       Height="18"
-                                                      Kind="PageCopy" /> 
+                                                      Kind="PageCopy" />
                         </Button>
                     </Grid>
                 </StackPanel>
@@ -79,40 +79,83 @@
                     </TextBox>
                 </StackPanel>
 
-                <Button x:Name="btnSave"
-                    Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="70" Height="30"
-                    Margin="0 0 0 0" FontSize="13" 
-                    Style="{DynamicResource SquareButtonStyle}"
-                    Click="ButtonSave_Click">Save</Button>
+               
 
-                
+
             </Grid>
         </Grid>
-        <Grid Grid.Column="1" Grid.Row="0" Margin="0 20 20 0">
+        <Grid Grid.Column="1" Grid.Row="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-            <StackPanel Orientation="Horizontal" Grid.Row="0">
-                <Label FontWeight="DemiBold"  FontSize="13" VerticalAlignment="Top">Ip Address</Label>
-                <Button Grid.Row="0"
-                    Width="25"
-                    Height="25"
-                    Margin="10 0 0 10"
-                    Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}"
-                    HorizontalAlignment="Left" VerticalContentAlignment="Center" VerticalAlignment="Top" Click="BtnAddIp_Click">
-
-                    <iconPacks:PackIconModern Width="15"
-                                              Height="15"
-                                              Kind="Add" />
-                </Button>
-            </StackPanel>
-            <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
-                <StackPanel x:Name="Ips" Orientation="Vertical" >
-                    
+            <Grid Grid.Row="0" Margin="20 20 0 0 " x:Name="IpListGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <StackPanel Margin="0 0 0 0" Orientation="Vertical" Grid.Row="0">
+                    <Label FontWeight="DemiBold" FontSize="13" VerticalAlignment="Top">Ip Management</Label>
+                    <UniformGrid Columns="2" Margin="0 0 20 10">
+                        <TextBox VerticalAlignment="center" x:Name="txtIpMng" Margin="0 0 10 0" Text="{Binding Path=IpMng, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Controls:TextBoxHelper.Watermark="Ip Address"
+                                 Controls:TextBoxHelper.UseFloatingWatermark="True"></TextBox>
+                        <TextBox VerticalAlignment="center" Margin="10 0 0 0" x:Name="txtMacMng" Text="{Binding Path=MacMng, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Controls:TextBoxHelper.Watermark="Mac Address"
+                                 Controls:TextBoxHelper.UseFloatingWatermark="True"></TextBox>
+                    </UniformGrid>
                 </StackPanel>
-            </ScrollViewer>
+                <StackPanel Margin="0 0 0 0" Orientation="Vertical" Grid.Row="1">
+                    <Label FontWeight="DemiBold" FontSize="13" VerticalAlignment="Top">Ip WAN</Label>
+                    <UniformGrid Columns="2" Margin="0 0 20 10"  >
+                        <TextBox VerticalAlignment="center" x:Name="txtIpWan" Margin="0 0 10 0" Text="{Binding Path=IpWan, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Controls:TextBoxHelper.Watermark="Ip Address"
+                                 Controls:TextBoxHelper.UseFloatingWatermark="True"></TextBox>
+                        <TextBox VerticalAlignment="center" Margin="10 0 0 0" x:Name="txtMacWan" Text="{Binding Path=MacWan, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Controls:TextBoxHelper.Watermark="Mac Address"
+                                 Controls:TextBoxHelper.UseFloatingWatermark="True"></TextBox>
+                    </UniformGrid>
+                </StackPanel>
+                <StackPanel Margin="0 0 0 0" Orientation="Vertical" Grid.Row="2">
+                    <Label FontWeight="DemiBold"  FontSize="13" VerticalAlignment="Top">Ip LAN</Label>
+                    <UniformGrid Columns="2" Margin="0 0 20 10"  >
+                        <TextBox VerticalAlignment="center" x:Name="txtIpLan" Margin="0 0 10 0" Text="{Binding Path=IpLan, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Controls:TextBoxHelper.Watermark="Ip Address"
+                                 Controls:TextBoxHelper.UseFloatingWatermark="True"></TextBox>
+                        <TextBox VerticalAlignment="center" Margin="10 0 0 0" x:Name="txtMacLan" Text="{Binding Path=MacLan, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Controls:TextBoxHelper.Watermark="Mac Address"
+                                 Controls:TextBoxHelper.UseFloatingWatermark="True"></TextBox>
+                    </UniformGrid>
+                </StackPanel>
+                <StackPanel Margin="0 0 0 0" Orientation="Vertical" Grid.Row="3">
+                    <Label FontWeight="DemiBold"  FontSize="13" VerticalAlignment="Top">Ip Database</Label>
+                    <UniformGrid Columns="2" Margin="0 0 20 10"  >
+                        <TextBox VerticalAlignment="center" x:Name="txtIpDB" Margin="0 0 10 0" Text="{Binding Path=IpDB, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Controls:TextBoxHelper.Watermark="Ip Address"
+                                 Controls:TextBoxHelper.UseFloatingWatermark="True"></TextBox>
+                        <TextBox VerticalAlignment="center" Margin="10 0 0 0" x:Name="txtMacDb" Text="{Binding Path=MacDB, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Controls:TextBoxHelper.Watermark="Mac Address"
+                                 Controls:TextBoxHelper.UseFloatingWatermark="True"></TextBox>
+                    </UniformGrid>
+                </StackPanel>
+                <StackPanel Margin="0 0 0 0" Orientation="Vertical" Grid.Row="4">
+                    <Label FontWeight="DemiBold"  FontSize="13" VerticalAlignment="Top">Name Tag</Label>
+                    <TextBox VerticalAlignment="center" Margin="0 0 20 0" Text="{Binding Path=NameTag, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
+                </StackPanel>
+                <Button x:Name="btnSave"
+                    Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="70" Height="30"
+                    Margin="0 40 0 0" FontSize="13" 
+                    Style="{DynamicResource SquareButtonStyle}"
+                    Command="{Binding AsyncCreateServerCommand}">Save</Button>
+                <TextBlock Text="{Binding Path=Status}" Grid.Row="6" TextWrapping="Wrap" Margin="0 10 0 0"
+                           FontWeight="Bold" FontSize="13"
+                           Foreground="{Binding Path=StatusColor}"></TextBlock>
+            </Grid>
         </Grid>
     </Grid>
-    
+
 </UserControl>

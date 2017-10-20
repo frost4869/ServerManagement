@@ -65,6 +65,11 @@
             <Separator Style="{StaticResource MetroStatusBarSeparator}" />
             <StatusBarItem>Logged in as:</StatusBarItem>
             <StatusBarItem Content="{Binding AuthenticatedUser, Mode=OneWay}" />
+            <Separator Style="{StaticResource MetroStatusBarSeparator}" />
+            <StatusBarItem x:Name="progressText" Visibility="Collapsed" FontWeight="Bold">Exporting:</StatusBarItem>
+            <StatusBarItem>
+                <Controls:MetroProgressBar Visibility="Collapsed" x:Name="ExportPB" Height="15" Width="500" Minimum="0" Maximum="100"></Controls:MetroProgressBar>
+            </StatusBarItem>
         </StatusBar>
     </Grid>
 </Controls:MetroWindow>
