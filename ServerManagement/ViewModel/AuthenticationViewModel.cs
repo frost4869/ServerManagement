@@ -41,7 +41,7 @@ namespace ServerManagement.ViewModel
         {
             ServerManagementEntities db = new ServerManagementEntities();
             CustomPrincipal customPrincipal = Thread.CurrentPrincipal as CustomPrincipal;
-            var accounts = db.Users.Where(q => q.Active && q.Username != customPrincipal.Identity.Name);
+            var accounts = db.Users.Where(q => q.Username != customPrincipal.Identity.Name);
             Accounts = new ObservableCollection<User>(accounts);
         }
 
@@ -178,15 +178,14 @@ namespace ServerManagement.ViewModel
                 }
                 LoginWindow.Instance.Close();
             }
-            catch (UnauthorizedAccessException)
+            catch (UnauthorizedAccessException ex)
             {
                 StatusColor = Brushes.Red;
-                Status = "Login failed! Please provide some valid credentials.";
+                Status = ex.Message;
             }
             catch (Exception ex)
             {
-                StatusColor = Brushes.Red;
-                Status = string.Format("ERROR: {0}", ex.Message);
+                MessageBox.Show(ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         private bool CanLogin(object parameter)
@@ -250,7 +249,7 @@ namespace ServerManagement.ViewModel
             {
                 if (IsAdmin)
                 {
-                    if(!string.IsNullOrEmpty(OldPassword) || !string.IsNullOrEmpty(Password) || !string.IsNullOrEmpty(ConfirmPassword))
+                    if (!string.IsNullOrEmpty(OldPassword) || !string.IsNullOrEmpty(Password) || !string.IsNullOrEmpty(ConfirmPassword))
                     {
                         var currentUser = (Thread.CurrentPrincipal as CustomPrincipal);
                         using (ServerManagementEntities db = new ServerManagementEntities())

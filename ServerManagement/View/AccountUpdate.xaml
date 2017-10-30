@@ -16,6 +16,7 @@
             <RowDefinition Height="50"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBox x:Name="txtUsername" Grid.Row="0" Width="Auto" VerticalAlignment="Center"
                  Controls:TextBoxHelper.UseFloatingWatermark="True"
@@ -51,11 +52,13 @@
                   Margin="30 0 30 0"
                   x:Name="roleComboBox"
                   SelectedItem="{Binding Path=CurrentRole, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
-        <TextBlock Text="{Binding Status}" Grid.Row="4" 
+        <CheckBox Grid.Row="4" IsChecked="{Binding Path=Active, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Active"
+                  Margin="30 20 30 0"/>
+        <TextBlock Text="{Binding Status}" Grid.Row="5" 
                    VerticalAlignment="Center" Foreground="{Binding StatusColor}" TextWrapping="Wrap" HorizontalAlignment="Center" 
                    FontSize="13" FontWeight="DemiBold">
         </TextBlock>
-        <Button Grid.Row="5" Content="Update" Style="{DynamicResource SquareButtonStyle}"
+        <Button Grid.Row="6" Content="Update" Style="{DynamicResource SquareButtonStyle}"
                 Command="{Binding UpdateAccountCommand}"
                 CommandParameter="{Binding ElementName=passwordBox}"
                 HorizontalAlignment="Center"

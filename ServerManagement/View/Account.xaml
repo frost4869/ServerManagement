@@ -35,7 +35,7 @@
                 <DataGridTemplateColumn Header="Active">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox IsChecked="{Binding Active, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" MinWidth="0"/>
+                            <CheckBox IsEnabled="False" IsChecked="{Binding Active, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" MinWidth="0"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

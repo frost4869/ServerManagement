@@ -52,49 +52,6 @@ namespace ServerManagement.View
             });
         }
 
-        private async Task GetCustomColumnsAsync(ObservableCollection<ServerModel> serverList)
-        {
-            await Task.Run(() =>
-            {
-                Application.Current.Dispatcher.Invoke((Action)(() =>
-                {
-                    foreach (var server in serverList)
-                    {
-                        var columns = new List<DataGridColumn>();
-                        //for (int i = 0; i < server.IpAddresses.Count; i++)
-                        //{
-                        //    var newColumn = new DataGridTextColumn()
-                        //    {
-                        //        Header = "IP " + (i + 1),
-                        //        Width = new DataGridLength(1.0, DataGridLengthUnitType.Auto)
-                        //    };
-                        //    Binding valueBinding = new Binding()
-                        //    {
-                        //        Path = new PropertyPath("IpAddresses[" + i + "].IPAddress"),
-                        //        Mode = BindingMode.TwoWay,
-                        //        UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-                        //        NotifyOnSourceUpdated = true,
-                        //        NotifyOnTargetUpdated = true
-                        //    };
-                        //    newColumn.Binding = valueBinding;
-
-                        //    if (!CheckIfColumnAdded(newColumn.Header.ToString()))
-                        //    {
-                        //        serverDataGrid.Columns.Add(newColumn);
-                        //    }
-                        //}
-                    }
-
-                    ProgressPanel.Visibility = Visibility.Collapsed;
-                }));
-            });
-        }
-
-        private bool CheckIfColumnAdded(string ColName)
-        {
-            return serverDataGrid.Columns.Any(q => q.Header.ToString() == ColName);
-        }
-
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
 
@@ -117,9 +74,14 @@ namespace ServerManagement.View
 
         private async void ButtonDelete_Click(object sender, RoutedEventArgs e)
         {
-            var dataContext = this.DataContext as ServerViewModel;
-            await dataContext.DeleteSelected();
-            LoadData();
+            MessageBoxResult result = MessageBox.Show("Are you sure to delete these records ?", "Delete", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+
+            if(result == MessageBoxResult.Yes)
+            {
+                var dataContext = this.DataContext as ServerViewModel;
+                await dataContext.DeleteSelected();
+                LoadData();
+            }
         }
 
         private void DataGridRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -244,13 +206,6 @@ namespace ServerManagement.View
         private void CopyButton_Click(object sender, RoutedEventArgs e)
         {
             Clipboard.SetText(((PasswordBox)((Grid)((Button)sender).Parent).FindName("txtPassword")).Password);
-        }
-
-        private bool IsMatch(object o)
-        {
-            ServerModel server = o as ServerModel;
-
-            return (DataContext as ServerViewModel).Servers.Any(q => q.Name.ToLower().Contains(searchBox.Text.ToLower()));
         }
 
         private void serverDataGrid_MouseUp(object sender, MouseButtonEventArgs e)

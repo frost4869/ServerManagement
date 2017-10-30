@@ -2,6 +2,7 @@
 using ServerManagement.ViewModel;
 using System.Globalization;
 using System.Reflection;
+using System.Windows.Input;
 
 namespace ServerManagement.View
 {
@@ -32,8 +33,9 @@ namespace ServerManagement.View
             Instance = this;
             Title = "Server Management Tool - Version " + Assembly.GetEntryAssembly().GetName().Version;
             this.EnableDWMDropShadow = true;
+            FocusManager.SetFocusedElement(this, txtUsername);
 
-            AutoUpdater.CurrentCulture = new CultureInfo("en-EN");
+            //AutoUpdater.CurrentCulture = new CultureInfo("en-EN");
             AutoUpdater.LetUserSelectRemindLater = true;
             AutoUpdater.RemindLaterTimeSpan = RemindLaterFormat.Minutes;
             AutoUpdater.RemindLaterAt = 1;

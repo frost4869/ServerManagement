@@ -7,17 +7,12 @@ using ServerManagement.View;
 using ServerManagement.ViewModel;
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Data;
-using System.Globalization;
-using System.IO;
 using System.Reflection;
 using System.Security.Permissions;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using Excel = Microsoft.Office.Interop.Excel;
 namespace ServerManagement
 {
@@ -59,7 +54,6 @@ namespace ServerManagement
             item.Content = view;
             MainTabControl.Items.Add(item);
 
-            AutoUpdater.CurrentCulture = new CultureInfo("en-EN");
             AutoUpdater.LetUserSelectRemindLater = true;
             AutoUpdater.RemindLaterTimeSpan = RemindLaterFormat.Minutes;
             AutoUpdater.RemindLaterAt = 1;
@@ -192,12 +186,17 @@ namespace ServerManagement
                     ExportPB.Visibility = Visibility.Collapsed;
                     progressText.Visibility = Visibility.Collapsed;
                     wb.SaveAs(fileName);
-                    app.Quit();
-                    wb = null;
+
+                    MessageBox.Show("Excel file exported at: \n" + fileName, "Finish", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 catch (Exception ex)
                 {
-
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK);
+                }
+                finally
+                {
+                    app.Quit();
+                    wb = null;
                 }
             }
         }

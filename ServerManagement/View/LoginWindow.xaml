@@ -20,7 +20,7 @@
                  Controls:TextBoxHelper.UseFloatingWatermark="True"
                  Controls:TextBoxHelper.Watermark="Username">
             <TextBox.InputBindings>
-                <KeyBinding Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=passwordBox}"/>
+                <KeyBinding Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=passwordBox}" Key="Return"/>
             </TextBox.InputBindings>
         </TextBox>
 

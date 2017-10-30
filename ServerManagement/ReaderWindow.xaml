@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ServerManagement"
         xmlns:views="clr-namespace:ServerManagement.View"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
         Title="ReaderWindow" Height="600" Width="1000">
@@ -16,14 +17,6 @@
             <Setter Property="Header" Value="{Binding Name, Mode=OneWay}" />
         </Style>
     </Window.Resources>
-    <Controls:MetroWindow.RightWindowCommands>
-        <Controls:WindowCommands>
-            <Button ToolTip="Logout" Content="Logout"
-                    FontWeight="DemiBold"
-                    FontSize="15"
-                    Command="{Binding LogoutCommand}"></Button>
-        </Controls:WindowCommands>
-    </Controls:MetroWindow.RightWindowCommands>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
@@ -38,6 +31,25 @@
                     DockPanel.Dock="Left">
                 <MenuItem Header="Check for Update" Click="Update_Click"></MenuItem>
             </Menu>
+            <Grid DockPanel.Dock="Right" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Stretch" 
+                  Controls:ControlsHelper.MouseOverBorderBrush="{DynamicResource BlackBrush}">
+                <Menu>
+                    <Menu.Resources>
+                        <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+                    </Menu.Resources>
+                    <MenuItem  Width="150">
+                        <MenuItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconModern Width="20"
+                                              Height="20" VerticalAlignment="Center" 
+                                              Kind="User"/>
+                                <Label Content="{Binding AuthenticatedUser, Mode=OneWay}" ContentStringFormat="{}{0} &#x23f7;"></Label>
+                            </StackPanel>
+                        </MenuItem.Header>
+                        <MenuItem Header="Logout " Command="{Binding LogoutCommand}"/>
+                    </MenuItem>
+                </Menu>
+            </Grid>
         </DockPanel>
         <Controls:MetroAnimatedSingleRowTabControl 
             x:Name="MainTabControl"
@@ -49,9 +61,6 @@
         </Controls:MetroAnimatedSingleRowTabControl>
         <StatusBar Grid.Row="3">
             <StatusBarItem>Server Management Tool</StatusBarItem>
-            <Separator Style="{StaticResource MetroStatusBarSeparator}" />
-            <StatusBarItem>Logged in as:</StatusBarItem>
-            <StatusBarItem Content="{Binding AuthenticatedUser, Mode=OneWay}" />
         </StatusBar>
     </Grid>
 </Controls:MetroWindow>

@@ -60,7 +60,8 @@
                                        Height="40" />
         </StackPanel>
 
-        <DataGrid x:Name="serverDataGrid" ItemsSource="{Binding Servers}" EnableRowVirtualization="True" AutoGenerateColumns="False"
+        <DataGrid x:Name="serverDataGrid" ItemsSource="{Binding Servers}"
+                  EnableRowVirtualization="True" AutoGenerateColumns="False"
                   Grid.Row="1" Grid.Column="0"
                   Margin="0,10,0,0" 
                   CanUserAddRows="False"

@@ -19,9 +19,9 @@
                     Style="{DynamicResource SquareButtonStyle}" 
                     FontSize="13" 
                     Width="60" Margin="0 0 10 0" Click="SaveButton_Click"></Button>
-            <Button Content="Cancel" Style="{DynamicResource SquareButtonStyle}" 
-                    FontSize="13" 
-                    Width="60"></Button>
+            <Button Content="Remove" Style="{DynamicResource SquareButtonStyle}" 
+                    FontSize="13" x:Name="btnRemove" Click="btnRemove_Clicked"
+                    Width="60" Visibility="Collapsed"/>
         </StackPanel>
         <StackPanel Orientation="Vertical" Grid.Row="1" Panel.ZIndex="10" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="ProgressSection">
             <TextBlock HorizontalAlignment="Center">Importing...</TextBlock>
@@ -35,7 +35,15 @@
                   Grid.Row="1" Margin="0,10,0,0" 
                   GridLinesVisibility="All" EnableColumnVirtualization="True"
                   HeadersVisibility="All" SelectionUnit="CellOrRowHeader"
-                  IsReadOnly="True">
+                  IsReadOnly="True"
+                  vml:DataGridBehavior.DisplayRowNumber="True">
+            <DataGrid.RowHeaderStyle>
+                <Style TargetType="{x:Type DataGridRowHeader}">
+                    <Setter Property="HorizontalContentAlignment" Value="Right"/>
+                    <Setter Property="Width" Value="40"/>
+                </Style>
+            </DataGrid.RowHeaderStyle>
+
             <DataGrid.Columns>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.HeaderStyle>
@@ -48,7 +56,7 @@
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" MinWidth="0" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                            <CheckBox x:Name="chkBox" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" MinWidth="0" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

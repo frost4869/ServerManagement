@@ -5,6 +5,7 @@ using ServerManagement.Model.Entity;
 using ServerManagement.ViewModel;
 using ServerManagement.VML;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,27 +32,35 @@ namespace ServerManagement.View
 
         private void headerCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-
+            IEnumerable<CheckBox> chkBoxs = this.FindChildren<CheckBox>(true);
+            foreach (CheckBox item in chkBoxs)
+            {
+                item.IsChecked = true;
+            }
         }
 
         private void headerCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void CopyButton_Click(object sender, RoutedEventArgs e)
-        {
-
+            IEnumerable<CheckBox> chkBoxs = this.FindChildren<CheckBox>(true);
+            foreach (CheckBox item in chkBoxs)
+            {
+                item.IsChecked = false;
+            }
+            btnRemove.Visibility = Visibility.Collapsed;
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
-
+            btnRemove.Visibility = Visibility.Visible;
         }
 
         private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
-
+            IEnumerable<CheckBox> chkBoxs = this.FindChildren<CheckBox>(true);
+            if (!chkBoxs.Any(q => q.IsChecked.Value))
+            {
+                btnRemove.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -74,6 +83,8 @@ namespace ServerManagement.View
                 {
                     using (var trans = db.Database.BeginTransaction())
                     {
+                        int rowCnt = 1;
+
                         try
                         {
                             Crypto c = new Crypto(Crypto.CryptoTypes.encTypeTripleDES);
@@ -110,21 +121,43 @@ namespace ServerManagement.View
                                         });
                                 }
                                 db.SaveChanges();
-                                progress = (progress * 100) / ImportDatagrid.Items.Count;
+
+                                rowCnt++;
                             }
                             trans.Commit();
                             await controller.CloseAsync();
                             await metroWindow.ShowMessageAsync("Success", "Saved");
-                            
                         }
                         catch (Exception ex)
                         {
                             await controller.CloseAsync();
-                            await metroWindow.ShowMessageAsync("Error", ex.Message);
+                            await metroWindow.ShowMessageAsync("Error", "There is an error with data record at row number: " + rowCnt + "\n\n"
+                                                                    + ex.ToString());
                             trans.Rollback();
                         }
                     }
                 }
+            }
+        }
+
+        private void btnRemove_Clicked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                List<CheckBox> chkBoxs = this.FindChildren<CheckBox>(true)
+                    .Where(q => q.Name == "chkBox" && q.IsChecked.Value)
+                    .ToList();
+                var dataList = ImportDatagrid.ItemsSource as DataView;
+
+                foreach (CheckBox chkBox in chkBoxs)
+                {
+                    DataGridRow row = VisualTreeHelpers.FindAncestor<DataGridRow>(chkBox);
+                    dataList.Delete(row.GetIndex());
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "Error", MessageBoxButton.OK);
             }
         }
     }

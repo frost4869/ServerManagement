@@ -163,6 +163,7 @@
     <Compile Include="VML\PasswordHelper.cs" />
     <Compile Include="VML\Utils.cs" />
     <Compile Include="VML\ViewModelLocator.cs" />
+    <Compile Include="VML\VisualTreeHelpers.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

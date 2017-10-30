@@ -12,7 +12,7 @@ namespace ServerManagement.Identity
     {
         User AuthenticateUser(string username, string password);
         void Register(string username, string password, string confirmPassword, Enums role);
-        void UpdateAccount(int Id, string password, string confirmPassword, Enums role);
+        void UpdateAccount(int Id, string password, string confirmPassword, Enums role, bool active);
         void UpdateAdminPassword(int id, string oldPassword, string newPassword, string confirmNewPassword);
     }
     class AuthenticationService : IAuthenticationService
@@ -24,6 +24,10 @@ namespace ServerManagement.Identity
             if (user == null)
             {
                 throw new UnauthorizedAccessException("Wrong Username or Password. Please try again");
+            }
+            else if (!user.Active)
+            {
+                throw new UnauthorizedAccessException("User has been Deactivated by Admin.");
             }
 
             return user;
@@ -103,14 +107,14 @@ namespace ServerManagement.Identity
             }
         }
 
-        public void UpdateAccount(int Id, string password, string confirmPassword, Enums role)
+        public void UpdateAccount(int Id, string password, string confirmPassword, Enums role, bool active)
         {
             using (ServerManagementEntities db = new ServerManagementEntities())
             {
                 using (var transaction = db.Database.BeginTransaction())
                 {
                     User user = db.Users.Find(Id);
-                    if (user != null && user.Active)
+                    if (user != null)
                     {
                         try
                         {
@@ -139,6 +143,7 @@ namespace ServerManagement.Identity
                                 default:
                                     break;
                             }
+                            user.Active = active;
                             db.Entry(user).State = System.Data.Entity.EntityState.Modified;
                             db.SaveChanges();
                             transaction.Commit();

@@ -5,7 +5,7 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="IPAddress" Type="nvarchar" MaxLength="15" />
+    <Property Name="IPAddress" Type="nvarchar" MaxLength="22" />
     <Property Name="ServerId" Type="int" Nullable="false" />
     <Property Name="MacAddressId" Type="int" />
     <Property Name="Type" Type="int" />

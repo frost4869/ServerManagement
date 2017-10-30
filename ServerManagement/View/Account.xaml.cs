@@ -22,9 +22,16 @@ namespace ServerManagement.View
     /// </summary>
     public partial class Account : UserControl
     {
+        public static Account Instance
+        {
+            get;
+            private set;
+        }
+
         public Account(AuthenticationViewModel viewModel)
         {
             InitializeComponent();
+            Instance = this;
             this.DataContext = viewModel;
             accountDataGrid.AddHandler(DataGridRow.MouseDoubleClickEvent,
                                         new MouseButtonEventHandler(DataGridRow_MouseDoubleClick), true);

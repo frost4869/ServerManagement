@@ -30,18 +30,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="IPs">
-      <EntityTypeMapping TypeName="ServerManagementModel.IP">
-        <MappingFragment StoreEntitySet="IP">
-          <ScalarProperty Name="Active" ColumnName="Active" />
-          <ScalarProperty Name="Type" ColumnName="Type" />
-          <ScalarProperty Name="MacAddressId" ColumnName="MacAddressId" />
-          <ScalarProperty Name="ServerId" ColumnName="ServerId" />
-          <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Servers">
       <EntityTypeMapping TypeName="ServerManagementModel.Server">
         <MappingFragment StoreEntitySet="Server">
@@ -53,6 +41,18 @@
           <ScalarProperty Name="NameTag" ColumnName="NameTag" />
           <ScalarProperty Name="HostName" ColumnName="HostName" />
           <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="IPs">
+      <EntityTypeMapping TypeName="ServerManagementModel.IP">
+        <MappingFragment StoreEntitySet="IP">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="MacAddressId" ColumnName="MacAddressId" />
+          <ScalarProperty Name="ServerId" ColumnName="ServerId" />
+          <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>

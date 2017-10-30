@@ -12,7 +12,7 @@ using MahApps.Metro.Controls.Dialogs;
 
 namespace ServerManagement.ViewModel
 {
-    class ImportServerViewModel : INotifyPropertyChanged
+    public class ImportServerViewModel : INotifyPropertyChanged
     {
         private DataView _data;
         private string _fileName;
@@ -37,10 +37,10 @@ namespace ServerManagement.ViewModel
                 NotifyPropertyChanged("Data");
             }
         }
-
+        
         public async Task LoadImportedDataAsync()
         {
-            var metroWindow = (System.Windows.Application.Current.Windows.OfType<Window>().SingleOrDefault(q => q.IsActive) as MetroWindow);
+            var metroWindow = (Application.Current.Windows.OfType<Window>().SingleOrDefault(q => q.IsActive) as MetroWindow);
 
             await Task.Run(() =>
             {
@@ -75,9 +75,10 @@ namespace ServerManagement.ViewModel
                     wb.Close(true, Missing.Value, Missing.Value);
 
                     Data = dt.DefaultView;
+
                     _progressSection.Dispatcher.Invoke(new Action(() =>
                     {
-                        _progressSection.Visibility = System.Windows.Visibility.Collapsed;
+                        _progressSection.Visibility = Visibility.Collapsed;
                     }));
                 }
                 catch (Exception ex)
