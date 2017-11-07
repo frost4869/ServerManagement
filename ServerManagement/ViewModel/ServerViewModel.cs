@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using ServerManagement.Model;
 using ServerManagement.Model.Entity;
 using ServerManagement.VML;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -128,12 +129,13 @@ namespace ServerManagement.ViewModel
                 {
                     try
                     {
-                        foreach (var item in Servers)
+                        foreach (ServerModel item in Servers)
                         {
                             if (item.IsSelected)
                             {
                                 var server = await db.Servers.FindAsync(Mapper.Map<Server>(item).Id);
                                 server.Active = false;
+                                Utils.RecordActivityAsync(ActivityType.Delete, "Servers", DateTime.Now, item.Id, Utils.GetCurrentUser().UserId);
                             }
                         }
 

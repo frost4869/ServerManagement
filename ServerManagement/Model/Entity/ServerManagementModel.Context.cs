@@ -9,7 +9,6 @@
 
 namespace ServerManagement.Model.Entity
 {
-    using ServerManagement.VML;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
@@ -17,7 +16,7 @@ namespace ServerManagement.Model.Entity
     public partial class ServerManagementEntities : DbContext
     {
         public ServerManagementEntities()
-            : base(Utils.GetEntityConnectionString())
+            : base(VML.Utils.GetEntityConnectionString())
         {
         }
     
@@ -31,5 +30,6 @@ namespace ServerManagement.Model.Entity
         public virtual DbSet<MacAddress> MacAddresses { get; set; }
         public virtual DbSet<Server> Servers { get; set; }
         public virtual DbSet<IP> IPs { get; set; }
+        public virtual DbSet<ActivityLog> ActivityLogs { get; set; }
     }
 }

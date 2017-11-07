@@ -140,64 +140,64 @@ namespace ServerManagement
             sheet = wb.ActiveSheet;
             sheet.Name = "Danh sách Servers";
 
-            DataGrid serverDataGrid = this.FindChild<DataGrid>("serverDataGrid");
-
-            if (serverDataGrid != null)
+            try
             {
-                try
+                ServerViewModel viewModel = Server.Instance.DataContext as ServerViewModel;
+                ObservableCollection<ServerModel> model = viewModel.Servers;
+
+                DataTable dt = await VML.Utils.ToDataTable(model);
+                await Task.Run(() =>
                 {
-                    DataTable dt = await VML.Utils.ToDataTable((serverDataGrid.ItemsSource as ObservableCollection<ServerModel>));
-                    await Task.Run(() =>
-                    {
 
                         //headers
                         for (int i = 1; i <= 14; i++)
-                        {
-                            sheet.Cells[1, i] = dt.Columns[i - 1].ColumnName;
-                            sheet.Cells[1, i].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-                            sheet.Cells[1, i].VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
-                            sheet.Cells[1, i].Font.Size = 11;
-                            sheet.Cells[1, i].Font.Bold = true;
-                            sheet.Cells[1, i].Borders.Weight = Excel.XlBorderWeight.xlThin;
-                            sheet.Cells[1, i].Interior.Color = Excel.XlRgbColor.rgbLightBlue;
-                            sheet.Cells[1, i].EntireColumn.AutoFit();
-                        }
+                    {
+                        sheet.Cells[1, i] = dt.Columns[i - 1].ColumnName;
+                        sheet.Cells[1, i].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+                        sheet.Cells[1, i].VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+                        sheet.Cells[1, i].Font.Size = 11;
+                        sheet.Cells[1, i].Font.Bold = true;
+                        sheet.Cells[1, i].Borders.Weight = Excel.XlBorderWeight.xlThin;
+                        sheet.Cells[1, i].Interior.Color = Excel.XlRgbColor.rgbLightBlue;
+                        sheet.Cells[1, i].EntireColumn.AutoFit();
+                    }
                         //data
                         int rowCnt = 2;
-                        foreach (DataRow row in dt.Rows)
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        for (int i = 1; i <= 14; i++)
                         {
-                            for (int i = 1; i <= 14; i++)
-                            {
-                                sheet.Cells[rowCnt, i] = row[i - 1].ToString();
-                                sheet.Cells[rowCnt, i].HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
-                                sheet.Cells[rowCnt, i].VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
-                                sheet.Cells[rowCnt, i].Font.Size = 11;
-                                sheet.Cells[rowCnt, i].Borders.Weight = Excel.XlBorderWeight.xlThin;
-                                sheet.Cells[rowCnt, i].EntireColumn.AutoFit();
-                            }
-                            ExportPB.Dispatcher.Invoke(new Action(() =>
-                            {
-                                ExportPB.Value = rowCnt * 100 / dt.Rows.Count;
-                            }));
-                            rowCnt++;
+                            sheet.Cells[rowCnt, i] = row[i - 1].ToString();
+                            sheet.Cells[rowCnt, i].HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
+                            sheet.Cells[rowCnt, i].VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+                            sheet.Cells[rowCnt, i].Font.Size = 11;
+                            sheet.Cells[rowCnt, i].Borders.Weight = Excel.XlBorderWeight.xlThin;
+                            sheet.Cells[rowCnt, i].EntireColumn.AutoFit();
                         }
-                    });
+                        ExportPB.Dispatcher.Invoke(new Action(() =>
+                        {
+                            ExportPB.Value = rowCnt * 100 / dt.Rows.Count;
+                        }));
+                        rowCnt++;
+                    }
+                });
 
-                    ExportPB.Visibility = Visibility.Collapsed;
-                    progressText.Visibility = Visibility.Collapsed;
-                    wb.SaveAs(fileName);
+                ExportPB.Visibility = Visibility.Collapsed;
+                progressText.Visibility = Visibility.Collapsed;
+                wb.SaveAs(fileName);
 
-                    MessageBox.Show("Excel file exported at: \n" + fileName, "Finish", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK);
-                }
-                finally
-                {
-                    app.Quit();
-                    wb = null;
-                }
+                MessageBox.Show("Excel file exported at: \n" + fileName, "Finish", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error has occured: \n" + ex.Message, "Error", MessageBoxButton.OK);
+                ExportPB.Visibility = Visibility.Collapsed;
+                progressText.Visibility = Visibility.Collapsed;
+            }
+            finally
+            {
+                app.Quit();
+                wb = null;
             }
         }
 

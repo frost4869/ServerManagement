@@ -384,6 +384,8 @@ namespace ServerManagement.Model
                                 db.Servers.Add(entity);
                                 db.SaveChanges();
 
+                                Utils.RecordActivityAsync(ActivityType.Create, "Servers", DateTime.Now, entity.Id, Utils.GetCurrentUser().UserId);
+
                                 StatusColor = Brushes.Green;
                                 Status = "New Server Created !";
                             }
@@ -410,6 +412,8 @@ namespace ServerManagement.Model
                                 };
                                 db.Entry(entity).CurrentValues.SetValues(updatedServer);
                                 db.Entry(entity).State = System.Data.Entity.EntityState.Modified;
+
+                                Utils.RecordActivityAsync(ActivityType.Update, "Servers", DateTime.Now, entity.Id, Utils.GetCurrentUser().UserId);
 
                                 StatusColor = Brushes.Green;
                                 Status = "Updated !";

@@ -30,6 +30,7 @@ namespace ServerManagement.Identity
                 throw new UnauthorizedAccessException("User has been Deactivated by Admin.");
             }
 
+
             return user;
         }
 
@@ -45,46 +46,20 @@ namespace ServerManagement.Identity
                         {
                             if (!db.Users.Any(q => q.Username.Equals(username)))
                             {
-                                switch (role)
+
+                                User newUser = new User
                                 {
-                                    case Enums.Admin:
-                                        {
-                                            db.Users.Add(new User
-                                            {
-                                                Active = true,
-                                                Username = username,
-                                                Password = PasswordEncriptionHelper.HashPassword(password),
-                                                RoleId = 1
-                                            });
-                                        }
-                                        break;
-                                    case Enums.Writer:
-                                        {
-                                            db.Users.Add(new User
-                                            {
-                                                Active = true,
-                                                Username = username,
-                                                Password = PasswordEncriptionHelper.HashPassword(password),
-                                                RoleId = 2
-                                            });
-                                        }
-                                        break;
-                                    case Enums.Reader:
-                                        {
-                                            db.Users.Add(new User
-                                            {
-                                                Active = true,
-                                                Username = username,
-                                                Password = PasswordEncriptionHelper.HashPassword(password),
-                                                RoleId = 3
-                                            });
-                                        }
-                                        break;
-                                    default:
-                                        break;
-                                }
+                                    Active = true,
+                                    Username = username,
+                                    Password = PasswordEncriptionHelper.HashPassword(password),
+                                    RoleId = (int)role,
+                                };
+
+                                db.Users.Add(newUser);
                                 db.SaveChanges();
                                 transaction.Commit();
+
+                                Utils.RecordActivityAsync(ActivityType.Create, "User", DateTime.Now, newUser.Id, Utils.GetCurrentUser().UserId);
                             }
                             else
                             {
@@ -129,24 +104,13 @@ namespace ServerManagement.Identity
                                     throw new Exception("Confirm Password miss matched");
                                 }
                             }
-                            switch (role)
-                            {
-                                case Enums.Admin:
-                                    user.RoleId = 1;
-                                    break;
-                                case Enums.Writer:
-                                    user.RoleId = 2;
-                                    break;
-                                case Enums.Reader:
-                                    user.RoleId = 3;
-                                    break;
-                                default:
-                                    break;
-                            }
+                            user.RoleId = (int)role;
                             user.Active = active;
                             db.Entry(user).State = System.Data.Entity.EntityState.Modified;
                             db.SaveChanges();
                             transaction.Commit();
+
+                            Utils.RecordActivityAsync(ActivityType.Update, "User", DateTime.Now, user.Id, Utils.GetCurrentUser().UserId);
                         }
                         catch (Exception ex)
                         {
@@ -179,6 +143,7 @@ namespace ServerManagement.Identity
                                 db.Entry(user).State = System.Data.Entity.EntityState.Modified;
                                 db.SaveChanges();
                                 transaction.Commit();
+                                Utils.RecordActivityAsync(ActivityType.Update, "User", DateTime.Now, user.Id, Utils.GetCurrentUser().UserId);
                             }
                             else
                             {

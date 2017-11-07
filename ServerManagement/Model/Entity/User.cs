@@ -14,6 +14,12 @@ namespace ServerManagement.Model.Entity
     
     public partial class User
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public User()
+        {
+            this.ActivityLogs = new HashSet<ActivityLog>();
+        }
+    
         public int Id { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
@@ -21,5 +27,7 @@ namespace ServerManagement.Model.Entity
         public bool Active { get; set; }
     
         public virtual Role Role { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ActivityLog> ActivityLogs { get; set; }
     }
 }

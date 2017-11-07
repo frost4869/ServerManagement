@@ -18,6 +18,11 @@
       <End Role="Server" EntitySet="Servers" />
       <End Role="IP" EntitySet="IPs" />
     </AssociationSet>
+    <EntitySet Name="ActivityLogs" EntityType="ServerManagementModel.ActivityLog" />
+    <AssociationSet Name="FK_Record_User" Association="ServerManagementModel.FK_Record_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="ActivityLog" EntitySet="ActivityLogs" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Role">
     <Key>
@@ -38,6 +43,7 @@
     <Property Name="RoleId" Type="Int32" Nullable="false" />
     <Property Name="Active" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="Role" Relationship="ServerManagementModel.FK_User_Role" FromRole="User" ToRole="Role" />
+    <NavigationProperty Name="ActivityLogs" Relationship="ServerManagementModel.FK_Record_User" FromRole="User" ToRole="ActivityLog" />
   </EntityType>
   <Association Name="FK_User_Role">
     <End Type="ServerManagementModel.Role" Role="Role" Multiplicity="1" />
@@ -109,6 +115,33 @@
       </Principal>
       <Dependent Role="IP">
         <PropertyRef Name="ServerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ActivityLog">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ActivityType" Type="Int32" Nullable="false" />
+    <Property Name="TableName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DataId" Type="Int32" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="IpAddress" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="MacAddress" Type="String" MaxLength="17" FixedLength="false" Unicode="true" />
+    <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="User" Relationship="ServerManagementModel.FK_Record_User" FromRole="ActivityLog" ToRole="User" />
+  </EntityType>
+  <Association Name="FK_Record_User">
+    <End Type="ServerManagementModel.User" Role="User" Multiplicity="1" />
+    <End Type="ServerManagementModel.ActivityLog" Role="ActivityLog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ActivityLog">
+        <PropertyRef Name="UserId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

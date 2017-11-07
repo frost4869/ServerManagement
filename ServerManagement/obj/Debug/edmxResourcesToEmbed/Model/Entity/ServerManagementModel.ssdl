@@ -1,5 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="ServerManagementModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="ActivityLog">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ActivityType" Type="int" Nullable="false" />
+    <Property Name="TableName" Type="nvarchar(max)" />
+    <Property Name="DataId" Type="int" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="IpAddress" Type="nvarchar" MaxLength="15" />
+    <Property Name="MacAddress" Type="nvarchar" MaxLength="17" />
+    <Property Name="TimeStamp" Type="datetime" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
   <EntityType Name="IP">
     <Key>
       <PropertyRef Name="Id" />
@@ -75,6 +89,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Record_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="ActivityLog" Type="Self.ActivityLog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ActivityLog">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_User_Role">
     <End Role="Role" Type="Self.Role" Multiplicity="1" />
     <End Role="User" Type="Self.User" Multiplicity="*" />
@@ -88,6 +114,7 @@
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="ServerManagementModelStoreContainer">
+    <EntitySet Name="ActivityLog" EntityType="Self.ActivityLog" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="IP" EntityType="Self.IP" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="MacAddress" EntityType="Self.MacAddress" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
@@ -100,6 +127,10 @@
     <AssociationSet Name="FK_IP_Server" Association="Self.FK_IP_Server">
       <End Role="Server" EntitySet="Server" />
       <End Role="IP" EntitySet="IP" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Record_User" Association="Self.FK_Record_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="ActivityLog" EntitySet="ActivityLog" />
     </AssociationSet>
     <AssociationSet Name="FK_User_Role" Association="Self.FK_User_Role">
       <End Role="Role" EntitySet="Role" />

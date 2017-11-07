@@ -1,5 +1,7 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using ServerManagement.Identity;
+using ServerManagement.Model.Entity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,7 +10,9 @@ using System.Data.Entity.Core.EntityClient;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -30,7 +34,7 @@ namespace ServerManagement.VML
             sqlBuilder.MultipleActiveResultSets = true;
             sqlBuilder.ApplicationName = "EntityFramework";
             sqlBuilder.UserID = "user_conn_server";
-            sqlBuilder.Password = "Si*2bjSu#B";
+            sqlBuilder.Password = "zaQ@123";
             sqlBuilder.DataSource = "11.0.4.221";
             //sqlBuilder.UserID = "sa";
             //sqlBuilder.Password = "aptx4869";
@@ -102,6 +106,50 @@ namespace ServerManagement.VML
                 dt.Rows.Add(row);
             }
             return dt;
+        }
+
+        public static async Task RecordActivityAsync(ActivityType type, string tableName, DateTime time, int dataId, int userId)
+        {
+            await Task.Run(() =>
+            {
+                using (ServerManagementEntities db = new ServerManagementEntities())
+                {
+                    using (var transaction = db.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            IPAddress[] localIPs = Dns.GetHostAddresses(Dns.GetHostName());
+                            string ipAddress = localIPs.FirstOrDefault(q => !q.IsIPv6LinkLocal).ToString();
+
+                            ActivityLog log = new ActivityLog
+                            {
+                                ActivityType = (int)type,
+                                TableName = tableName,
+                                DataId = dataId,
+                                UserId = userId,
+                                TimeStamp = time,
+                                IpAddress = ipAddress,
+                                Active = true,
+                            };
+
+                            db.ActivityLogs.Add(log);
+                            db.SaveChanges();
+
+                            transaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback();
+                        }
+                    }
+                }
+            });
+        }
+
+        public static CustomIdentity GetCurrentUser()
+        {
+            CustomPrincipal customPrincipal = Thread.CurrentPrincipal as CustomPrincipal;
+            return customPrincipal.Identity;
         }
     }
 

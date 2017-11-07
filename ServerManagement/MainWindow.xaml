@@ -51,14 +51,14 @@
                     <Menu.Resources>
                         <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
                     </Menu.Resources>
-                    <MenuItem  Width="150">
+                    <MenuItem  Width="150" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <MenuItem.Header>
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconModern Width="20"
+                            <DockPanel>
+                                <iconPacks:PackIconModern Width="20" DockPanel.Dock="Left"
                                               Height="20" VerticalAlignment="Center" 
                                               Kind="User"/>
-                                <Label Content="{Binding AuthenticatedUser, Mode=OneWay}" ContentStringFormat="{}{0} &#x23f7;"></Label>
-                            </StackPanel>
+                                <Label Content="{Binding AuthenticatedUser, Mode=OneWay}" Margin="15 0 0 0" DockPanel.Dock="Right" ContentStringFormat="{}{0} &#x23f7;"></Label>
+                            </DockPanel>
                         </MenuItem.Header>
                         <MenuItem Header="Change Password" Click="ChangePassword_Click" Visibility="{Binding Path=IsAdmin, Converter={StaticResource BoolToVisConverter}}"/>
                         <MenuItem Header="Logout " Command="{Binding LogoutCommand}"/>

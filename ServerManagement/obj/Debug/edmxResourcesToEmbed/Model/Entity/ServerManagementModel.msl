@@ -57,5 +57,20 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="ActivityLogs">
+      <EntityTypeMapping TypeName="ServerManagementModel.ActivityLog">
+        <MappingFragment StoreEntitySet="ActivityLog">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+          <ScalarProperty Name="MacAddress" ColumnName="MacAddress" />
+          <ScalarProperty Name="IpAddress" ColumnName="IpAddress" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="DataId" ColumnName="DataId" />
+          <ScalarProperty Name="TableName" ColumnName="TableName" />
+          <ScalarProperty Name="ActivityType" ColumnName="ActivityType" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

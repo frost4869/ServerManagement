@@ -4,7 +4,9 @@ namespace ServerManagement
 {
     public enum Enums
     {
-        Admin, Writer, Reader
+        Admin = 1,
+        Writer = 2,
+        Reader = 3
     }
     public enum IpType
     {
@@ -16,5 +18,13 @@ namespace ServerManagement
         Lan = 3,
         [Description("Ip Database")]
         Database = 4
+    }
+    public enum ActivityType
+    {
+        Create = 0,
+        Update = 1,
+        Delete = 2,
+        Login = 3,
+        Logout = 4
     }
 }

@@ -84,6 +84,9 @@
     <Compile Include="Identity\AuthenticationService.cs" />
     <Compile Include="Identity\CustomPrincipal.cs" />
     <Compile Include="Identity\CustomIdentity.cs" />
+    <Compile Include="Model\Entity\ActivityLog.cs">
+      <DependentUpon>ServerManagementModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Entity\IP.cs">
       <DependentUpon>ServerManagementModel.tt</DependentUpon>
     </Compile>

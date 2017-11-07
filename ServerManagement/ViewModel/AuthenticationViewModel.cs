@@ -155,7 +155,8 @@ namespace ServerManagement.ViewModel
                     throw new ArgumentException("The application's default thread principal must be set to a CustomPrincipal object on startup.");
 
                 //Authenticate the user
-                customPrincipal.Identity = new CustomIdentity(user.Username, user.Role.RoleName);
+                customPrincipal.Identity = new CustomIdentity(user.Username, user.Role.RoleName, user.Id);
+                VML.Utils.RecordActivityAsync(ActivityType.Login, "User", DateTime.Now, user.Id, user.Id);
 
                 //Update UI
                 NotifyPropertyChanged("AuthenticatedUser");
@@ -196,6 +197,7 @@ namespace ServerManagement.ViewModel
         private void Logout(object parameter)
         {
             CustomPrincipal customPrincipal = Thread.CurrentPrincipal as CustomPrincipal;
+
             if (customPrincipal != null)
             {
                 AuthenticationViewModel viewModel = new AuthenticationViewModel(new AuthenticationService());
@@ -210,6 +212,8 @@ namespace ServerManagement.ViewModel
                 {
                     MainWindow.Instance.Close();
                 }
+
+                VML.Utils.RecordActivityAsync(ActivityType.Logout, "User", DateTime.Now, customPrincipal.Identity.UserId, customPrincipal.Identity.UserId);
 
                 customPrincipal.Identity = new UnauthenticatedIdentity();
                 NotifyPropertyChanged("AuthenticatedUser");

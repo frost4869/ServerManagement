@@ -9,7 +9,7 @@ namespace ServerManagement.Identity
 {
     class UnauthenticatedIdentity : CustomIdentity
     {
-        public UnauthenticatedIdentity() : base(string.Empty, "Guest")
+        public UnauthenticatedIdentity() : base(string.Empty, "Guest", 0)
         {
         }
     }
